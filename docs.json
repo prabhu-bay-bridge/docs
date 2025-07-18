@@ -31,18 +31,16 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "Overview",
-            "pages": ["api-reference/introduction"]
+            "group": "Authentication & Errors",
+            "pages": ["api-reference/authentication", "api-reference/errors"]
           },
           {
-            "group": "Endpoints",
-            "pages": [
-              "api-reference/endpoints/get",
-              "api-reference/endpoints/create",
-              "api-reference/endpoints/update",
-              "api-reference/endpoints/delete",
-              "api-reference/endpoints/webhooks"
-            ]
+            "group": "Common Models",
+            "pages": ["api-reference/models/customer", "api-reference/models/wallet", "api-reference/models/transfer"]
+          },
+          {
+            "group": "Webhooks",
+            "pages": ["api-reference/webhooks/overview", "api-reference/webhooks/events"]
           }
         ]
       },
@@ -50,24 +48,24 @@
         "tab": "Orchestration",
         "groups": [
           {
-            "group": "API Overview",
-            "pages": ["orchestration/overview"]
+            "group": "Overview",
+            "pages": ["orchestration/overview", "orchestration/use-cases"]
           },
           {
-            "group": "Use Cases",
-            "pages": [
-              "orchestration/virtual-accounts",
-              "orchestration/static-memos",
-              "orchestration/liquidation-addresses"
-            ]
+            "group": "Virtual Accounts",
+            "pages": ["orchestration/virtual-accounts/create", "orchestration/virtual-accounts/fund", "orchestration/virtual-accounts/webhooks"]
           },
           {
-            "group": "Transfer APIs",
-            "pages": [
-              "orchestration/transfers/create",
-              "orchestration/transfers/track",
-              "orchestration/transfers/webhooks"
-            ]
+            "group": "Static Memos",
+            "pages": ["orchestration/static-memos/create", "orchestration/static-memos/usage"]
+          },
+          {
+            "group": "Transfers",
+            "pages": ["orchestration/transfers/create", "orchestration/transfers/status", "orchestration/transfers/webhooks"]
+          },
+          {
+            "group": "Liquidation Addresses",
+            "pages": ["orchestration/liquidation-addresses/create", "orchestration/liquidation-addresses/route"]
           }
         ]
       },
@@ -75,16 +73,16 @@
         "tab": "Cards",
         "groups": [
           {
-            "group": "Getting Started",
-            "pages": ["cards/overview", "cards/provision", "cards/transactions"]
+            "group": "Overview",
+            "pages": ["cards/introduction", "cards/use-cases"]
           },
           {
-            "group": "Card APIs",
-            "pages": [
-              "cards/endpoints/create",
-              "cards/endpoints/retrieve",
-              "cards/endpoints/webhooks"
-            ]
+            "group": "Card Lifecycle",
+            "pages": ["cards/creating-cards", "cards/viewing-details", "cards/limits", "cards/controls"]
+          },
+          {
+            "group": "Transactions & Webhooks",
+            "pages": ["cards/transactions", "cards/webhooks"]
           }
         ]
       },
@@ -93,14 +91,19 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["wallets/introduction", "wallets/creating-wallets", "wallets/balances"]
+            "pages": ["wallets/introduction", "wallets/concepts"]
           },
           {
-            "group": "Orchestration",
+            "group": "Managing Wallets",
+            "pages": ["wallets/creating-wallets", "wallets/retrieving-wallets", "wallets/balances"]
+          },
+          {
+            "group": "Orchestration Flows",
             "pages": [
-              "wallets/orchestration/from-virtual-account",
-              "wallets/orchestration/from-liquidation-address",
-              "wallets/orchestration/wallet-to-wallet"
+              "wallets/from-virtual-account",
+              "wallets/from-liquidation-address",
+              "wallets/wallet-to-wallet",
+              "wallets/from-fiat"
             ]
           }
         ]
@@ -110,16 +113,11 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["issuance/introduction", "issuance/token-types"]
+            "pages": ["issuance/introduction", "issuance/token-types", "issuance/use-cases"]
           },
           {
             "group": "Issuance APIs",
-            "pages": [
-              "issuance/endpoints/create",
-              "issuance/endpoints/redeem",
-              "issuance/endpoints/burn",
-              "issuance/endpoints/audit"
-            ]
+            "pages": ["issuance/create", "issuance/redeem", "issuance/burn", "issuance/audit"]
           }
         ]
       }
