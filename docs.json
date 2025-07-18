@@ -8,123 +8,123 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
-"navigation": {
-  "tabs": [
-    {
-      "tab": "Guides",
-      "groups": [
-        {
-          "group": "Getting Started",
-          "pages": ["index", "quickstart", "development"]
-        },
-        {
-          "group": "How-to Guides",
-          "pages": ["guides/funding-wallets", "guides/sending-transfers", "guides/testing-environment"]
-        },
-        {
-          "group": "Concepts",
-          "pages": ["guides/architecture", "guides/security", "guides/regions"]
-        }
-      ]
-    },
-    {
-      "tab": "API reference",
-      "groups": [
-        {
-          "group": "Overview",
-          "pages": ["api-reference/introduction"]
-        },
-        {
-          "group": "Endpoints",
-          "pages": [
-            "api-reference/endpoints/get",
-            "api-reference/endpoints/create",
-            "api-reference/endpoints/update",
-            "api-reference/endpoints/delete",
-            "api-reference/endpoints/webhooks"
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Orchestration",
-      "groups": [
-        {
-          "group": "API Overview",
-          "pages": ["orchestration/overview"]
-        },
-        {
-          "group": "Use Cases",
-          "pages": [
-            "orchestration/virtual-accounts",
-            "orchestration/static-memos",
-            "orchestration/liquidation-addresses"
-          ]
-        },
-        {
-          "group": "Transfer APIs",
-          "pages": [
-            "orchestration/transfers/create",
-            "orchestration/transfers/track",
-            "orchestration/transfers/webhooks"
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Cards",
-      "groups": [
-        {
-          "group": "Getting Started",
-          "pages": ["cards/overview", "cards/provision", "cards/transactions"]
-        },
-        {
-          "group": "Card APIs",
-          "pages": [
-            "cards/endpoints/create",
-            "cards/endpoints/retrieve",
-            "cards/endpoints/webhooks"
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Wallets",
-      "groups": [
-        {
-          "group": "Overview",
-          "pages": ["wallets/introduction", "wallets/creating-wallets", "wallets/balances"]
-        },
-        {
-          "group": "Orchestration",
-          "pages": [
-            "wallets/orchestration/from-virtual-account",
-            "wallets/orchestration/from-liquidation-address",
-            "wallets/orchestration/wallet-to-wallet"
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Issuance",
-      "groups": [
-        {
-          "group": "Overview",
-          "pages": ["issuance/introduction", "issuance/token-types"]
-        },
-        {
-          "group": "Issuance APIs",
-          "pages": [
-            "issuance/endpoints/create",
-            "issuance/endpoints/redeem",
-            "issuance/endpoints/burn",
-            "issuance/endpoints/audit"
-          ]
-        }
-      ]
-    }
-  ]
-}
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["index", "quickstart", "development"]
+          },
+          {
+            "group": "How-to Guides",
+            "pages": ["guides/funding-wallets", "guides/sending-transfers", "guides/testing-environment"]
+          },
+          {
+            "group": "Concepts",
+            "pages": ["guides/architecture", "guides/security", "guides/regions"]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["api-reference/introduction"]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api-reference/endpoints/get",
+              "api-reference/endpoints/create",
+              "api-reference/endpoints/update",
+              "api-reference/endpoints/delete",
+              "api-reference/endpoints/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Orchestration",
+        "groups": [
+          {
+            "group": "API Overview",
+            "pages": ["orchestration/overview"]
+          },
+          {
+            "group": "Use Cases",
+            "pages": [
+              "orchestration/virtual-accounts",
+              "orchestration/static-memos",
+              "orchestration/liquidation-addresses"
+            ]
+          },
+          {
+            "group": "Transfer APIs",
+            "pages": [
+              "orchestration/transfers/create",
+              "orchestration/transfers/track",
+              "orchestration/transfers/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Cards",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["cards/overview", "cards/provision", "cards/transactions"]
+          },
+          {
+            "group": "Card APIs",
+            "pages": [
+              "cards/endpoints/create",
+              "cards/endpoints/retrieve",
+              "cards/endpoints/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Wallets",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["wallets/introduction", "wallets/creating-wallets", "wallets/balances"]
+          },
+          {
+            "group": "Orchestration",
+            "pages": [
+              "wallets/orchestration/from-virtual-account",
+              "wallets/orchestration/from-liquidation-address",
+              "wallets/orchestration/wallet-to-wallet"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Issuance",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["issuance/introduction", "issuance/token-types"]
+          },
+          {
+            "group": "Issuance APIs",
+            "pages": [
+              "issuance/endpoints/create",
+              "issuance/endpoints/redeem",
+              "issuance/endpoints/burn",
+              "issuance/endpoints/audit"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
