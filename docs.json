@@ -56,7 +56,12 @@
       {
         "tab": "Customers",
         "pages": [
-          "customers/overview"
+          "customers/overview",
+          "customers/api",
+          "customers/kyclinks",
+          "customers/add_req",
+          "customers/endorsements",
+          "customers/rejection_reasons"
         ]
       },
       {
