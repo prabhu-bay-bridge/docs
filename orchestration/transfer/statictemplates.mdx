@@ -1,0 +1,182 @@
+---
+title: "Static Templates"
+---
+
+The static template feature allows the creation of a Transfer template through the API. The response includes standing deposit instructions that can be used multiple times to send funds to the configured destination. The source deposit instructions will remain the same indefinitely including the source memo / wire message / SEPA reference.
+
+Every time that funds match the template, Bridge will create a new Transfer record in the API. The id of the template will never change. Transfer instances created from that template will each have unique ids.
+
+**Note: **Providing an amount is optional but allowed when creating a Static Template. If no amount is provided, the Transfer will automatically have the `flexible_amount` feature enabled as well.
+
+### **Request**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "sepa",
+    "currency": "eur",
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+  "features": {
+    "static_template": true,
+  }
+}'
+```
+
+### **Response**
+
+JSON
+
+```
+{
+  "id": "transfer_template_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "sepa",
+    "currency": "eur"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  "source_deposit_instructions": {
+    "payment_rail": "sepa",
+    "currency": "eur",
+    "deposit_message": "BRGEXAMPLEMEMO",
+    "iban": "IE57MODR99035505123456",
+    "bic": "MODRIE22XXX",
+    "account_holder_name": "Bridge Building Sp.z.o.o.",
+    "bank_name": "Modulr Finance B.V.",
+    "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+  },
+ "features": {
+    "static_template": true,
+    "flexible_amount": true
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+This template will remain in the `awaiting_funds` state unless canceled. Each time Bridge receives funds and matches them to the template, Bridge will expose a new Transfer instance based on the templated configuration.
+
+### **Fetching Transfers after funds received**
+
+**Request**
+
+You can query for transfer instances created from the static template using the [<u>Get all transfers</u>](https://apidocs.bridge.xyz/reference/get_transfers) endpoint.
+
+cURL
+
+```
+curl --request GET \
+  --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
+  --header 'Api-Key: <API Key>'
+
+```
+
+**Response**
+
+JSON
+
+```
+{
+  "count": 2,
+  "data": [
+    {
+      "id": "transfer_instance_456",
+      "state": "payment_processed",
+      "on_behalf_of": "cust_alice",
+      "amount": "1234.0",
+      "source": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+      },
+      "destination": {
+        "payment_rail": "polygon",
+        "currency": "usdc",
+        "to_address": "0xdeadbeef"
+      },
+      "source_deposit_instructions": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+        "deposit_message": "BRGEXAMPLEMEMO",
+        "iban": "IE57MODR99035505123456",
+        "bic": "MODRIE22XXX",
+        "account_holder_name": "Bridge Building Sp.z.o.o.",
+        "bank_name": "Modulr Finance B.V.",
+        "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+      },
+      "receipt": {
+        "initial_amount": "1234.0",
+        "developer_fee": "0.0",
+        "exchange_fee": "0.0",
+        "subtotal_amount": "1234.0",
+        "url": "https://dashboard.bridge.xyz/transaction/4181f2d9-7647-4249-b340-068d6ebdf8a2/receipt/c571e913-1f94-457e-a158-4249526b847b",
+        gas_fee: "0.0",
+        final_amount: "1234.0",
+        destination_tx_hash: "0x628ec487573fc503c3cad909bcd271d29a906257dc19a27db8cc82f213cf95e2",
+      },
+     "features": {
+        "static_template": true,
+        "flexible_amount": true
+      },
+      "created_at": "2024-10-06T19:39:14.316Z",
+      "updated_at": "2024-10-06T19:39:15.231Z"
+    },
+    {
+      "id": "transfer_template_123",
+      "state": "awaiting_funds",
+      "on_behalf_of": "cust_alice",
+      "source": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+      },
+      "destination": {
+        "payment_rail": "polygon",
+        "currency": "usdc",
+        "to_address": "0xdeadbeef"
+      },
+      "source_deposit_instructions": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+        "deposit_message": "BRGEXAMPLEMEMO",
+        "iban": "IE57MODR99035505123456",
+        "bic": "MODRIE22XXX",
+        "account_holder_name": "Bridge Building Sp.z.o.o.",
+        "bank_name": "Modulr Finance B.V.",
+        "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+      },
+     "features": {
+        "static_template": true,
+        "flexible_amount": true
+      },
+      "created_at": "2024-10-05T19:39:14.316Z",
+      "updated_at": "2024-10-05T19:39:15.231Z"
+    }
+  ]
+}
+```
+
+### **Template Transfers in the API**
+
+- The initial template you create will maintain the same id. Use this ID to interact with the Template through our API. Its state will remain `awaiting_source_deposit` as long as it is active. `static_template` feature field will always be true for Template Transfers.
+- Each time we receive funds, we will create a new Transfer. We will send webhooks when the new Transfer is created and any time we update information about each Transfer created from the template. For instances of the template, the `static_template` Transfer feature will not be present in the API response.
+- You can use the [<u>Update Transfer</u>](https://apidocs.bridge.xyz/reference/put_transfers-transferid) endpoint to make changes to the template. This will not change any existing instances of that template, but funds received after the changes will be processed according to the updated template instructions.
+- You can use the `template_id` query parameter to [<u>List All Transfer instances</u>](https://apidocs.bridge.xyz/reference/get_transfers) created from this template.
+
+## **Static Template vs Virtual Accounts**
+
+Similar to virtual accounts, static templates let you create a reusable set of instructions to let your customers onramp by depositing fiat. However, virtual accounts offer more flexibility and are easier for your customers to use since the fiat addresses are unique to each customer. Static transfer addresses are shared and onramps will require your customer to submit a deposit message.

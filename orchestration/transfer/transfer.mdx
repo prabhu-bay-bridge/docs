@@ -1,0 +1,491 @@
+---
+title: "Transfer"
+---
+
+# **Introduction**
+
+The [<u>Transfer API</u>](https://apidocs.bridge.xyz/reference/transfers) enables seamless conversion between fiat and crypto — or within each — across various supported currencies and rails. At its core, the API is designed to abstract away the complexity of cross-rail and cross-currency money movement, supporting:
+
+- Fiat → Crypto
+- Crypto → Crypto
+- Crypto → Fiat
+
+Transfers a source and a destination, each of which can represent fiat funding sources (e.g. bank accounts, cards) or blockchain-based wallets. The API is generalized, composable, and rails-agnostic, allowing for a variety of transfer flows that suit modern financial applications.
+
+Refer to supported currencies and rails below:
+
+- [<u>Stablecoins and Blockchains</u>](https://apidocs.bridge.xyz/docs/blockchains)
+- [<u>Fiat Payment Methods</u>](https://apidocs.bridge.xyz/docs/payment-methods)
+
+## **How they work**
+
+Depending on the source, Bridge either pulls funds (e.g. Bridge wallet, prefunded account) or generates deposit instructions when a third-party source (e.g. bank, external wallet) is specified.
+
+If the funds reside outside of Bridge, you will receive a `source_deposit_instructions` object in the response payload containing deposit bank details or blockchain addresses. Once your customer completes the deposit, Bridge will automatically detect and process the payment to the destination.
+
+## **Key Concepts**
+
+- `source`: Where the funds come from. This can be a Bridge-controlled wallet, a customer’s crypto wallet, or a fiat source like a bank account.
+- `destination`: Where the funds go. This can be any supported rail or chain.
+- `on_behalf_of`: Customer identifier. Required when sending/receiving on behalf of a user.
+- `developer_fee` or `developer_fee_percent`: Monetize transfers via fixed or percentage fees. Refer the [<u>Developer Fees</u>](https://apidocs.bridge.xyz/v1/docs/developer-fees) section on how to set fees.
+- `features`: Optional settings to add flexibility (e.g. allow_any_from_address, flexible_amount).
+
+---
+
+# **High Level Flow**
+
+For one time transfers, the high level flow is:
+
+1. You, the developer, will create a transfer specifying the `source` and `destination`
+   1. If the source is a pre-funded account or a bridge wallet, Bridge will pull funds directly from it and skip the above steps -- there is no deposit required.
+2. Bridge will create a transfer object which will include `source_deposit_instructions`.
+3. You will instruct your customer to follow the `source_deposit_instructions`.
+4. Your customer will send a deposit following the `source_deposit_instructions`.
+5. Bridge will **_match_** your customer's deposit to the transfer you created.
+6. Bridge sends money to the `destination`.
+
+## **Create Transfer**
+
+**Request**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  # source object tells Bridge where to expect deposits from.
+  # can be fiat or crypto
+  "source": {
+    "payment_rail": "ach_push",
+    "currency": "usd",
+  },
+  # deposit object tells Bridge where to send funds to.
+  # can also be fiat or crypto
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+}'
+```
+
+**Response**
+
+JSON
+
+```
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ach_push",
+    "currency": "usd"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  # Very important that your customer follows the source deposit instructions
+  "source_deposit_instructions": {
+    "bank_account_number": "123456789", # Bridge's bank account number to send deposits to
+    "bank_routing_number": "101019644", # Bridge's bank account routing number
+ 		# if the transfer requires a specific amount, it's important your customer includes
+    # the exact amount expected.
+    "amount": "10.0", 
+    "currency": "usd",
+    "deposit_message": "BVI7depositmessage", # important that the deposit message is included
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "final_amount": "9.5",
+    "destination_tx_hash": "0xc0ffee", // A destination tx hash will appear after the transfer is complete
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+## **Deposit Instructions**
+
+### **Fiat Deposits**
+
+**Transfer Object**
+
+JSON
+
+```
+{
+  ...
+"source_deposit_instructions": {
+    "bank_account_number": "123456789", # Bridge's bank account number to send deposits to
+    "bank_routing_number": "101019644", # Bridge's bank account routing number
+ 		# if the transfer requires a specific amount, it's important your customer includes
+    # the exact amount expected.
+    "amount": "10.0", 
+    "currency": "usd",
+    "deposit_message": "BVI7depositmessage", # important that the deposit message is included
+  },
+   ...
+}
+```
+
+- **Unique Deposit Message**: Due to the limitations of fiat rails, we will create a unique identifier for your customer to attach to the deposit they send to Bridge. We rely on that identifier to match customer deposits to your transfer.
+- Direct your customer to send funds to Bridge's bank account, with the required amount and currency, and to include the deposit message (starting with BRG). Your customer can include the unique deposit message as the wire memo/message, ACH push description, SEPA reference, or SPEI memo. The deposit message is unique per transfer and including it with your transaction is required for Bridge to process.
+
+### **Crypto Deposits**
+
+If you receive crypto deposits, remember to configure a crypto return policy\! Refer [<u>Crypto Return Policies</u>](https://apidocs.bridge.xyz/reference/crypto-return-policies).
+
+**Transfer Object**
+
+JSON
+
+```
+{
+  ...
+  "source_deposit_instructions": {
+    "payment_rail": "ethereum", # expected blockchain
+    "amount": "10.0", # expected amount
+    "currency": "usdc", # expected currency
+    "from_address": "0xdeadbeef", # expected address for funds to originate from
+    "to_address": "0xc0ffee" # Bridge's deposit address to send funds to
+  },
+   ...
+}
+```
+
+- In this instance, we need to request your customer to deposit funds to Bridge from their wallet. The `source_deposit_instructions` object in the response will contain Bridge's deposit address.
+- You can guide your user to use Metamask or an equivalent wallet to create a blockchain transfer to move funds from their wallet to our deposit address.
+
+#### **Memo Based Blockchains**
+
+JSON
+
+```
+{
+  ...
+  "source_deposit_instructions": {
+    "payment_rail": "stellar",
+    "amount": "10.0",
+    "currency": "usdc",
+    "from_address": "GDUY7JALICESTELLARADDRESS",
+    "to_address": "GDUY7JSBRIDGESTELLARDEPOSITADDRESS",
+    "blockchain_memo": "123456",
+  },
+  ...
+}
+```
+
+- For memo-based blockchains, such as Stellar and Tron, a `blockchain_memo` will be provided as part of the `source_deposit_instructions` in the response. _This must be included in the crypto deposit memo._ When you forget to include the memo, your off-ramp will experience signficant delays
+
+## **Transfer Delivery**
+
+Once we receive the deposit for your transfer, we will move the funds to the destination. You can use the Transfers API to check the state of the transfer or listen to webhooks.
+
+# **Advanced Features**
+
+## **Flexible Amounts**
+
+To create a Transfer that will match any funds sent using the source deposit instructions regardless of amount, use the `flexible_amount` feature.
+
+Because the amount is not known ahead of time, Transfers with the `flexible_amount` feature only support a percentage based `developer_fee_percent`. Flexible amount Transfers do not support setting a fixed `developer_fee`.
+
+**Note:** Static templates have this feature enabled automatically if no amount is provided when they are created.
+
+**Request**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+  "developer_fee_percent": "1.0", // A 1% developer fee
+  "features": {
+    "flexible_amount": true,
+  }
+}'
+```
+
+**Response**
+
+JSON
+
+```
+{
+  "id": "flexible_transfer_789",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  "source_deposit_instructions": {
+    // ...Bridge banking details
+    "currency": "usd",
+    "deposit_message": "BVI7depositmessage",
+  },
+ "features": {
+    "flexible_amount": true
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+After Bridge receives funds and matches them to the Transfer, the amount will be included in API responses
+
+JSON
+
+```
+{
+  "id": "flexible_transfer_789",
+  "amount": "1337.0",
+  ...
+}
+```
+
+## **Allow Any From Address**
+
+JSON
+
+```
+"features": {
+  "allow_any_from_address": true,
+}
+```
+
+- By default, Bridge requires the sending address of the wallet sending the funds to be specified upon creating a Transfer.
+- For some use cases like consumer sending funds from an exchange, this is difficult or impossible to know ahead of time.
+- To support these use cases, Bridge has the `allow_any_from_address` feature.
+- If this feature is enabled, no `from_address` needs to be specified at Transfer creation time and any funds sent to the source deposit instructions will be matched regardless of the `from_address`.
+
+# **Transfer States**
+
+The transfer status refers to the current state of a transfer. There are several possible states that a transfer can be in, including:
+
+- `awaiting_funds` - Bridge is waiting to receive funds from the customer before it can start to process the transfer. This state only exists when Bridge is awaiting funds from the customer (ex: crypto deposits, wires, ACH push).
+- `in_review` - This is a temporary state that is rarely triggered. If it does occur, it usually resolves automatically within seconds. However, if we are unable to confirm the transaction information by the end of the 24-hour period, we will reach out to the developer with the next steps.
+- `funds_received` - This is an acknowledgment that Bridge has received your funds and is in the process of moving funds on your customer's behalf.
+- `payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. Depending on the payment rail, this can take anywhere from minutes (Crypto) to hours (Wires) to days (ACH push)
+- `payment_processed` - The transfer has been completed. The funds have been sent to your specified destination.
+- `undeliverable` - Bridge was unable to send the funds to the specified destination. Some examples of this case are an invalid routing number/account number or attempting to send an asset not supported by the destination.
+- `returned` - Bridge has sent the payment, but received notification that it wasn't successful. The funds have been returned to Bridge, and the refund to the sender is in process.
+- `refunded` - The funds for this transfer have been sent back to the original sender.
+- `canceled` - The transfer has been canceled. (Transfers can only be canceled when in the `awaiting_funds` state).
+- `error` - There was a problem preventing Bridge from processing this transfer. This may require manual intervention to resolve. Please reach out to Bridge if you haven't already been contacted about this transfer.
+
+Please note that a transfer will always progress from `awaiting_funds` → `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
+
+`canceled` can only be progressed to from `awaiting_funds`, and is done by hitting our [<u>DELETE </u>](https://apidocs.bridge.xyz/reference/delete_transfers-transferid)`/v0/transfers/{transferID}` endpoint.
+
+# **Source & Destination Details**
+
+## **Source**
+
+The `source` key can return additional information if available. Specifically, if the transfer is an onramp and the funds have already arrived, we will return information about the fiat deposit.
+
+**Wire Deposit Example**
+
+JSON
+
+```
+{
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd",
+    "external_account_id": null,
+    "bank_beneficiary_name": "name of person sending money",
+    "bank_routing_number": "routing number of the sending bank",
+    "bank_name": "name of the sending bank",
+    "imad": "imad of incoming wire",
+    "omad": "omad of incoming wire (deprecated)"
+  }
+  ...
+}
+```
+
+**ACH Deposit Example**
+
+JSON
+
+```
+{
+  "source": {
+    "payment_rail": "ach_push",
+    "currency": "usd",
+    "external_account_id": null,
+    "description": "ach description"
+  }
+  ...
+}
+```
+
+Note that the source payment rail is `ach_push`, but in the destination it needs to be `ach`. You'll get a 4xx level error when specifying a destination payment rail of `ach_push`. Note that in both cases, this corresponds to an ACH push rail.
+
+**SEPA Deposit Example**
+
+JSON
+
+```
+{
+  "source": {
+    "bic": "REVOESM2XXX",
+    "uetr": "53301970-2771-4449-a6c1-c23eafc34a8b",
+    "reference": "Payment from Joaquin Valente: ",
+    "iban_last_4": "3628",
+    "sender_name": "Joaquin Valente",
+    "payment_rail": "sepa",
+    "payment_scheme": "sepa_instant",
+    "recipient_name": "Bridge Building Sp.z.o.o."
+  },
+  ...
+}
+```
+
+## **Destination**
+
+The `destination` field will also return additional information when available. Specifically, if the transfer is an offramp and the payment has been fully processed, we will return information about the outgoing fiat transaction.
+
+**Wire Destination Example**
+
+JSON
+
+```
+{
+  "destination": {
+    "payment_rail": "wire",
+    "currency": "usd",
+    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+    "imad": "20240701MMASDFO9000528"
+  }
+  ...
+}
+```
+
+**ACH Destination Example:**
+
+JSON
+
+```
+{
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+    "trace_number": "718268532664263"
+  }
+  ...
+}
+```
+
+# **Returning Funds via ACH, Wire, and SEPA**
+
+If your customer previously onramped via ACH, Wire, or SEPA, and you would like to return those funds, you can do so by creating a new transfer via the Bridge API. This flow is supported only for returning fiat deposits and is typically used in cases of recalls, refunds, or rejected user activity. Using this API, you can return fiat deposits across any orchestration product, including Transfers and Virtual Accounts.
+
+## **Example: Return funds using a crypto source**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+  --header 'Api-Key: <API Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "amount": "50.0",
+    "on_behalf_of": "cust_alice",
+    "source": {
+      "payment_rail": "base",
+      "currency": "usdc",
+      "from_address": "0xdeadbeef"
+    },
+    "destination": {
+      "payment_rail": "fiat_deposit_return",
+      "currency": "usd",
+      "deposit_id": "deposit_123"
+    }
+}'
+```
+
+### **How it Works**
+
+- Bridge will return a transfer object with crypto funding instructions.
+- After you send the exact amount of crypto to the provided address, Bridge will initiate a return of fiat funds back to the original sender.
+
+### **Validations**
+
+When calling this endpoint, Bridge enforces the following rules:
+
+| **Constraint**                             | **Description**                                                                                                   |
+| :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| `source.currency`                          | Must be a supported **crypto** (e.g. `usdc`, `usdb`).                                                             |
+| `source.currency` ↔ `destination.currency` | Must be equivalent (e.g. `usdc` → `usd`).                                                                         |
+| `on_behalf_of`                             | Must match the original deposit’s customer ID.                                                                    |
+| `amount`                                   | For **ACH returns**, must match the original deposit amount. For **Wire** and **SEPA**, can be ≤ original amount. |
+| Time window                                | Returns must be initiated **within 60 days** of the original deposit.                                             |
+
+## **Recommended to use a Bridge wallet to fund returns**
+
+> ## **💡We recommend using a Bridge wallet for returns.**
+>
+> For automatically returning deposits, we recommend that you use a Bridge wallet as your funding source. You can fund the Bridge wallet as needed. When you're ready to fund a return, you can use the Bridge wallet as the transfer source
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+  --header 'Api-Key: <API Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "amount": "50.0",
+    "on_behalf_of": "cust_alice",
+    "source": {
+      "payment_rail": "bridge_wallet",
+      "currency": "usdb",
+      "bridge_wallet_id": "the-wallet-uuid"
+    },
+    "destination": {
+      "payment_rail": "fiat_deposit_return",
+      "currency": "usd",
+      "deposit_id": "deposit_123"
+    }
+}'
+```
+
+### **Why use a Bridge Wallet?**
+
+- Simplifies automation of return flows
+- Avoids funding delays or incorrect on-chain transfers
+- Lets you pre-fund once and initiate returns programmatically
+
+You can use your own wallet or the wallet belonging to your customer to fund the return.
