@@ -82,6 +82,25 @@
               "orchestration/transfer/transfer",
               "orchestration/transfer/statictemplates"
             ]
+          },
+          {
+            "group": "Liquidation Address",
+            "pages": [
+              "orchestration/liquidation_address/liquidation_address",
+              "orchestration/liquidation_address/drains"
+            ]
+          },
+          {
+            "group": "Prefunded Account",
+            "pages": [
+              "orchestration/prefunded_account/prefunded_accounts"
+            ]
+          },
+          {
+            "group": "Static Memo",
+            "pages": [
+              "orchestration/staticmemo/staticmemos"
+            ]
           }
         ]
       },   
