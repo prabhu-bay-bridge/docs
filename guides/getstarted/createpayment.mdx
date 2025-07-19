@@ -10,7 +10,7 @@ Before you begin, ensure you have:
 
 - A Bridge account with API access
 - Your API key (keep this secure\!)
-- At least one verified customer - see [Create your first customer](doc:create-your-first-customer).
+- At least one verified customer - see [Create your first customer](/guides/getstarted/createcustomer).
 - Basic understanding of REST APIs
 - Development environment set up
 
@@ -41,7 +41,7 @@ For detailed information, see [Transfers](doc:transfers-2).
 
 Let's create a transfer for an onramp from a USD ACH deposit to a USDC Ethereum address.
 
-```curl
+```curl Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -62,9 +62,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-Example response
-
-```json
+```json Response
 {
   "id": "transfer_123",
   "state": "awaiting_funds",
@@ -114,15 +112,19 @@ When Bridge receives the deposit, we'll transition the transfer state to `funds_
 
 You can use the [Get a transfer](ref:get_transfers-transferid) endpoint to fetch the latest Transfer status.
 
-```curl
+<RequestExample>
+
+``` cURL
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/transfer_123' \
      --header 'accept: application/json'
 ```
 
-### Funds received example
+</RequestExample>
 
-```json Funds received example
+<ResponseExample>
+
+```json Funds received
 {
   "count": 2,
   "data": [
@@ -163,7 +165,8 @@ curl --request GET \
 }
 ```
 
-```json Payment processed example
+
+```json Payment processed
 {
   "count": 2,
   "data": [
@@ -203,6 +206,8 @@ curl --request GET \
   ]
 }
 ```
+
+</ResponseExample>
 
 ## Advanced: Monitoring using webhooks
 
@@ -275,6 +280,6 @@ After successfully creating your first static template:
 
 ### Additional Resources
 
-- [Transfers](doc:transfers-2)
-- [Make recurring payments using saved payment routes](doc:make-recurring-payments-using-saved-payment-routes)
-- [Setting up webhooks](doc:setting-up-webhooks)
+- [Transfers](/orchestration/transfer/transfer)
+- [Make recurring payments using saved payment routes](/guides/movemoney/recurring)
+- [Setting up webhooks](/guides/getstarted/setupwebhooks)
