@@ -2,7 +2,7 @@
 title: "Create your first customer"
 ---
 
-This guide walks you through creating your first customer using Bridge's API. Whether you want a fast start with a hosted KYC flow or prefer full control via API integration, this guide covers both options with clear examples in `curl`.
+This guide walks you through onboarding your first customer using Bridge's API. Whether you want a fast start with a hosted KYC flow or prefer full control via API integration, this guide covers both options.
 
 # Prerequisites
 
@@ -26,7 +26,7 @@ Bridge customers represent users of your business who can send and receive money
 - **Endorsements**: Approval for specific payment rails (USD, EUR, MXN)
 - **Terms of Service**: Legal agreement customers must accept
 
-:point_right: More about customers here: [Customers](doc:customers)
+Learn more about the customers api at [Customers](/customers/overview).
 
 # Method 1: Using KYC Links (Quick Start - Recommended)
 
@@ -38,7 +38,7 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
 
 Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
 
-```curl
+```curl Request
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -50,9 +50,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 }'
 ```
 
-Response:
-
-```json expandable
+```json Response expandable
 {
   "id": "uuid",
   "full_name": "John Doe",
@@ -78,7 +76,7 @@ Guide the user through:
 
 This process typically takes less than a minute and updates automatically once complete.
 
-:point_right: More about KYC Links here: [KYC Links for New Customers](doc:kyc-links)
+More about KYC Links here: [KYC Links for New Customers](/customers/kyclinks)
 
 # Method 2: Direct API Integration (More Control)
 
@@ -90,7 +88,7 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
 
 Create U.S. based customer:
 
-```curl expandable
+```curl Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -126,7 +124,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
 }
 ```
 
-👉 For business customers or international onboarding, see the [Customers](doc:customers) documentation.
+For business customers or international onboarding, see the [Customers](/customers/overview) documentation.
 
 ## Step 2: Customer Endorsements: Enabling Transacting
 
@@ -136,15 +134,17 @@ Endorsements represent an approval of a customer to onboard and transact with Br
 
 ## Checking Customer Endorsement Status
 
-```curl expandable
+```curl Request expandable
 curl --request GET \
      --url https://api.bridge.xyz/v0/customers/{customerID} \
      --header 'accept: application/json'
 ```
 
-:white_check_mark: Example of an approved customer
+<Check>
+  Example of an approved customer
+</Check>
 
-```json expandable
+```json Response expandable
 
 {
  	id: '1',
@@ -174,7 +174,9 @@ curl --request GET \
 }
 ```
 
-:warning: Example of an incomplete customer
+<Warning>
+  Example of an incomplete customer
+</Warning>
 
 ```json expandable
 {
@@ -208,7 +210,7 @@ curl --request GET \
 }
 ```
 
-:point_right: Learn more about endorsements here: [Endorsements](doc:endorsements)
+Learn more about endorsements here: [Endorsements](/customers/endorsements)
 
 # What's next?
 
