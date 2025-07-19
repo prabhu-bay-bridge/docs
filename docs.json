@@ -55,7 +55,9 @@
       },
       {
         "tab": "Customers",
-        "groups": []
+        "pages": [
+          "customers/overview"
+        ]
       },
       {
         "tab": "Orchestration",

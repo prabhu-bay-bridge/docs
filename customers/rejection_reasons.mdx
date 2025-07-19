@@ -1,0 +1,60 @@
+---
+title: "Rejection Reasons"
+description: "Description of your new file."
+---
+
+If [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-api#kyc-rejection) and [<u>KYC Links</u>](https://apidocs.bridge.xyz/docs/kyc-links#immediate-rejection) return that the customer's KYC status is `rejected`, there are two fields shared with rejection reasons:
+
+- `developer_reason` is meant to be used by developers for **internal purposes only.** This field can contain sensitive information intended for only the developer and is provided to help with troubleshooting potential issues or protecting against potential abuse.
+- `reason` can be shared by a developer directly with their customers.
+
+| **developer_reason**                                      | **reason**                                                |
+| :-------------------------------------------------------- | :-------------------------------------------------------- |
+| ID cannot be verified against third-party databases       | Your information could not be verified                    |
+| Inconsistent or incomplete information.                   | Inconsistent or incomplete information.                   |
+| Cannot validate user age                                  | Your information could not be verified                    |
+| Missing or incomplete barcode on the ID.                  | Cannot validate ID -- upload a clear photo of the full ID |
+| Inconsistent information in the barcode.                  | Your information could not be verified                    |
+| Submission is blurry.                                     | Cannot validate ID - upload photo of ID is clear          |
+| Inconsistent ID format                                    | Your information could not be verified                    |
+| Compromised ID detected                                   | Your information could not be verified                    |
+| ID from disallowed country.                               | Cannot accept provided ID                                 |
+| Incorrect ID type selected.                               | Incorrect ID type selected.                               |
+| Same side submitted as both front and back.               | Same side submitted as both front and back.               |
+| Electronic replica detected.                              | Your information could not be verified                    |
+| No government ID found in submission.                     | No government ID found in submission.                     |
+| ID is expired.                                            | ID is expired.                                            |
+| Missing required ID details.                              | Cannot validate ID -- upload a clear photo of the full ID |
+| Inconsistent details in extraction.                       | Your information could not be verified                    |
+| Likely fabrication detected.                              | Your information could not be verified                    |
+| Glare detected in the submission.                         | Cannot validate ID -- upload a clear photo of the full ID |
+| Identity cannot be verified                               | Your information could not be verified                    |
+| Inconsistent details with previous submission.            | Your information could not be verified                    |
+| Inconsistent details between submissions.                 | Your information could not be verified                    |
+| Machine readable zone not detected                        | Cannot validate ID -- upload a clear photo of the full ID |
+| Inconsistent machine readable zone                        | Cannot validate ID -- upload a clear photo of the full ID |
+| ID number format inconsistency.                           | Your information could not be verified                    |
+| Paper copy detected.                                      | Your information could not be verified                    |
+| PO box address detected.                                  | PO box address detected.                                  |
+| Blurry face portrait.                                     | Cannot validate ID -- upload a clear photo of the full ID |
+| No face portrait found in the submission.                 | Cannot validate ID -- upload a clear photo of the full ID |
+| Face portrait matches a public figure.                    | Your information could not be verified                    |
+| Not a U.S. REAL ID.                                       | Your information could not be verified                    |
+| ID details and face match previous submission.            | Your information could not be verified                    |
+| Different faces in ID and selfie.                         | Your information could not be verified                    |
+| Tampering detected.                                       | Your information could not be verified                    |
+| Submission cannot be processed.                           | Submission cannot be processed.                           |
+| Dates on the ID are invalid.                              | Your information could not be verified                    |
+| Identity cannot be verified against third-party databases | Your information could not be verified                    |
+| Person is deceased.                                       | Your information could not be verified                    |
+| Document could not be verified                            | Your information could not be verified                    |
+| Unsupported country                                       | Your region is not supported                              |
+| No government ID detected                                 | Cannot validate ID -- upload a clear photo of the full ID |
+| No database check was performed                           | Your information could not be verified                    |
+| Prohibited state/province                                 | Your region is not supported                              |
+| Prohibited country                                        | Your information could not be verified                    |
+| Potential elder abuse                                     | Your information could not be verified                    |
+| Potential PEP                                             | Your information could not be verified                    |
+| Customer information could not be verified                | Your information could not be verified                    |
+| Unsupported state/province                                | Your region is not supported                              |
+| Missing or invalid proof of address                       | Missing or invalid proof of address                       |

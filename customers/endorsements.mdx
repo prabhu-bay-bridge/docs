@@ -1,0 +1,206 @@
+---
+title: "Endorsements"
+description: "Description of your new file."
+---
+
+Endorsements represent an approval of a customer to onboard and transact with Bridge.
+
+To onboard a customer and enable them to take actions on Bridge, the customer must provide their KYC information and accept the terms of service for the required endorsement type.
+
+# **Prerequisites**
+
+To obtain any endorsements, you must meet KYC Information and Terms of Service (ToS) requirements.
+
+## **KYC Information**
+
+The first component is providing Bridge with the necessary KYC information from the customer by, either directly through the [<u>Customers API</u>](https://dash.readme.com/project/bridge-docs/v0/docs/customers-api), or by asking the customer to follow a developer provided [<u>KYC Link</u>](https://apidocs.bridge.xyz/docs/kyc-links).
+
+### **Customers API**
+
+Here is an example for submitting information directly via the Customers API.
+
+US-Based CustomerInternational CustomerEEA Customer
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "type": "individual",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "email@example.com",
+  "residential_address": {
+    "street_line_1": "123 Main St",
+    "city": "New York City",
+    "subdivision": "New York",
+    "postal_code": "10001",
+    "country": "USA"
+  },
+  "birth_date": "2007-01-01",
+  "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+  "identifying_information": [
+    {
+      "type": "ssn",
+      "issuing_country": "usa",
+      "number": "xxx-xx-xxxx"
+    },
+    {
+      "type": "drivers_license",
+      "issuing_country": "usa",
+      "number": "xxxxxxxxxxxxx",
+      "image_front": "data:image/jpg;base64,...",
+      "image_back": "data:image/jpg;base64,..."
+    }
+  ]
+}
+```
+
+For more details please see the [<u>Customers API</u>](https://dash.readme.com/project/bridge-docs/v0/docs/customers-api) page.
+
+### **KYC Link**
+
+To create a KYC Link, use the following endpoint:
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "full_name": "John Doe",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business",
+  "endorsement": "base"
+}'
+```
+
+For more details please see the [<u>KYC Links</u>](https://dash.readme.com/project/bridge-docs/v0/docs/kyc-links) page for new customers, or the [<u>Additional Requirements</u>](https://dash.readme.com/project/bridge-docs/v0/docs/additional-requirements-for-existing-customers) page for existing customers.
+
+## **Terms of Service**
+
+The second component is obtaining terms of service acceptance from your customer. This is accomplished by providing your customer with a [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service) Link for them to follow.
+
+Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](https://apidocs.bridge.xyz/reference/post_customers-tos-links).
+
+# **Endorsement Types**
+
+There are a few different endorsements you can obtain for your customer. The type of endorsement you need for your customer depends on the region of residence and which fiat rails they're intending to utilize.
+
+## **Base Endorsement**
+
+The `base` endorsement represents approval of a customer to onboard and transact with USD payment rails.
+
+## **SEPA Endorsement**
+
+The `sepa` endorsement represents approval of using SEPA/Euro services offered by Bridge.
+
+## **SPEI Endorsement**
+
+The `spei` endorsement represents approval of using SPEI/MXN peso services offered by Bridge.
+
+# **Endorsement requirements**
+
+The customer object contains an **endorsements** attribute, where each endorsement will includes a **requirements** object. Developers can use it to get a comprehensive view into the status of endorsements, detailing which requirements are:
+
+✅ **Complete:** Items that are already fulfilled.\
+⏳ **Pending:** Items received and are being reviewed internally.\
+🔍 **Missing:** Required items that are not yet pending or complete.\
+❗️ **Issues:** The required information has been received, but there are outside factors that will not allow us to approve the endorsement.
+
+**How It Works**\
+The **requirements** object will provide a summary of the endorsement’s status, allowing developers to clearly identify which fields require action. For example, developers can now determine missing fields such as **Proof of Address** or **Terms of Service acceptance**.
+
+**Examples**
+
+The following is an example of a customer who requested both **Base** and **SEPA**.
+
+json
+
+```
+{
+  "endorsements": [
+    {
+      "name": "base",
+      "status": "incomplete",
+      "requirements": {
+          "complete": [
+            "first_name",
+            "last_name",
+            "tax_identification_number",
+            "email_address",
+            "date_of_birth",
+            "accepted_risk_region",
+            "address_of_residence"
+          ],
+          "pending": [],
+          "missing": {
+            "all_of": [
+              "terms_of_service_v1",
+              "sanctions_screen"
+            ]
+          },
+          "issues": []
+      },
+    },
+    {
+      "name": "sepa",
+      "status": "incomplete",
+      "requirements": {
+        "complete": [
+          "first_name",
+          "last_name",
+          "tax_identification_number",
+          "email_address",
+          "date_of_birth",
+          "accepted_risk_region",
+          "address_of_residence"
+        ],
+        "pending": [],
+        "missing": {
+          "all_of": [
+            "terms_of_service_v2",
+            "proof_of_address",
+            "sanctions_screen"
+          ]
+        },
+        "issues": []
+      },
+    },
+  ]
+}
+```
+
+The following is an example of a customer who has fulfilled the requirements for **Base**, but have outstanding **issues** on their account preventing them from having the endorsement approved.
+
+JSON
+
+```
+{
+  "endorsements": [
+    {
+      "name": "base",
+      "status": "incomplete",
+      "requirements": {
+        "complete": [
+          "first_name",
+          "last_name",
+          "tax_identification_number",
+          "email_address",
+          "date_of_birth",
+          "accepted_risk_region",
+          "address_of_residence",
+          "terms_of_service_v1",
+          "sanctions_screen",
+        ],
+        "pending": [],
+        "missing": nil,
+        "issues": ["endorsement_not_available_in_customers_region"]
+      }
+    },
+  ]
+}
+```

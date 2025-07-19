@@ -1,0 +1,67 @@
+---
+title: "Additional Requirements for Existing Customers"
+description: "Description of your new file."
+---
+
+There will be situations where Bridge may require additional customer information for a given customer.
+
+For example, we offer the option to create restricted US customers who do not need to provide a government ID when using the Customers endpoint. However, these restricted customers are limited to transactions of \$10,000 each, and a total of \$100,000 over a 30-day period. To increase these limits, the additional information can be collected either via a new hosted URL or via a PUT request.
+
+## **KYC Links**
+
+A KYC Link can be requested for an existing customer to provide additional KYC information required by certain products or services offered by Bridge.
+
+To request a KYC Link, use the following endpoint:
+
+Shell
+
+```
+curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/kyc_link' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>'
+```
+
+This endpoint will respond with:
+
+JSON
+
+```
+{
+  "url": "https://bridge.withpersona.com/verify?inquiry-template-id=itmpl_NtIXpb9AbEYCPxGo5iRbc9d2&reference-id=75d2f259-6810-4cde-a9b9-83eca42b0ebf"
+}
+```
+
+To enable an existing customer to use the `SEPA`/`Euro` services, users may be required to provide `proof of address`depending on where their government identification is from . An additional parameter, `endorsement=sepa`, can be included to request a KYC link with this specific step enabled in the flow.
+
+Shell
+
+```
+curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/kyc_link?endorsement=sepa' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>'
+```
+
+Please reference our [<u>KYC Link API</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-kyc-link) for existing customers for more details.
+
+## **Acceptance of a new ToS version for an existing customer**
+
+Bridge launched a new version on `4/14/2024`. Its acceptance is required for using the SEPA/Euro services. For an existing customer, a `GET` request can be issued to this endpoint to retrieve a ToS acceptance link to accept the new version.
+
+Shell
+
+```
+curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/tos_acceptance_link' \
+--header 'Api-Key: <API Key>'
+```
+
+This endpoint will return a response like the following:
+
+JSON
+
+```
+{
+  "url": "https://dashboard.bridge.xyz/accept-terms-of-service?email=sage%40blick-mayer.example&t=74ea7c13-2b52-5073-bd12-6879f92b88dd"
+}
+```
+
+Use this `url` to guide the customer towards Terms of Service acceptance. You can embed this URL in an iFrame or display in a new browser window. For iFrame and WebView implementations, we recommend listening to the `postMessage` event for the `signedAgreementId`. Moreover, you can pass a `redirect_uri` query parameter that will redirect the TOS page back to your application with a `signed_agreement_id` as a query parameter.
