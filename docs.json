@@ -34,6 +34,22 @@
               "guides/movemoney/offramp_liquidation",
               "guides/movemone/fiat_to_fiat"
             ]
+          },
+          {
+            "group": "Integrate custodial wallets",
+            "pages": [
+              "guides/wallets/overview",
+              "guides/wallets/onramp",
+              "guides/wallets/c2c",
+              "guides/wallets/offramp"
+            ]
+          },
+          {
+            "group": "Provision and make card payments",
+            "pages": [
+              "guides/movemoney/overview",
+              "guides/movemoney/spend"
+            ]
           }
         ]
       },

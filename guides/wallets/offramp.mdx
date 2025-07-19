@@ -1,0 +1,84 @@
+---
+title: "Offramp wallet funds to an external account"
+---
+
+This guide walks you through how to offramp funds from a Bridge-managed wallet to an external fiat account (e.g. a customer’s bank account) using the Transfers API.
+
+# Prerequisites
+
+Before you start:
+
+- A Bridge wallet with sufficient balance
+- A verified customer (via KYC or business onboarding)
+- External account created
+
+---
+
+# Step 1: Create a transfer from a Bridge wallet to an external bank account
+
+Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
+
+**Request**
+
+```curl
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Key>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "amount": "100.00",
+  "on_behalf_of": "cust_12345", // id of the customer who owns the wallet and ext. account
+  "source": {
+    "payment_rail": "bridge_wallet",
+    "currency": "usdb",
+    "bridge_wallet_id": "wallet_abc123" // id of the bridge wallet with funds
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "ext_account_xyz789" // id of the customer bank account
+  }
+}'
+```
+
+# Step 2: Monitor transfer status
+
+You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
+
+**Request**
+
+```curl
+curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
+--header 'Api-Key: <API Key>' \
+--header 'accept: application/json'
+```
+
+**Response**
+
+```json
+{
+  "id": "transfer_xyz",
+  "state": "payment_processed",
+  "amount": "100.00",
+  "source": { ... },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "ext_account_xyz789"
+  },
+  ...
+}
+```
+
+Common states:
+
+- `awaiting_funds`: waiting for source balance
+- `payment_submitted`: funds handed off to banking partner
+- `payment_processed`: funds delivered to external account
+
+# Related Docs
+
+- [Transfers](doc:transfers-2)
+- [External Accounts](doc:external-accounts)
+- [Wallets](doc:custodial-wallets)
+- [Setting up webhooks](doc:setting-up-webhooks)
