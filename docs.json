@@ -66,6 +66,9 @@
       },
       {
         "tab": "Orchestration",
+        "pages": [
+          "orchestration/overview"
+        ]
         "groups": []
       },   
       {
