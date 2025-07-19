@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "Bridge",
+  "name": "Example Co.",
   "description": "Example Co. is a company that provides example content and placeholder text.",
   "colors": {
     "primary": "#3B82F6",
@@ -41,25 +41,6 @@
         ]
       },
       {
-        "dropdown": "API reference",
-        "icon": "terminal",
-        "description": "How to use the Example Co. API",
-        "groups": [
-          {
-            "group": "API reference",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoints",
-            "openapi": {
-              "source": "openapi.json"
-            }
-          }
-        ]
-      },
-      {
         "dropdown": "Changelog",
         "icon": "history",
         "description": "Updates and changes",
@@ -68,14 +49,6 @@
         ]
       }
     ]
-  },
-  "api": {
-    "playground": {
-      "display": "interactive"
-    },
-    "examples": {
-      "languages": ["javascript", "curl", "python"]
-    }
   },
   "logo": {
     "light": "/logo-light.svg",
