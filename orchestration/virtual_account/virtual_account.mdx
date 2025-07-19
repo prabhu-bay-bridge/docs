@@ -1,0 +1,843 @@
+---
+title: "Virtual Accounts"
+---
+
+Virtual accounts provide a unique routing and account number that accepts wire transfers and ACH deposits.
+
+> ## **📘Please reach out to get access**
+>
+> Virtual Accounts are a separate product with different pricing. Please reach out in Slack to get access
+
+# **Create a Virtual Account**
+
+Example Request
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "source": {
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0xDEADBEEF"
+  },
+  "developer_fee_percent": "1.0" // 1%. This is optional and defaults to 0 if not set
+}'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "va_c5c032b7",
+  "status": "activated",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "currency": "usd",
+    "bank_beneficiary_name": "Alice Customer",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_routing_number": "101019644",
+    "bank_account_number": "123456789",
+    "payment_rails": ["ach_push", "wire"],
+    "payment_rail": "ach_push", // deprecated, use payment_rails instead
+  },
+  "destination": {
+    "currency": "usdc",
+    "payment_rail": "ethereum",
+    "address": "0xDEADBEEF",
+  },
+  "developer_fee_percent": "1.0"
+}
+
+```
+
+### **Optional Blockchain memo**
+
+For memo-based blockchains such as Stellar, you may include an optional `blockchain_memo` in the destination:
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "source": {
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "stellar",
+    "currency": "usdc",
+    "address": "STELLARADDRESS",
+    "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+  }
+}'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "virtual_acct_alice_456",
+  "status": "activated",
+  "developer_fee_percent": "0.0",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "bank_beneficiary_name": "Alice Customer",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_beneficiary": "Bridge Ventures Inc",
+    "bank_account_number": "123456789",
+    "bank_routing_number": "87654321",
+    "currency": "usd",
+    "payment_rails": ["ach_push", "wire"],
+  },
+  "destination": {
+    "payment_rail": "stellar",
+    "currency": "usdc",
+    "address": "STELLARADDRESS",
+    "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+  }
+}
+```
+
+# **Listing Virtual Accounts for a Customer**
+
+Example request to retrieve the Virtual Accounts that exist for a customer:
+
+shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/virtual_accounts' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'	
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "count": 2,
+  "data": [
+    {
+      "id": "virtual_acct_alice_123",
+      "status": "activated",
+      "developer_fee_percent": "0.10",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_beneficiary_name": "Alice Customer",
+        "currency": "usd",
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "87654321",
+        "payment_rails": ["ach_push", "wire"]
+      },
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0xdeadbeef"
+      }
+    },
+   {
+      "id": "virtual_acct_alice_456",
+      "status": "activated",
+      "developer_fee_percent": "0.0",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_beneficiary_name": "Alice Customer",
+        "currency": "usd",
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "000111000",
+        "payment_rails": ["ach_push", "wire"]
+      },
+      "destination": {
+        "payment_rail": "stellar",
+        "currency": "usdc",
+        "address": "STELLARADDRESS",
+        "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+      }
+    } 
+  ]
+}
+```
+
+# **Update a Virtual Account**
+
+Update the destination details for an existing Virtual Account. Future transactions will use the updated destination details. All fields in this request are optional. Updating a Virtual Account will also create an `account_update` event in the history for that account.
+
+Example Request
+
+Shell
+
+```
+curl --location --request PUT 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts/va_123' \
+  --header 'Content-Type: application/json' \
+  --header 'Api-Key: <Api-Key>' \
+  --data-raw '{
+	  "destination": {
+	    "payment_rail": "ethereum",
+	    "currency": "usdt",
+	    "address": "0xDEADBEEF"
+	  },
+    "developer_fee_percent": "2.5", // 2.5%, omitting will not change the existing dev fee percent
+  }'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "va_c5c032b7",
+  "status": "activated",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "bank_beneficiary_name": "Alice Customer",
+    "currency": "usd",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_routing_number": "101019644",
+    "bank_account_number": "123456789",
+    "payment_rails": ["ach_push", "wire"]
+  },
+  "destination": {
+    "currency": "usdt",
+    "payment_rail": "ethereum",
+    "address": "0xDEADBEEF",
+  },
+  "developer_fee_percent": "2.5"
+}
+```
+
+# **Deactivate a Virtual Account**
+
+This endpoint provides the ability to deactivate a Virtual Account. A deactivated Virtual Account cannot receive new transactions and all incoming funds will be returned to the sender. In progress transactions received before the Virtual Account was deactivated will process as normal.
+
+Example Request
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts/va_123/deactivate' \
+  --header 'Content-Type: application/json' \
+  --header 'Api-Key: <Api-Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "va_c5c032b7",
+  "status": "deactivated",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "currency": "usd",
+    "bank_beneficiary_name": "Alice Customer",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_routing_number": "101019644",
+    "bank_account_number": "123456789",
+    "payment_rails": ["ach_push", "wire"]
+  },
+  "destination": {
+    "currency": "usdc",
+    "payment_rail": "ethereum",
+    "address": "0xDEADBEEF",
+  },
+  "developer_fee_percent": "0.10"
+}
+
+```
+
+# **Reactivate a Virtual Account**
+
+Reactivate a previously deactivated Virtual Account. New incoming transactions will process as normal. Any transactions returned while the Virtual Account was deactivated will need to be reinitiated.
+
+Example Request
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts/va_123/reactivate' \
+  --header 'Content-Type: application/json' \
+  --header 'Api-Key: <Api-Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "va_c5c032b7",
+  "status": "activated",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "currency": "usd",
+    "bank_beneficiary_name": "Alice Customer",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_routing_number": "101019644",
+    "bank_account_number": "123456789",
+    "payment_rails": ["ach_push", "wire"]
+  },
+  "destination": {
+    "currency": "usdc",
+    "payment_rail": "ethereum",
+    "address": "0xDEADBEEF",
+  },
+  "developer_fee_percent": "0.10"
+}
+
+```
+
+# **History of Virtual Account Activity**
+
+This endpoints provide a history of activity for a Virtual Account such incoming funds received and outgoing payments submitted. See [<u>List History of Virtual Account activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-virtual-accounts-virtualaccountid-history) for more information about the types of events returned from these endpoints.
+
+## **Listing history of Activity for a Virtual Account**
+
+Example request to fetch the history of a Virtual Account:
+
+Shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/virtual_accounts/virtual_acct_alice_123/history' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+Example response:
+
+JSON
+
+```
+[{
+  "id": "event_4",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "virtual_acct_alice_456",
+  "type": "payment_submitted",
+  "amount": "98.63",
+  "currency": "usdc",
+  "developer_fee_amount": "0.13",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:39:14.316Z",
+  "subtotal_amount": "98.63",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "STANLEY SENDER",
+    "wire_message": "Sample Wire Message"
+  }
+  "destination_tx_hash": "0xc99e2d1eaab82f2b293d26bbe58f3e3cc6df0a1276cdad89233767ef619b1e37"
+},
+{
+  "id": "event_3",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "virtual_acct_alice_456",
+  "type": "funds_received",
+  "amount": "98.76",
+  "currency": "usd",
+  "developer_fee_amount": "0.0",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:29:12.621Z",
+  "subtotal_amount": "98.76",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "STANLEY SENDER",
+     "wire_message": "Sample Wire Message"
+  }
+}]
+```
+
+## **Listing history of Activity for all Virtual Accounts**
+
+Event history is also available for all virtual accounts across all customers.
+
+Shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/virtual_accounts/history' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+Example response:
+
+JSON
+
+```
+[{
+  "id": "event_1",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "virtual_acct_alice_456",
+  "type": "payment_submitted",
+  "amount": "98.63",
+  "currency": "usdc",
+  "developer_fee_amount": "0.13",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:39:14.316Z",
+  "subtotal_amount": "98.63",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_456",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "STANLEY SENDER",
+  }
+  "destination_tx_hash": "0xc99e2d1eaab82f2b293d26bbe58f3e3cc6df0a1276cdad89233767ef619b1e37"
+},
+{
+  "id": "event_2",
+  "customer_id": "cust_bob",
+  "virtual_account_id": "virtual_acct_bob_123",
+  "type": "funds_received",
+  "amount": "98.76",
+  "currency": "usd",
+  "developer_fee_amount": "0.0",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:29:12.621Z",
+  "subtotal_amount": "98.76",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_789",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "DAN DEPOSITOR",
+  }
+}]
+```
+
+## **Event Details**
+
+### **Event Types**
+
+#### **Transaction Status Events**
+
+`funds_received` - This is an acknowledgment that Bridge has received funds and is in the process of moving funds on the customer's behalf.\
+`payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. This usually takes just a few minutes to confirm the crypto transaction on chain\
+`payment_processed` - The transaction has been completed. The funds have arrived at your specified destination. This is a terminal state.
+
+Please note that a transaction will always progress from `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
+
+`funds_scheduled` - The events provides a notification that incoming funds are processing through an external system and an estimated arrival date for the credit. This event does not occur for all payments. Only ACH transactions can trigger a `funds_scheduled` event.
+
+`in_review` - A temporary state triggered when a transaction is undergoing review. Bridge may reach out to collect more information before progressing the transaction.
+
+`refunded` - If Bridge is unable to complete the transaction and needs to return the funds to the sender, this event will be triggered.
+
+#### **Non-transactional Events**
+
+`microdeposit` - These events are triggered when a sending bank initiates a microdeposit verification process. This is the only event emitted for this verification process. These funds are never onramped and don't go through the transaction statuses above.
+
+`account_update` - Triggered when the details of a Virtual Account (e.g. destination currency or address) are changed.
+
+`deactivation` - This event is fired when a Virtual Account is deactivated which prevents it from accepting any incoming transactions
+
+`reactivation` - Triggered if a previously deactivated account is later reactivated.
+
+### **Deposit ID**
+
+All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
+
+### **Funds Received Events**
+
+Information about a fiat deposit received. The `funds_received` event amount always matches the full amount that the customer sent before any fees are deducted. We also provide any source information we have about the sender of a deposit.
+
+- `payment_rail`- `ach_push` or `wire`. The payment rail on which the deposit was received. Different information is available for each of these payment rail types.
+- For ACH deposits, funding events have these details:
+  - `description`- This field contains the sender-related information set by the sending bank according to the NACHA ACH file specifications;
+  - `sender_routing_number`- The routing number of the entity that initiated this ACH transaction
+  - `sender_name`- The name of the business or individual who initiated the ACH as provided through the ACH system
+  - `trace_number`- The unique, a 15-digit number associated with each ACH transaction that is used for tracking and reconciling transactions
+- For wire deposits, funding events have these details:
+  - `bank_routing_number` - The routing number of the bank which sent this wire
+  - `bank_name` - The name of the bank which sent this wire
+  - `bank_beneficiary_name` - The name the sender used for the beneficiary name of the wire
+  - `originator_name`- The name of the sender
+  - `originator_address` - The address of the sender
+  - `imad` - A unique number given to each FedWire payment when using the Federal Reserve Bank Service which can be used to investigate and track wire transfers.
+
+Example Event
+
+JSON
+
+```
+{
+  "id": "va_event_457",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "funds_received",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+    "trace_number": "111222333444555"
+  }
+}
+```
+
+### **Payment Submitted Events**
+
+Information about any funds sent on chain using the deposit instructions. This event is created when the funds are sent on chain. The `payment_submitted` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each fee. Some information such as `destination_tx_hash` may not be available immediately after the event is created but will be populated later when the transaction is confirmed on chain.
+
+For convenience, the source deposit information is included in this event as well if available.
+
+Example Event
+
+JSON
+
+```
+{
+  "id": "va_event_456",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "payment_submitted",
+  "amount": "116.66",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+    "trace_number": "111222333444555"
+  },
+  "receipt": {
+    "initial_amount": "120.0",
+    "developer_fee": "1.25",
+    "exchange_fee": "2.2",
+    "subtotal_amount": "116.55",
+    "url": "https://dashboard.bridge.xyz/transaction/dac30205-854f-4d8e-af41-d71bc1a48f13/receipt/eaf7a53b-d223-48e5-8089-23aa59862717",
+    "gas_fee": "0.0",
+    "final_amount": "116.55",
+  }
+}
+```
+
+### **Payment Processed Events**
+
+Information about any funds sent on chain using the deposit instructions. This event is created when the funds are confirmed on chain. The `payment_processed` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each fee. The`destination_tx_hash`will always be populated for these events. This is final event in the onramp payment lifecycle and the best event to determine when a payment is fully complete.
+
+For convenience, the source deposit information is included in this event as well if available.
+
+Example Event
+
+JSON
+
+```
+{
+  "id": "va_event_456",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "payment_procesed",
+  "amount": "116.55",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "destination_tx_hash": "0xdeadbeef",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+    "trace_number": "111222333444555"
+  },
+  "receipt": {
+    "initial_amount": "120.0",
+    "developer_fee": "1.25",
+    "exchange_fee": "2.2",
+    "subtotal_amount": "116.55",
+    "url": "https://dashboard.bridge.xyz/transaction/dac30205-854f-4d8e-af41-d71bc1a48f13/receipt/eaf7a53b-d223-48e5-8089-23aa59862717",
+    "gas_fee": "0.0",
+    "final_amount": "116.55",
+    "destination_tx_hash": "0xdeadbeef" 
+  }
+}
+```
+
+### **Funds Scheduled Events**
+
+The events provides a notification that incoming funds are processing through the ACH system and an estimated arrival date for the credit. These events only occur for funds sent through ACH.
+
+JSON
+
+```
+{
+    "id": "va_event_400f",
+    "type": "funds_scheduled",
+    "currency": "usd",
+    "created_at": "2024-09-06T03:23:09.597Z",
+    "customer_id": "cust_alice",
+    "virtual_account_id": "va_123",
+    "amount": "482.5",
+    "source": {
+        "payment_rail": "ach_push",
+        "description": "ACH description",
+        "sender_name": "The name of the business or individual who sent the ACH",
+        "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+        "trace_number": "111222333444555",
+        "estimated_arrival_date": "2024-09-06"
+    }
+}
+```
+
+### **In Review Events**
+
+This event happens when a transaction enters the manual review queue. Bridge may reach out to obtain more information about the transaction before processing.
+
+JSON
+
+```
+{
+  "id": "va_event_363",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "in_review",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+    "trace_number": "111222333444555"
+  }
+}
+```
+
+### **Refund Events**
+
+Information about funds this Virtual Account received which were refunded back to the sender. Details about the refund are included in the "refund" section of the event which includes:
+
+- Reason: a brief, human-readable explanation of why this transaction was refunded
+- Code: an alphanumeric code representing the reason inside Bridge's system
+- Refunded At: when the refund was initiated
+
+Example Refunded event:
+
+JSON
+
+```
+{
+  "id": "va_event_5dd679",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "deposit_id": "deposit_daec03",
+  "type": "refunded",
+  "amount": "98.76",
+  "currency": "usd",
+  "created_at": "2024-03-27T00:00:00.000Z",
+  "source": {
+    "description": "ACH description",
+    "payment_rail": "ach_push",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "611161312",
+    "trace_number": "111222333444555"
+  },
+  "refund": {
+    "code": "300",
+    "reason": "Transaction Review",
+    "refunded_at": "2024-03-27T00:00:00.000Z",
+  }
+}
+```
+
+Note that not all refund events will include a `deposit_id`. This may be omitted in cases where the refund occurred before a deposit completed. For example:
+
+JSON
+
+```
+{
+  "id": "va_event_5dd680",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "refunded",
+  "amount": "98.76",
+  "currency": "usd",
+  "created_at": "2024-03-27T00:00:00.000Z",
+  "source": {
+    "description": "wire description",
+    "payment_rail": "wire",
+    "originator_name": "The name of the business or individual who sent the wire",
+    "originator_address" "The address of the sender",
+    "beneficiary_name": "The beneficiary name of this wire",
+    "beneficiary_address": "The beneficiary address of this wire",
+    "sender_bank_routing_number": "611161312",
+    "trace_number": "111222333444555"
+  },
+  "refund": {
+    "code": "610",
+    "reason": "Wire Rejected: Unmatched",
+    "refunded_at": "2024-03-27T00:00:00.000Z",
+  }
+}
+```
+
+### **Bank Verification Events**
+
+> ## **📘Virtual Accounts support microdeposit and challenge deposit verification to help your customers link external bank accounts.**
+
+When a customer links their Virtual Account with another financial platform (e.g. a fintech app or payroll provider), they may be prompted to verify ownership through one of two methods:
+
+- **Microdeposit Verification** – A small amount (typically less than \$1) is deposited and withdrawn to confirm the account is active.
+- **Challenge Deposit Verification **– One or more microdeposits are made, and the customer must input the exact deposit amounts (e.g. \$0.56 and \$0.84) to pass verification.
+
+Bridge supports both of these methods by allowing microdebits and credits to pass through. Please note:
+
+- **Microdeposits are never onramped **– Any deposit under \$1 is treated as a verification attempt and will not trigger a payment or transfer.
+- **Only Virtual Accounts support verification** – Static memo-based deposit flows (e.g. with shared memos) are not compatible with microdeposit verification
+
+We automatically generate a `microdeposit` event for each verification attempt. This event includes the amount, source bank details, and timestamp—so you can display them to the customer for verification if needed.
+
+❗**Credit and debit entries (positive and negative amounts)** may both appear during the verification process. However, some providers may only send a credit—behavior varies by the verifying institution.
+
+Example Microdeposit Events
+
+JSON
+
+```
+{
+  "id": "va_event_2641619d",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "microdeposit", // indicates a microdeposit event
+  "amount": "0.30",
+  "currency": "usd",
+  "created_at": "2024-01-03T19:09:46.676Z",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the sending bank",
+    "sender_bank_routing_number": "The routing number of the sending bank",
+    "trace_number": "111222333444555"
+  }
+},
+{
+  "id": "va_event_2c86b184",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "microdeposit",
+  "amount": "0.12",
+  "currency": "usd",
+  "created_at": "2024-01-03T19:09:46.676Z",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the sending bank",
+    "sender_bank_routing_number": "The routing number of the sending bank",
+    "trace_number": "111222333444556"
+  }
+},
+{
+  "id": "va_event_88294b57",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "microdeposit",
+  "amount": "-0.42",
+  "currency": "usd",
+  "created_at": "2024-01-03T19:13:19.281Z",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the sending bank",
+    "sender_bank_routing_number": "The routing number of the sending bank",
+    "trace_number": "111222333444557"
+  }
+}
+```
+
+### **Account Update Events**
+
+If a Virtual Account is modified using the [<u>Update a Virtual Account</u>](https://apidocs.bridge.xyz/reference/put_customers-customerid-virtual-accounts-virtualaccountid) endpoint, its history will include an `account_update` event to track what changed. The `account_updates` field in this event will contain a map of fields with their previous and updated values.
+
+JSON
+
+```
+{
+  "id": "va_event_456",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "va_123",
+  "type": "account_update",
+  "amount": "0.0",
+  "currency": "usd",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "account_updates": {
+    "destination_currency": ["usdc", "usdt"],
+  }
+```
+
+# **Amounts**
+
+- `amount`- For transaction-related events in the destination currency (`payment_processed`, `payment_submitted`), this amount is the final total amount of funds sent to the destination. For all other events, which use the source currency, this is the initial amount received from the source.
+- `subtotal_amount`- The amount of funds received from the source minus any fiat fees: developer fee and exchange fee. This is always in the source currency.
+
+Refer [<u>here</u>](https://apidocs.bridge.xyz/docs/transaction-costs) on minimum amounts for transactions.
+
+## **Developer Fees**
+
+Refer [<u>Developer Fees</u>](https://apidocs.bridge.xyz/docs/developer-fees)
+
+## **Other Fees**
+
+- `exchange_fee_amount`- The fee for exchanging one currency to another, in the source currency. This may be 0.
+- `gas_fee`- The fee for sending funds on chain, in the destination currency. This is usually 0 for most currencies and chains.

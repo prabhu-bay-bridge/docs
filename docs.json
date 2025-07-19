@@ -68,8 +68,15 @@
         "tab": "Orchestration",
         "pages": [
           "orchestration/overview"
+        ],
+        "groups": [
+          {
+            "group": "Virtual Account",
+            "pages": [
+              "orchestration/virtual_account/virtual_account"
+            ]
+          }
         ]
-        "groups": []
       },   
       {
         "tab": "Wallets",
