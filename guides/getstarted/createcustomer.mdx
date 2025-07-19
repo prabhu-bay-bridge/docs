@@ -52,7 +52,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 
 Response:
 
-```json
+```json expandable
 {
   "id": "uuid",
   "full_name": "John Doe",
@@ -90,7 +90,7 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
 
 Create U.S. based customer:
 
-```curl
+```curl expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -136,7 +136,7 @@ Endorsements represent an approval of a customer to onboard and transact with Br
 
 ## Checking Customer Endorsement Status
 
-```curl
+```curl expandable
 curl --request GET \
      --url https://api.bridge.xyz/v0/customers/{customerID} \
      --header 'accept: application/json'
@@ -144,7 +144,7 @@ curl --request GET \
 
 :white_check_mark: Example of an approved customer
 
-```json
+```json expandable
 
 {
  	id: '1',
@@ -176,7 +176,7 @@ curl --request GET \
 
 :warning: Example of an incomplete customer
 
-```json
+```json expandable
 {
   "id": "cust_1",
   ...
