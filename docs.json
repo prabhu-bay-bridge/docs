@@ -71,9 +71,14 @@
         ],
         "groups": [
           {
-            "group": "Virtual Account",
+            "group": "Virtual Accounts",
             "pages": [
-              "orchestration/virtual_account/virtual_account",
+              "orchestration/virtual_account/virtual_account"
+            ]
+          },
+          {
+            "group": "Transfers",
+            "pages": [
               "orchestration/transfer/transfer",
               "orchestration/transfer/statictemplates"
             ]
