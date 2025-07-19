@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "Example Co.",
+  "name": "Bridge",
   "description": "Example Co. is a company that provides example content and placeholder text.",
   "colors": {
     "primary": "#3B82F6",
