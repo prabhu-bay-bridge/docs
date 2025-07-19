@@ -1,0 +1,148 @@
+---
+title: "Additional functionality"
+---
+
+# **Listing Virtual Accounts for a Customer**
+
+```bash Request
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/virtual_accounts' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'	
+```
+
+```json Response
+{
+  "count": 2,
+  "data": [
+    {
+      "id": "virtual_acct_alice_123",
+      "status": "activated",
+      "developer_fee_percent": "0.10",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_beneficiary_name": "Alice Customer",
+        "currency": "usd",
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "87654321",
+        "payment_rails": ["ach_push", "wire"]
+      },
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0xdeadbeef"
+      }
+    },
+   {
+      "id": "virtual_acct_alice_456",
+      "status": "activated",
+      "developer_fee_percent": "0.0",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_beneficiary_name": "Alice Customer",
+        "currency": "usd",
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "000111000",
+        "payment_rails": ["ach_push", "wire"]
+      },
+      "destination": {
+        "payment_rail": "stellar",
+        "currency": "usdc",
+        "address": "STELLARADDRESS",
+        "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+      }
+    } 
+  ]
+}
+```
+
+# **Update a Virtual Account**
+
+Update the destination details for an existing Virtual Account. Future transactions will use the updated destination details. All fields in this request are optional. Updating a Virtual Account will also create an `account_update` event in the history for that account.
+
+```bash
+curl --location --request PUT 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts/va_123' \
+  --header 'Content-Type: application/json' \
+  --header 'Api-Key: <Api-Key>' \
+  --data-raw '{
+	  "destination": {
+	    "payment_rail": "ethereum",
+	    "currency": "usdt",
+	    "address": "0xDEADBEEF"
+	  },
+    "developer_fee_percent": "2.5", // 2.5%, omitting will not change the existing dev fee percent
+  }'
+```
+
+# **Deactivate a Virtual Account**
+
+The deactivate endpoint provides the ability to deactivate a Virtual Account. A deactivated Virtual Account cannot receive new transactions and all incoming funds will be returned to the sender. In progress transactions received before the Virtual Account was deactivated will process as normal.
+
+# **Reactivate a Virtual Account**
+
+Reactivate a previously deactivated Virtual Account. New incoming transactions will process as normal. Any transactions returned while the Virtual Account was deactivated will need to be reinitiated.
+
+# **History of Virtual Account Activity**
+
+This endpoints provide a history of activity for a Virtual Account such incoming funds received and outgoing payments submitted.
+
+## **Listing history of Activity for a Virtual Account**
+
+Example request to fetch the history of a Virtual Account:
+
+```bash
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/virtual_accounts/virtual_acct_alice_123/history' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+```json
+[{
+  "id": "event_4",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "virtual_acct_alice_456",
+  "type": "payment_submitted",
+  "amount": "98.63",
+  "currency": "usdc",
+  "developer_fee_amount": "0.13",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:39:14.316Z",
+  "subtotal_amount": "98.63",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "STANLEY SENDER",
+    "wire_message": "Sample Wire Message"
+  }
+  "destination_tx_hash": "0xc99e2d1eaab82f2b293d26bbe58f3e3cc6df0a1276cdad89233767ef619b1e37"
+},
+{
+  "id": "event_3",
+  "customer_id": "cust_alice",
+  "virtual_account_id": "virtual_acct_alice_456",
+  "type": "funds_received",
+  "amount": "98.76",
+  "currency": "usd",
+  "developer_fee_amount": "0.0",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:29:12.621Z",
+  "subtotal_amount": "98.76",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "description": "Deposit to Virtual Account",
+    "payment_rail": "ach_push",
+    "sender_routing_number": "987654321",
+    "sender_name": "STANLEY SENDER",
+     "wire_message": "Sample Wire Message"
+  }
+}]
+```
