@@ -1,0 +1,310 @@
+---
+title: "Onramp to stablecoins with virtual accounts"
+---
+
+# Overview
+
+Bridge ****virtual accounts are permanent, reusable fiat deposit addresses**** that convert incoming fiat into crypto and deliver it to your specified destination (e.g. a wallet address).
+
+They support multiple currencies and provide customers with local deposit details like account numbers and routing codes. For example, a USD virtual account gives your customer a U.S. account and routing number for ACH or wire transfers.
+
+**Supported Payment Rails**
+
+- **USD Virtual Accounts** - U.S. bank account and routing numbers issued in your customer’s name.
+- \*\*SEPA Virtual IBAN \*\*- Euro-denominated IBANs for accepting SEPA payments.
+- **MXN Virtual Accounts** - CLABE account numbers for receiving SPEI (Mexico) payments.
+
+Developers use virtual accounts to simplify global payments, custody stablecoins (e.g. USDB), and enable programmable flows. A common pattern: create a virtual account for a customer, route funds into a Bridge wallet, and earn yield.
+
+👉 Note: Customers must be onboarded and KYC/KYB-approved before creating virtual accounts.
+
+![](https://files.readme.io/132dbb7a0c26b0bb79c8de61164c2db8535bd71816f6cd897f8030186fa91276-image.png)
+
+---
+
+# Step 1: Create a virtual account
+
+Use the [Virtual Accounts](ref:virtual-accounts-1) API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
+
+Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automatically.
+
+## API Example
+
+**API Request**
+
+```curl USD Virtual Account
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  # The source object specifies a USD virtual account.
+  "source": {
+    "currency": "usd",
+  },
+  # The destination object instructs Bridge where to send the USD deposits to.
+  # Bridge will automatically handle converting and sending USD to the crypto destination. 
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+  },
+  # You can specifcy an optional developer fee to monetize on transactions.
+  "developer_fee_percent": "1.0" // 1%.
+}'
+```
+
+```curl SEPA Virtual IBAN
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  # The source object specifies a SEPA virtual IBAN.
+  "source": {
+    "currency": "eur",
+  },
+  # The destination object instructs Bridge where to send the EURO deposits to.
+  # Bridge will automatically handle converting and sending EURO to the crypto destination. 
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+  },
+  # You can specifcy an optional developer fee to monetize on transactions.
+  "developer_fee_percent": "1.0" // 1%.
+}'
+```
+
+```curl MXN Virtual Account
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  # The source object specifies a MXN virtual account.
+  "source": {
+    "currency": "mxn",
+  },
+  # The destination object instructs Bridge where to send the MXN deposits to.
+  # Bridge will automatically handle converting and sending MXN to the crypto destination. 
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+  },
+  # You can specifcy an optional developer fee to monetize on transactions.
+  "developer_fee_percent": "1.0" // 1%.
+}'
+```
+
+**API Response**
+
+```json USD Virtual Account
+{
+    "id": "1a400dae-f7fc-4f75-8105-212a14d4132d",
+    "status": "activated",
+    "developer_fee_percent": "1.0",
+    "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+    "created_at": "2025-07-04T22:10:34.564Z",
+    "source_deposit_instructions": {
+        "currency": "usd",
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_routing_number": "101019644",
+        "bank_account_number": "215268120000",
+        "bank_beneficiary_name": "Ada Lovelace",
+        "bank_beneficiary_address": "923 Folsom Street, 302, San Francisco, California 941070000, US",
+        "payment_rail": "ach_push",
+        "payment_rails": [
+            "ach_push",
+            "wire"
+        ]
+    },
+    "destination": {
+        "currency": "usdc",
+        "payment_rail": "ethereum",
+        "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+    }
+}
+```
+
+```json SEPA Virtual IBAN
+{
+    "id": "393c6358-4c19-4cb7-bbfa-d4a56be58309",
+    "status": "activated",
+    "developer_fee_percent": "1.0",
+    "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+    "created_at": "2025-07-04T22:07:18.701Z",
+    "source_deposit_instructions": {
+        "currency": "eur",
+        "iban": "IE90MODR14035307970528",
+        "bic": "MODRIE00XXX",
+        "account_holder_name": "Bridge Building Sp.z.o.o.",
+        "bank_name": "Modulr Finance, Ireland Branch",
+        "bank_address": "Floor 6, 2 Grand Canal Square, Dublin, Ireland",
+        "payment_rail": "sepa",
+        "payment_rails": [
+            "sepa"
+        ]
+    },
+    "destination": {
+        "currency": "usdc",
+        "payment_rail": "ethereum",
+        "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+    }
+} 
+```
+
+```json MXN Virtual Account
+{
+    "id": "35334433-dcee-48e8-bdc8-90171234ad00",
+    "status": "activated",
+    "developer_fee_percent": "1.0",
+    "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+    "created_at": "2025-07-04T22:13:29.481Z",
+    "source_deposit_instructions": {
+        "currency": "mxn",
+        "clabe": "568980546701071234",
+        "account_holder_name": "Ada Lovelace",
+        "payment_rails": [
+            "spei"
+        ]
+    },
+    "destination": {
+        "currency": "usdc",
+        "payment_rail": "ethereum",
+        "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+    }
+}
+```
+
+## Sharing Deposit Instructions
+
+Once a Virtual Account is created, use the `source_deposit_instructions` object in the response to share the fiat deposit details with your customer. Funds sent to those details will be automatically converted and delivered to the crypto destination you specified.
+
+---
+
+# Step 2: Monitoring virtual account events
+
+Once a Virtual Account is created, your customer can start receiving fiat payments using the provided deposit instructions.
+
+Bridge automatically tracks the full lifecycle of each deposit—from the moment funds are received to the point they are delivered on-chain. Each event in this lifecycle is represented by a `VirtualAccountEvent`.
+
+## Event Creation and Tracking
+
+Whenever a deposit is received, Bridge generates a `VirtualAccountEvent` with a unique `id`. You can:
+
+- Fetch historical events using the [Virtual Account Activity](ref:get_customers-customerid-virtual-accounts-virtualaccountid-history) API.
+- Receive **real-time webhook notifications** when:
+  - A new deposit is received.
+  - The status of an event changes (e.g. funds delivered, refund issued).
+
+Each `VirtualAccountEvent` includes detailed information about the deposit, source, status, and destination.
+
+## Virtual account event types
+
+Below are the different types of virtual account events you may receive. You can identify the type of each event by checking the `type` field in the virtual account event object.
+
+### Payment Lifecycle
+
+| Type                | Description                                                           |
+| ------------------- | --------------------------------------------------------------------- |
+| `funds_received`    | Bridge received funds via ACH or wire.                                |
+| `payment_submitted` | Bridge submitted the crypto payment.                                  |
+| `payment_processed` | Payment confirmed on-chain. Final state.                              |
+| `funds_scheduled`   | (ACH only) Incoming funds are in transit with estimated arrival date. |
+| `in_review`         | Transaction is under manual review.                                   |
+| `refunded`          | Funds could not be delivered and were refunded to the sender.         |
+
+### Other
+
+| Type             | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `account_update` | Virtual Account was updated (e.g. new destination address).   |
+| `deactivation`   | Virtual Account was deactivated.                              |
+| `reactivation`   | Virtual Account was reactivated.                              |
+| `microdeposit`   | Microdeposit verification detected. Funds are never onramped. |
+
+> All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
+
+To see the full breakdown of VirtualAccountEvents and their payloads, refer [Virtual Accounts](doc:virtual-accounts).
+
+## Fetching virtual account activity
+
+**API Request**
+
+```curl Request
+curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts/<virtual_account_id>/history' \
+--header 'Accept: application/json' \
+--header 'Api-Key: <api-key>'
+```
+
+**API Response**
+
+```json Response
+{
+  "count": 10, // Total number of events returned
+  "data": [
+    {
+      "id": "3686be0e-468c-e3ad-1dcd-b4a41b8b7632", // Unique ID of the event
+      "type": "payment_processed", // Event type: payment_processed means funds were delivered on chain
+      "currency": "usd", // Event source currency
+      "created_at": "2025-07-01T12:00:00Z", // Timestamp when the payment was processed.
+      "customer_id": "84325ad9-1c8f-5794-3738-373b980d466f",
+      "virtual_account_id": "4707fbec-f5a0-39d1-55d5-83fa18e1e49f",
+      "amount": "1500.0", // Deposited amount
+      "developer_fee_amount": "0.0", // Amount held for developer fees
+      "exchange_fee_amount": "0.0", // Exchange fees
+      "subtotal_amount": "1500.0", // Source amount after subtracting dev and exchange fees
+      "gas_fee": "0.0", // On-chain gas fee charged when sending crypto
+      "deposit_id": "ce898006-6347-f8b5-4e52-45185ba66e65", // ID of the deposit associated with this event
+      "source": {
+        "payment_rail": "ach_push", // Rail the funds arrived on (e.g., ach_push, wire)
+        "description": "Mock ACH Description 00", // Free-text description from the bank
+        "sender_name": "Sender 00", // Name of the sender provided by their bank
+        "sender_bank_routing_number": "00000000", // Sender's bank routing number
+        "trace_number": "000000000000000" // ACH trace number
+      },
+      "destination_tx_hash": "0xabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd0", // Blockchain tx hash
+      // we include a receipt object to share transaction details with your customer
+      "receipt": {
+        "initial_amount": "1500.0", // Amount received before fees
+        "developer_fee": "0.0",
+        "exchange_fee": "0.0",
+        "subtotal_amount": "1500.0",
+        "url": "https://dashboard.bridge.xyz/transaction/mock_tx_0/receipt/mock_receipt_0", 
+        "gas_fee": "0.0",
+        "final_amount": "1500.0", // final amount after subtracting any gas fees
+        "destination_tx_hash": "0xabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd0"
+      }
+    },
+    {
+      "id": "e8d43469-efcc-90e2-c64d-6c50c8e8912f",
+      "type": "funds_received", // Event indicating fiat funds have arrived
+      "currency": "usdc",
+      "created_at": "2025-07-02T12:00:00Z",
+      "customer_id": "5b6575f9-d3e4-79d1-ed7d-62c02ab14af3",
+      "virtual_account_id": "9c132b3f-476e-5eaf-4e17-fed4b06dd93e",
+      "amount": "1500.0",
+      "developer_fee_amount": "0.0",
+      "exchange_fee_amount": "0.0",
+      "subtotal_amount": "1500.0",
+      "gas_fee": "0.0",
+      "deposit_id": "3f8dc835-c994-67f1-3221-77b1060ed2f7",
+      "source": {
+        "payment_rail": "ach_push",
+        "description": "Mock ACH Description 01",
+        "sender_name": "Sender 01",
+        "sender_bank_routing_number": "00000001",
+        "trace_number": "000000000000001"
+      }
+    }
+    // ... additional records omitted for brevity ...
+  ]
+}
+```
+
+# Learn More
+
+Refer [Virtual Accounts](doc:virtual-accounts) for more detailed documentation.

@@ -28,7 +28,10 @@
           {
             "group": "Move money with Bridge",
             "pages": [
-              "guides/movemoney/overview"
+              "guides/movemoney/overview",
+              "guides/movemoney/virtualaccounts",
+              "guides/movemoney/recurring",
+              "guides/movemoney/offramp_liquidation"
             ]
           }
         ]

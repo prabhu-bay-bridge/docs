@@ -1,0 +1,185 @@
+---
+title: "Make recurring payments using saved payment routes"
+description: "Description of your new file."
+---
+
+A**static template transfer**  is a saved/reusable payment route let you generate reusable deposit instructions (like an ACH memo) that trigger a transfer automatically when funds are sent to Bridge.
+
+![](https://files.readme.io/90b7930e8ce414f975cccda396c27b11b574bc04d5d29bf43e54632d0faf7372-image.png)
+
+# Step 1: Create a Static Template
+
+Use the [Create a transfer](ref:post_transfers) endpoint and set `"static_template": true`.
+
+**Request**
+
+```curl
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Key>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "sepa",
+    "currency": "eur"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  "features": {
+  	"static_template": true
+    "flexible_amount": true // allows for any deposit amount
+  }
+}'
+```
+
+**Response**
+
+The response object will contain deposit instructions. You can share these with your customers. Every time your customers send Bridge a deposit with the message `BRGEXAMPLEMEMO`, we will match it to this template, and create a new transfer instance.
+
+```json
+{
+  "id": "transfer_template_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "sepa",
+    "currency": "eur"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  // Share this with your customer
+  "source_deposit_instructions": {
+    "payment_rail": "sepa",
+    "currency": "eur",
+    "deposit_message": "BRGEXAMPLEMEMO",
+    "iban": "IE57MODR99035505123456",
+    "bic": "MODRIE22XXX",
+    "account_holder_name": "Bridge Building Sp.z.o.o.",
+    "bank_name": "Modulr Finance B.V.",
+    "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+  },
+ "features": {
+    "static_template": true,
+    "flexible_amount": true
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+# Step 2: Customer sends funds
+
+Each time funds match the template (e.g. via SEPA \+ deposit message), Bridge:
+
+- Creates a new Transfer instance
+- Processes the transfer automatically
+- Sends you a webhook
+- Makes it available to fetch at [Get all transfers](ref:get_customers-customerid-transfers)
+
+## Fetching static template created transfers via API
+
+Use the template ID to list all matched transfers.
+
+**Request**
+
+```curl
+curl --request GET \
+  --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
+  --header 'Api-Key: <API Key>'
+```
+
+**Response**
+
+Each resulting transfer instance is represented as a unique transfer object.
+
+```json
+{
+  "count": 2,
+  "data": [
+    {
+      "id": "transfer_instance_456",
+      "state": "payment_processed",
+      "on_behalf_of": "cust_alice",
+      "amount": "1234.0",
+      "source": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+      },
+      "destination": {
+        "payment_rail": "polygon",
+        "currency": "usdc",
+        "to_address": "0xdeadbeef"
+      },
+      "source_deposit_instructions": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+        "deposit_message": "BRGEXAMPLEMEMO",
+        "iban": "IE57MODR99035505123456",
+        "bic": "MODRIE22XXX",
+        "account_holder_name": "Bridge Building Sp.z.o.o.",
+        "bank_name": "Modulr Finance B.V.",
+        "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+      },
+      "receipt": {
+        "initial_amount": "1234.0",
+        "developer_fee": "0.0",
+        "exchange_fee": "0.0",
+        "subtotal_amount": "1234.0",
+        "url": "https://dashboard.bridge.xyz/transaction/4181f2d9-7647-4249-b340-068d6ebdf8a2/receipt/c571e913-1f94-457e-a158-4249526b847b",
+        gas_fee: "0.0",
+        final_amount: "1234.0",
+        destination_tx_hash: "0x628ec487573fc503c3cad909bcd271d29a906257dc19a27db8cc82f213cf95e2",
+      },
+     "features": {
+        "static_template": true,
+        "flexible_amount": true
+      },
+      "created_at": "2024-10-06T19:39:14.316Z",
+      "updated_at": "2024-10-06T19:39:15.231Z"
+    },
+    {
+      "id": "transfer_template_123",
+      "state": "awaiting_funds",
+      "on_behalf_of": "cust_alice",
+      "source": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+      },
+      "destination": {
+        "payment_rail": "polygon",
+        "currency": "usdc",
+        "to_address": "0xdeadbeef"
+      },
+      "source_deposit_instructions": {
+        "payment_rail": "sepa",
+        "currency": "eur",
+        "deposit_message": "BRGEXAMPLEMEMO",
+        "iban": "IE57MODR99035505123456",
+        "bic": "MODRIE22XXX",
+        "account_holder_name": "Bridge Building Sp.z.o.o.",
+        "bank_name": "Modulr Finance B.V.",
+        "bank_address": "Strawinskylaan 4117, 1077 ZX Amsterdam, The Netherlands"
+      },
+     "features": {
+        "static_template": true,
+        "flexible_amount": true
+      },
+      "created_at": "2024-10-05T19:39:14.316Z",
+      "updated_at": "2024-10-05T19:39:15.231Z"
+    }
+  ]
+}
+```
+
+# Tips
+
+- Omit "amount" to make the template flexible (`flexible_amount: true`)
+- Use [Update a transfer](ref:put_transfers-transferid) to modify template behavior (applies only to future deposits)
+- Static templates use **shared deposit instructions**, unlike Virtual Accounts, which are customer-specific
