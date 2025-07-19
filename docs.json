@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Bridge.xyz",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#000000",
+    "light": "#F9FAFB",   
+    "dark": "#111111"    
   },
   "favicon": "/logo/favicon.ico",
   "navigation": {
