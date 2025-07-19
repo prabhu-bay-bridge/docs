@@ -22,14 +22,14 @@
             ]
           },
           {
-            "group": "Customization",
+            "group": "Move money",
             "pages": [
               "essentials/settings",
               "essentials/navigation"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Wallets",
             "pages": [
               "essentials/markdown",
               "essentials/code",
@@ -38,7 +38,7 @@
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Take card payments",
             "pages": [
               "ai-tools/cursor",
               "ai-tools/claude-code",
