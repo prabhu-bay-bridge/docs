@@ -47,8 +47,8 @@
           {
             "group": "Provision and make card payments",
             "pages": [
-              "guides/movemoney/overview",
-              "guides/movemoney/spend"
+              "guides/cards/overview",
+              "guides/cards/spend"
             ]
           }
         ]
