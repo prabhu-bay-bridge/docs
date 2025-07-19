@@ -24,7 +24,7 @@ You can create a liquidation address with a fiat destination (off ramp).
 
 For fiat destinations, you need to first register your customer's external bank account with us. The following example walks through the option to create external bank accounts via the Bridge API. You also have the option to use Plaid to let your customers link bank accounts, please refer [External Accounts](doc:external-accounts) for more details.
 
-```curl US Account Example
+```curl Example US Bank Account Request
 curl --location 'https://api.bridge.xyz/v0/customers/<customer-id>/external_accounts' \
 --header 'Idempotency-Key: ea-7' \
 --header 'Content-Type: application/json' \
@@ -54,7 +54,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/<customer-id>/external_acco
 }'
 ```
 
-```curl IBAN Example
+```curl Example IBAN Request
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
 --header 'Idempotency-Key: ea-5' \
 --header 'Content-Type: application/json' \
@@ -84,7 +84,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d
 }'
 ```
 
-```curl CLABE Example
+```curl Example CLABE Request
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
 --header 'Idempotency-Key: ea-6' \
 --header 'Content-Type: application/json' \
@@ -114,7 +114,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d
 
 The response object will contain a unique identifier for your customer's external bank account. You can query or update the external account details later with the [External Accounts](ref:external-accounts-2) endpoint.
 
-```json US Account Example
+```json Example US Account Response
 {
     "id": "039c270f-a038-40be-be7b-43f550ce0678", // external account id
     "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
@@ -140,7 +140,7 @@ The response object will contain a unique identifier for your customer's externa
 }
 ```
 
-```json IBAN Example
+```json Example IBAN Response
 {
     "id": "c8948ce6-26ac-4d37-a336-742f961a76f3",
     "customer_id": "23c2d400-4c69-4c5a-b31a-88d035d7e8ae",
@@ -164,7 +164,7 @@ The response object will contain a unique identifier for your customer's externa
 }
 ```
 
-```json CLABE Example
+```json Example CLABE Response
 {
     "id": "2bb5b814-0128-49a8-977a-77b1bc1cdee2",
     "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
@@ -269,4 +269,75 @@ The response will contain the crypto address ready to start taking payments.
     "updated_at": "2025-07-05T00:17:04.779Z",
     "state": "active"
 }
+```
+
+---
+
+# Monitoring liquidation address payments
+
+# Drain History
+
+When funds are deposited to a Liquidation Address, Bridge automatically “drains” those funds—converting and forwarding them to the configured destination. Each drain operation creates a **Drain Record**, which reflects the lifecycle of that individual payment.
+
+- You can retrieve the full drain history for a given liquidation address using the [Get drain history of a liquidation address](ref:get-drain-history-of-a-liquidation-address) endpoint.
+- Bridge will also send you a **real time webhook** for new drains and state changes.
+
+# Drain States
+
+The `state` field tracks the status of each drain through its lifecycle. Here are the possible values:
+
+| State               | Description                                                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `in_review`         | The transaction is temporarily held for review. This usually clears automatically. If unresolved after 24 hours, Bridge will contact you. |
+| `funds_received`    | Bridge has received crypto and is preparing the outgoing payment.                                                                         |
+| `payment_submitted` | The outgoing payment has been sent. Confirmation pending (varies by payment rail).                                                        |
+| `payment_processed` | Payment successfully completed. Depending on the rail, metadata may include a `tx_hash`, `imad`, or `trace_number`.                       |
+| `undeliverable`     | Bridge could not deliver the payment (e.g. invalid account or unsupported asset).                                                         |
+| `returned`          | Payment was sent but later rejected and returned to Bridge.                                                                               |
+| `refunded`          | Funds that were returned have been re-sent to an alternative destination.                                                                 |
+| `error`             | A system or network issue prevented processing. Manual intervention may be required.                                                      |
+| `canceled`          | The payment was canceled before submission—usually due to AML/EFE review or because it did not meet the minimum transfer threshold.       |
+
+> Drains can only move forward (funds_received → payment_submitted → payment_processed) and cannot go backward.
+
+# Fetching liquidation address drain history
+
+```curl Request
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_addresses/<liquidation_address_id>/drains' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+```json Response
+[
+  {
+    "id": "drain_123",
+    "amount": "1.0",
+    "currency": "usd",
+    "state": "payment_processed",
+    "created_at": "2023-05-05T19:39:14.316Z",
+    "destination": {
+      "payment_rail": "ethereum",
+      "currency": "usdc",
+      "to_address": "0xb5a18db2e404fd5d234f1bec969cb071bed86f82"
+    },
+    "destination_tx_hash": "0x063834efe214f4199b1ad7181ce8c5ced3e15d271c8e866da7c89e86ee629cfb",
+    "deposit_tx_hash": "0x39debb5d410baddbae5755a8bb98827722b05f5f0e29e428239bf30fc7af2891"
+  },
+  {
+    "id": "drain_456",
+    "amount": "1.0",
+    "currency": "usd",
+    "state": "payment_processed",
+    "created_at": "2023-05-04T18:39:14.316Z",
+    "destination": {
+      "payment_rail": "ethereum",
+      "currency": "usdc",
+      "to_address": "0xb5a18db2e404fd5d234f1bec969cb071bed86f82"
+    },
+    "destination_tx_hash": "0x83f5ec78fdde7c48ad32cf2d7ec151fef578a0b6b123e37211a438521b234628",
+    "deposit_tx_hash": "0xe6d166219539d0c875a7a4e0806f43ca117a3aaa42440cf875b6e3398fb09060"
+  }
+]
 ```
