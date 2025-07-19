@@ -1,5 +1,573 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Static Memos"
 ---
 
+# Create a Static Memo
+
+> ## **🚧Deposit Message**
+>
+> For Static Memos, it is very important that the customer includes the `deposit_message` when they send funds. Failure to include the `deposit_message` will result in a significant delay in processing or a return of the funds.
+
+Static Memos are long-lived deposit instructions that accept fiat funds through wire and ACH push and send funds to the configured destination wallet. The same Static Memo can receive both wires and ACH pushes interchangeably.
+
+Example Request
+
+shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/static_memos' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "source": {
+    "currency": "usd",
+    "payment_rail": "wire",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0xDEADBEEF"
+  },
+ "developer_fee_percent": "1.0" // 1%. This is optional and defaults to 0 if not set
+}'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "static_memo_alice_123",
+  "status": "activated",
+  "developer_fee_percent": "1.0",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_beneficiary_name": "Bridge Ventures Inc",
+    "bank_account_number": "123456789",
+    "bank_routing_number": "87654321",
+    "currency": "usd",
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0xdeadbeef"
+  }
+}
+```
+
+### **Optional Blockchain memo**
+
+For memo-based blockchains such as Stellar, you may include an optional `blockchain_memo` in the destination:
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/static_memos' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "source": {
+    "currency": "usd",
+    "payment_rail": "wire"
+  },
+  "destination": {
+    "payment_rail": "stellar",
+    "currency": "usdc",
+    "address": "STELLARADDRESS",
+    "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+  }
+}'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "static_memo_alice_456",
+  "status": "activated",
+  "developer_fee_percent": "0.0",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_beneficiary_name": "Bridge Ventures Inc",
+    "bank_account_number": "123456789",
+    "bank_routing_number": "87654321",
+    "currency": "usd",
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",
+  },
+  "destination": {
+    "payment_rail": "stellar",
+    "currency": "usdc",
+    "address": "STELLARADDRESS",
+    "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+  }
+}
+```
+
+# **Listing Static Memos for a Customer**
+
+Example request to retrieve the Static Memos that exist for a customer:
+
+shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/static_memos' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'	
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "count": 2,
+  "data": [
+    {
+      "id": "static_memo_123",
+      "status": "activated",
+      "developer_fee_percent": "0.10",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_beneficiary_name": "Bridge Ventures Inc",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "87654321",
+        "currency": "usd",
+        "deposit_message": "EXAMPLE_MEMO_MESSAGE",
+      },
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0xdeadbeef"
+      }
+    },
+   {
+      "id": "static_memo_alice_456",
+      "status": "activated",
+      "developer_fee_percent": "0.0",
+      "customer_id": "cust_alice",
+      "source_deposit_instructions": {
+        "bank_name": "Lead Bank",
+        "bank_address": "1801 Main St., Kansas City, MO 64108",
+        "bank_beneficiary_name": "Bridge Ventures Inc",
+        "bank_account_number": "123456789",
+        "bank_routing_number": "87654321",
+        "currency": "usd",
+        "deposit_message": "EXAMPLE_MEMO_MESSAGE",
+      },
+      "destination": {
+        "payment_rail": "stellar",
+        "currency": "usdc",
+        "address": "STELLARADDRESS",
+        "blockchain_memo": "STELLARBLOCKCHAINMEMO"
+      }
+    } 
+  ]
+}
+```
+
+# **Update a Static Memo**
+
+Update the destination details for an existing Static Memo. Future transactions will use the updated destination details. All fields in this request are optional. Updating a Static Memo will also create an `account_update` event in the history for that account.
+
+Example Request
+
+Shell
+
+```
+curl --location --request PUT 'https://api.bridge.xyz/v0/customers/cust_alice/static_memos/sm_123' \
+  --header 'Content-Type: application/json' \
+  --header 'Api-Key: <Api-Key>' \
+  --data-raw '{
+	  "destination": {
+	    "payment_rail": "ethereum",
+	    "currency": "usdt",
+	    "address": "0xDEADBEEF"
+	  },
+    "developer_fee_percent": "2.5", // 2.5%, omitting will not change the existing dev fee percent
+  }'
+```
+
+Example Response
+
+JSON
+
+```
+{
+  "id": "static_memo_alice_123",
+  "status": "activated",
+  "developer_fee_percent": "2.5",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_beneficiary_name": "Bridge Ventures Inc",
+    "bank_account_number": "123456789",
+    "bank_routing_number": "87654321",
+    "currency": "usd",
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdt",
+    "address": "0xdeadbeef"
+  }
+}
+```
+
+# **History of Static Memo Activity**
+
+This endpoints provide a history of activity for Static Memos such incoming fiat funds received and outgoing payments on chain. See [<u>List History of Static Memo activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-static-memos-staticmemoid-history) for more information about the types of events returned from these endpoints.
+
+## **Listing history of Activity for a Static Memo**
+
+Example request to fetch the history of a Static Memo:
+
+Shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/static_memos/static_memo_alice_123/history' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+Example response:
+
+JSON
+
+```
+[{
+  "id": "event_4",
+  "customer_id": "cust_alice",
+  "static_memo_id": "static_memo_alice_456",
+  "type": "payment_submitted",
+  "amount": "98.63",
+  "currency": "usdc",
+  "developer_fee_amount": "0.13",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:39:14.316Z",
+  "subtotal_amount": "98.63",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JOHN SMITH",
+    "imad": "20240110RUDJYGYG009092",
+    "omad": "20240110RUDJYGYG03151101101621",
+  },
+  "destination_tx_hash": "0xc99e2d1eaab82f2b293d26bbe58f3e3cc6df0a1276cdad89233767ef619b1e37"
+},
+{
+  "id": "event_3",
+  "customer_id": "cust_alice",
+  "static_memo_id": "static_memo_alice_456",
+  "type": "funds_received",
+  "amount": "98.76",
+  "currency": "usd",
+  "developer_fee_amount": "0.0",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:29:12.621Z",
+  "subtotal_amount": "98.76",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JOHN SMITH",
+    "imad": "20240110RUDJYGYG009092",
+    "omad": "20240110RUDJYGYG03151101101621",
+  }
+}]
+```
+
+## **Listing history of Activity for all Static Memos**
+
+Event history is also available for all Static Memos across all customers.
+
+Shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/static_memos/static_memo_alice_123/history' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+Example response:
+
+JSON
+
+```
+[{
+  "id": "event_1",
+  "customer_id": "cust_alice",
+  "static_memo_id": "static_memo_alice_456",
+  "type": "payment_submitted",
+  "amount": "98.63",
+  "currency": "usdc",
+  "developer_fee_amount": "0.13",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:39:14.316Z",
+  "subtotal_amount": "98.63",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_456",
+  "source_deposit_instructions": {
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",    
+  },
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JOHN SMITH",
+    "imad": "20240110RUDJYGYG009092",
+    "omad": "20240110RUDJYGYG03151101101621",
+  },
+  "destination_tx_hash": "0xc99e2d1eaab82f2b293d26bbe58f3e3cc6df0a1276cdad89233767ef619b1e37"
+},
+{
+  "id": "event_2",
+  "customer_id": "cust_bob",
+  "static_memo_id": "static_memo_bob_123",
+  "type": "funds_received",
+  "amount": "98.76",
+  "currency": "usd",
+  "developer_fee_amount": "0.0",
+  "exchange_fee_amount": "0.0",
+  "created_at": "2023-11-05T19:29:12.621Z",
+  "subtotal_amount": "98.76",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_789",
+  "source_deposit_instructions": {
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",    
+  },
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JANE DOE",
+    "imad": "20240110FIUGEYG009092",
+    "omad": "20240110FIUGEYGYG03151101101621",
+  }
+}]
+```
+
+## **Event Details**
+
+### **Event Types**
+
+#### **Transaction Status Events**
+
+`funds_received` - This is an acknowledgment that Bridge has received funds and is in the process of moving funds on the customer's behalf.\
+`payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. This usually takes just a few minutes to confirm the crypto transaction on chain\
+`payment_processed` - The transaction has been completed. The funds have arrived at your specified destination. This is a terminal state.
+
+Please note that a transaction will always progress from `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
+
+`in_review` - A temporary state triggered when a transaction is undergoing review. Bridge may reach out to collect more information before progressing the transaction.
+
+`refund` - If Bridge is unable to complete the transaction and needs to return the funds to the sender, this event will be triggered.
+
+#### **Non-transactional Events**
+
+`account_update` - Triggered when the details of a Virtual Account (e.g. destination currency or address) are changed.
+
+### **Deposit ID**
+
+All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Static Memo and can be used to link separate events to the same source transaction.
+
+### **Funds Received Events**
+
+Information about a fiat deposit received. The `funds_received` event amount always matches the full amount that the customer sent before any fees are deducted. We also provide any source information we have about the sender of a deposit. The information available differs by source payment rail:
+
+- **ACH:** description, payment rail
+- **Wire:** beneficiary name, routing number, bank name, IMAD, OMAD (deprecated), payment rail
+
+Example Event
+
+JSON
+
+```
+{
+  "id": "sm_event_457",
+  "customer_id": "cust_alice",
+  "static_memo_id": "sm_123",
+  "type": "funds_received",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "source_deposit_instructions": {
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",    
+  },
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JANE DOE",
+    "imad": "20240110FIUGEYG009092",
+    "omad": "20240110FIUGEYGYG03151101101621",
+  }
+}
+```
+
+### **Payment Submitted Events**
+
+Information about any funds sent on chain using the deposit instructions. This event is created when the funds are sent on chain. The `payment_submitted` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each customer-facing fee. Some information such as `destination_tx_hash` may not be available immediately after the `payment_submitted` event is created but will be populated later when the transaction is confirmed on chain.
+
+For convenience, the source deposit information is included in this event as well if available.
+
+Example Event
+
+JSON
+
+```
+{
+  "id": "sm_event_456",
+  "customer_id": "cust_alice",
+  "static_memo_id": "sm_123",
+  "type": "payment_submitted",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "destination_tx_hash": "0xdeadbeef",
+  "source_deposit_instructions": {
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",    
+  },
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JANE DOE",
+    "imad": "20240110FIUGEYG009092",
+    "omad": "20240110FIUGEYGYG03151101101621",
+  }
+}
+```
+
+### **Payment Processed Events**
+
+Information about any funds sent on chain using the deposit instructions. This event is created when the funds are confirmed on chain. The `payment_processed` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each fee. The`destination_tx_hash`will always be populated for these events. This is final event in the onramp payment lifecycle and the best event to determine when a payment is fully complete.
+
+For convenience, the source deposit information is included in this event as well if available.
+
+Example event:
+
+JSON
+
+```
+{
+  "id": "sm_event_456",
+  "customer_id": "cust_alice",
+  "static_memo_id": "sm_123",
+  "type": "payment_processed",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "deposit_id": "deposit_123",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "destination_tx_hash": "0xdeadbeef",
+  "source_deposit_instructions": {
+    "deposit_message": "EXAMPLE_MEMO_MESSAGE",    
+  },
+  "source": {
+    "payment_rail": "wire",
+    "bank_routing_number": "987654321",
+    "bank_beneficiary_name": "JANE DOE",
+    "imad": "20240110FIUGEYG009092",
+    "omad": "20240110FIUGEYGYG03151101101621",
+  }
+}
+```
+
+### **In Review Events**
+
+This event happens when a transaction enters the manual review queue. Bridge may reach out to obtain more information about the transaction before processing.
+
+JSON
+
+```
+{
+  "id": "sm_event_363",
+  "customer_id": "cust_alice",
+  "static_memo_id": "sm_123",
+  "type": "in_review",
+  "amount": "120.0",
+  "currency": "usd",
+  "developer_fee_amount": "1.25",
+  "exchange_fee_amount": "2.2",
+  "subtotal_amount": "120.0",
+  "gas_fee": "0.0",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "deposit_id": "deposit_123",
+  "source": {
+    "payment_rail": "ach_push",
+    "description": "ACH description",
+    "sender_name": "The name of the business or individual who sent the ACH",
+    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction"
+  }
+}
+```
+
+### **Account Update Events**
+
+If a Static Memo is modified using the [<u>Update a Static Memo</u>](https://apidocs.bridge.xyz/reference/put_customers-customerid-static-memos-staticmemoid) endpoint, its history will include an `account_update` event to track what changed. The `account_updates` field in this event will contain a map of fields with their previous and updated values.
+
+JSON
+
+```
+{
+  "id": "sm_event_456",
+  "customer_id": "cust_alice",
+  "static_memo_id": "sm_123",
+  "type": "account_update",
+  "amount": "0.0",
+  "currency": "usd",
+  "created_at": "2020-01-01T00:00:00.000Z",
+  "account_updates": {
+    "destination_currency": ["usdc", "usdt"],
+  }
+```
+
+# **Microdeposits**
+
+Static memos do not support microdeposit verifications.
+
+# **Minimum Amounts**
+
+The following destination currencies require a minimum amount of funds to complete an onramp:
+
+- **USDT:** minimum of \$20 USD
+- All others: \$1
+
+# **Developer Fees**
+
+Because the amount of funds sent isn’t known ahead of time, Static Memos use a percentage rate to calculate developer fees.
+
+- The fee is always in the source currency.
+- The fee must be less than the customer's transaction amount.
+- The fee has maximum 5 digits of precision, i.e. `0.00119` is allowed, but `0.0000001` is not
+- The fee is optional. If `developer_fee_percent` is blank, then it’s equivalent to the fee being set to `0.0`
+- The fee is only valid on transactions where funds are transferred by Bridge (not to Bridge)

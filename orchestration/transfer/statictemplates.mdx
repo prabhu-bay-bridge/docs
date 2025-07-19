@@ -1,12 +1,12 @@
 ---
-title: "Static Templates"
+title: "Static Template"
 ---
 
 The static template feature allows the creation of a Transfer template through the API. The response includes standing deposit instructions that can be used multiple times to send funds to the configured destination. The source deposit instructions will remain the same indefinitely including the source memo / wire message / SEPA reference.
 
 Every time that funds match the template, Bridge will create a new Transfer record in the API. The id of the template will never change. Transfer instances created from that template will each have unique ids.
 
-**Note: **Providing an amount is optional but allowed when creating a Static Template. If no amount is provided, the Transfer will automatically have the `flexible_amount` feature enabled as well.
+\*\*Note: \*\*Providing an amount is optional but allowed when creating a Static Template. If no amount is provided, the Transfer will automatically have the `flexible_amount` feature enabled as well.
 
 ### **Request**
 
@@ -84,7 +84,6 @@ cURL
 curl --request GET \
   --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
   --header 'Api-Key: <API Key>'
-
 ```
 
 **Response**

@@ -1,5 +1,119 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Prefunded Accounts"
 ---
 
+Prefunded Accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Currently, Prefunded Accounts support USD.
+
+## **Funding a Prefunded Account**
+
+The currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account. In order to add funds to a Prefunded Account, it can be set as the destination of a Transfer.
+
+Prefunded Accounts can be funded using the Transfers API:
+
+Shell
+
+```
+// REQUEST
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "amount": "100.00",
+  "on_behalf_of": "customer_id",
+  "source": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "from_address": "0x..."
+  },
+  "destination": {
+    "payment_rail": "prefunded",
+    "currency": "usd",
+    "prefunded_account_id": "prefunded_account_id"
+  }
+}'
+```
+
+Prefunded Accounts can also be funded using a Liquidation Address:
+
+Shell
+
+```
+// REQUEST
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID>/liquidation_addresses' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "chain": "stellar",
+  "currency": "usdc",
+  "destination_payment_rail": "prefunded",
+  "destination_currency": "usd",
+  "prefunded_account_id": "prefunded_account_id"
+}
+```
+
+## **Using Prefunded Accounts for Instant Onramps**
+
+Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD.
+
+Shell
+
+```
+// REQUEST
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "amount": "100.00",
+  "on_behalf_of": "customer_id",
+  "source": {
+    "payment_rail": "prefunded",
+    "currency": "usd",
+    "prefunded_account_id": "prefunded_account_id"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0x..."
+  }
+}'
+
+```
+
+Shell
+
+```
+// RESPONSE
+{
+  "id": "tr_123456",
+  "state": "in_review",
+  "currency": "usd",
+  "amount": "100.00",
+  "source": {
+    "payment_rail": "prefunded",
+    "currency": "usd",
+    "prefunded_account_id": "pref_789",
+    "prefunded_account": "account_name"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6"
+  },
+  "receipt": {
+    "initial_amount": "100.00",
+    "developer_fee": "0.00",
+    "exchange_fee": "0.00",
+    "subtotal_amount": "100.00",
+    "remaining_prefunded_balance": "900.00",
+    "final_amount": "100.00",
+    "gas_fee": "0.00"
+  }
+}
+
+```

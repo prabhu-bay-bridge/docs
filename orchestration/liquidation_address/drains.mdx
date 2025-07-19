@@ -1,5 +1,103 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Drains"
 ---
 
+A liquidation address automatically drains any funds sent to it and distributes those funds as the liquidation address is configured. Each time the address is drained, this creates a drain record.
+
+Example request to fetch the drain history of your liquidation address:
+
+Shell
+
+```
+curl --request GET \
+     --url 'https://api.bridge.xyz/v0/customers/cust_123/liquidation_addresses/addr_123/drains' \
+     --header 'Api-Key: <Api-Key>' \
+     --header 'accept: application/json'
+```
+
+Example response:
+
+JSON
+
+```
+[{  
+  "id": "drain_123",  
+  "amount": "1.0",  
+  "currency": "usd",  
+  "state": "payment_processed",  
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xb5a18db2e404fd5d234f1bec969cb071bed86f82",
+  },
+  "destination_tx_hash": "0x063834efe214f4199b1ad7181ce8c5ced3e15d271c8e866da7c89e86ee629cfb",
+  "deposit_tx_hash": "0x39debb5d410baddbae5755a8bb98827722b05f5f0e29e428239bf30fc7af2891"
+ },  
+ {  
+  "id": "drain_456",  
+  "amount": "1.0",  
+  "currency": "usd",  
+  "state": "payment_processed",  
+  "created_at": "2023-05-04T18:39:14.316Z",
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xb5a18db2e404fd5d234f1bec969cb071bed86f82",
+  },
+  "destination_tx_hash": "0x83f5ec78fdde7c48ad32cf2d7ec151fef578a0b6b123e37211a438521b234628",
+  "deposit_tx_hash": "0xe6d166219539d0c875a7a4e0806f43ca117a3aaa42440cf875b6e3398fb09060"
+}]
+```
+
+## **Additional Fields**
+
+### **Destination**
+
+The `destination` field will also return additional information when available. This information will be available when the transaction has been fully processed. The information available depends on the destination configuration of the Liquidation Address.
+
+For wires:
+
+JSON
+
+```
+{
+  "destination": {
+    "payment_rail": "wire",
+    "currency": "usd",
+    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+    "imad": "20240701MMASDFO9000528"
+  }
+}
+```
+
+For ACH push:
+
+JSON
+
+```
+{
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+    "trace_number": "718268532664263"
+  }
+}
+```
+
+# **Drain States**
+
+The drain state refers to the current state of a drain. There are several possible states that a drain can be in, including:
+
+- `in_review` - This is a temporary state that is rarely triggered. If it does occur, it usually resolves automatically within seconds. However, if we are unable to confirm the transaction information by the end of the 24-hour period, we will reach out to the developer with the next steps.
+- `funds_received` - This is an acknowledgment that Bridge has received your funds and is in the process of moving funds on your customer's behalf.
+- `payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. Depending on the payment rail, this can take anywhere from minutes (Crypto) to hours (Wires) to days (ACH push)
+- `payment_processed` - The drain has been completed. The funds have arrived at your specified destination. Depending on the configuration of the Liquididation Address, drains in this state will also include `destination_tx_hash` for the on-chain transaction, the`imad` for outgoing wires, or the `trace_number` for outgoing ACH credits.
+- `undeliverable` - Bridge was unable to send the funds to the specified destination. Some examples of this case are an invalid routing number/account number or attempting to send an asset not supported by the destination.
+- `returned` - Bridge has sent the payment but received notification that it wasn't successful and the funds have been returned to Bridge.
+- `refunded` - Bridge has has sent funds previously `returned` through a different payment rail or destination.
+- `error` - There was a problem preventing Bridge from processing this drain. This may require manual intervention to resolve. Please reach out to Bridge if you haven't already been contacted about this drain.
+- `canceled` - This transaction has been canceled and enqueued for return either because it does not meet the minimum value threshold for the payment route or because the payment was rejected during an AML/EFE review.
+
+Please note that a drain will always progress from `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
