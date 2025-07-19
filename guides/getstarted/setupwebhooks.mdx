@@ -1,0 +1,779 @@
+---
+title: "Set up webhooks"
+---
+
+Bridge webhooks allow you to receive real-time notifications when events occur in your Bridge account. This guide covers creating, implementing, testing, and enabling webhooks using Bridge's REST API.
+
+# Prerequisites
+
+- A Bridge account with API access
+- Bridge API credentials (API key)
+- HTTPS endpoint with valid X.509 certificate
+- Development environment with your preferred language (Ruby, Node.js, Python, or Go)
+
+# Step 1: Create a New Webhook
+
+First, create a webhook endpoint using the Bridge API. The webhook will be created in `disabled` state initially.
+
+```curl
+curl -X POST "https://api.bridge.xyz/webhooks" \
+  -H "Authorization: Bearer your_bridge_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-domain.com/webhooks/bridge",
+    "events": ["customer.created", "customer.updated"]
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": "webhook_abc123",
+  "status": "disabled",
+  "url": "https://your-domain.com/webhooks/bridge",
+  "events": ["customer.created", "customer.updated"],
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+Save the `webhook_id` from the response - you'll need it for testing and enabling the webhook.
+
+# Step 2: Implement the Webhook Handler
+
+Create an endpoint that can receive and process Bridge webhook events with proper timestamp validation, refer [Webhook Event Signature Verification](doc:webhook-event-signature-verification).
+
+Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0=<base64-encoded-signature>`
+
+```python
+from flask import Flask, request, jsonify
+from typing import Dict, Any, Optional, Union
+import json
+import base64
+import time
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.exceptions import InvalidSignature
+
+app = Flask(__name__)
+
+class WebhookEvent:
+    def __init__(self, data: Dict[str, Any]):
+        self.api_version: str = data['api_version']
+        self.event_id: str = data['event_id']
+        self.event_category: str = data['event_category']
+        self.event_type: str = data['event_type']
+        self.event_object: Dict[str, Any] = data['event_object']
+        self.event_object_changes: Optional[Dict[str, Any]] = data.get('event_object_changes')
+        self.event_created_at: str = data['event_created_at']
+
+class SignatureVerificationResult:
+    def __init__(self, is_valid: bool, error: Optional[str] = None):
+        self.is_valid = is_valid
+        self.error = error
+
+WEBHOOK_PUBLIC_KEY = """-----BEGIN PUBLIC KEY-----
+your_webhook_public_key_here
+-----END PUBLIC KEY-----"""
+
+def verify_webhook_signature(payload: bytes, signature_header: str, public_key_pem: str) -> SignatureVerificationResult:
+    try:
+        # Parse signature header
+        signature_parts = signature_header.split(',')
+        timestamp = next((part.split('=', 1)[1] for part in signature_parts if part.startswith('t=')), None)
+        signature = next((part.split('=', 1)[1] for part in signature_parts if part.startswith('v0=')), None)
+        
+        if not timestamp or not signature:
+            return SignatureVerificationResult(False, 'Missing timestamp or signature')
+        
+        # Check timestamp (reject events older than 10 minutes)
+        current_time = int(time.time() * 1000)
+        if current_time - int(timestamp) > 600000:
+            return SignatureVerificationResult(False, 'Timestamp too old')
+        
+        # Create signed payload
+        signed_payload = f"{timestamp}.{payload.decode()}"
+        
+        # Verify signature
+        public_key = serialization.load_pem_public_key(public_key_pem.encode())
+        signature_bytes = base64.b64decode(signature)
+        
+        public_key.verify(
+            signature_bytes,
+            signed_payload.encode(),
+            padding.PKCS1v15(),
+            hashes.SHA256()
+        )
+        return SignatureVerificationResult(True)
+    except InvalidSignature:
+        return SignatureVerificationResult(False, 'Invalid signature')
+    except Exception as e:
+        return SignatureVerificationResult(False, f'Signature verification failed: {e}')
+
+def handle_webhook_event(event: WebhookEvent) -> None:
+    if event.event_type == 'customer.created':
+        print(f"New customer created: {event.event_object.get('id')}")
+    elif event.event_type == 'customer.updated':
+        print(f"Customer updated: {event.event_object.get('id')}")
+    elif event.event_type == 'transfer.created':
+        print(f"Transfer created: {event.event_object.get('id')}")
+    else:
+        print(f"Unhandled event type: {event.event_type}")
+
+@app.route('/webhooks/bridge', methods=['POST'])
+def handle_webhook():
+    payload = request.get_data()
+    signature_header = request.headers.get('X-Webhook-Signature')
+    
+    if not signature_header:
+        return jsonify({'error': 'Missing signature header'}), 400
+    
+    verification = verify_webhook_signature(payload, signature_header, WEBHOOK_PUBLIC_KEY)
+    
+    if not verification.is_valid:
+        print(f"Signature verification failed: {verification.error}")
+        return jsonify({'error': 'Invalid signature'}), 400
+    
+    try:
+        event_data = json.loads(payload)
+        event = WebhookEvent(event_data)
+        handle_webhook_event(event)
+        return jsonify({'received': True})
+    except Exception as e:
+        print(f"Failed to parse webhook event: {e}")
+        return jsonify({'error': 'Invalid JSON'}), 400
+
+if __name__ == '__main__':
+    app.run(port=3000, debug=True)
+```
+
+```typescript
+import express, { Request, Response } from 'express';
+import crypto from 'crypto';
+
+const app = express();
+
+interface WebhookEvent {
+  api_version: string;
+  event_id: string;
+  event_category: string;
+  event_type: string;
+  event_object: Record<string, any>;
+  event_object_changes?: Record<string, any>;
+  event_created_at: string;
+}
+
+interface SignatureVerificationResult {
+  isValid: boolean;
+  error?: string;
+}
+
+const WEBHOOK_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+your_webhook_public_key_here
+-----END PUBLIC KEY-----`;
+
+app.use('/webhooks/bridge', express.raw({ type: 'application/json' }));
+
+function verifyWebhookSignature(
+  payload: Buffer, 
+  signatureHeader: string, 
+  publicKey: string
+): SignatureVerificationResult {
+  try {
+    // Parse signature header
+    const signatureParts = signatureHeader.split(',');
+    const timestamp = signatureParts.find(part => part.startsWith('t='))?.split('=')[1];
+    const signature = signatureParts.find(part => part.startsWith('v0='))?.split('=')[1];
+    
+    if (!timestamp || !signature) {
+      return { isValid: false, error: 'Missing timestamp or signature' };
+    }
+    
+    // Check timestamp (reject events older than 10 minutes)
+    const currentTime = Date.now();
+    if (currentTime - parseInt(timestamp) > 600000) {
+      return { isValid: false, error: 'Timestamp too old' };
+    }
+    
+    // Create signed payload
+    const signedPayload = `${timestamp}.${payload.toString()}`;
+    
+    // Verify signature
+    const verifier = crypto.createVerify('RSA-SHA256');
+    verifier.update(signedPayload);
+    const isValid = verifier.verify(publicKey, signature, 'base64');
+    
+    return { isValid };
+  } catch (error) {
+    return { isValid: false, error: `Verification failed: ${error.message}` };
+  }
+}
+
+function handleWebhookEvent(event: WebhookEvent): void {
+  switch (event.event_type) {
+    case 'customer.created':
+      console.log(`New customer created: ${event.event_object.id}`);
+      break;
+    case 'customer.updated':
+      console.log(`Customer updated: ${event.event_object.id}`);
+      break;
+    case 'transfer.created':
+      console.log(`Transfer created: ${event.event_object.id}`);
+      break;
+    default:
+      console.log(`Unhandled event type: ${event.event_type}`);
+  }
+}
+
+app.post('/webhooks/bridge', (req: Request, res: Response) => {
+  const payload = req.body as Buffer;
+  const signatureHeader = req.headers['x-webhook-signature'] as string;
+  
+  if (!signatureHeader) {
+    return res.status(400).json({ error: 'Missing signature header' });
+  }
+  
+  const verification = verifyWebhookSignature(payload, signatureHeader, WEBHOOK_PUBLIC_KEY);
+  
+  if (!verification.isValid) {
+    console.error('Signature verification failed:', verification.error);
+    return res.status(400).json({ error: 'Invalid signature' });
+  }
+  
+  try {
+    const event: WebhookEvent = JSON.parse(payload.toString());
+    handleWebhookEvent(event);
+    res.status(200).json({ received: true });
+  } catch (error) {
+    console.error('Failed to parse webhook event:', error);
+    res.status(400).json({ error: 'Invalid JSON' });
+  }
+});
+
+app.listen(3000, () => console.log('Webhook server listening on port 3000'));
+```
+
+```ruby Ruby (Sorbet)
+# typed: strict
+require 'sinatra'
+require 'json'
+require 'openssl'
+require 'base64'
+require 'sorbet-runtime'
+
+class WebhookHandler
+  extend T::Sig
+
+  class WebhookEvent < T::Struct
+    prop :api_version, String
+    prop :event_id, String
+    prop :event_category, String
+    prop :event_type, String
+    prop :event_object, T::Hash[String, T.untyped]
+    prop :event_object_changes, T.nilable(T::Hash[String, T.untyped])
+    prop :event_created_at, String
+  end
+
+  class SignatureVerificationResult < T::Struct
+    prop :is_valid, T::Boolean
+    prop :error, T.nilable(String)
+  end
+
+  WEBHOOK_PUBLIC_KEY = T.let("""-----BEGIN PUBLIC KEY-----
+your_webhook_public_key_here
+-----END PUBLIC KEY-----""", String)
+
+  sig { params(payload: String, signature_header: String, public_key_pem: String).returns(SignatureVerificationResult) }
+  def self.verify_webhook_signature(payload, signature_header, public_key_pem)
+    # Parse signature header: t=timestamp,v0=signature
+    signature_parts = signature_header.split(',')
+    timestamp = signature_parts.find { |part| part.start_with?('t=') }&.split('=', 2)&.last
+    signature = signature_parts.find { |part| part.start_with?('v0=') }&.split('=', 2)&.last
+    
+    return SignatureVerificationResult.new(is_valid: false, error: 'Missing timestamp or signature') unless timestamp && signature
+    
+    # Check timestamp (reject events older than 10 minutes)
+    current_time = Time.now.to_i * 1000
+    if current_time - timestamp.to_i > 600_000
+      return SignatureVerificationResult.new(is_valid: false, error: 'Timestamp too old')
+    end
+    
+    # Create signed payload: timestamp.payload
+    signed_payload = "#{timestamp}.#{payload}"
+    
+    begin
+      # Verify signature
+      public_key = OpenSSL::PKey::RSA.new(public_key_pem)
+      signature_bytes = Base64.decode64(signature)
+      is_valid = public_key.verify(OpenSSL::Digest::SHA256.new, signature_bytes, signed_payload)
+      
+      SignatureVerificationResult.new(is_valid: is_valid)
+    rescue => e
+      SignatureVerificationResult.new(is_valid: false, error: "Signature verification failed: #{e.message}")
+    end
+  end
+
+  sig { params(event: WebhookEvent).void }
+  def self.handle_webhook_event(event)
+    case event.event_type
+    when 'customer.created'
+      puts "New customer created: #{event.event_object['id']}"
+    when 'customer.updated'
+      puts "Customer updated: #{event.event_object['id']}"
+    when 'transfer.created'
+      puts "Transfer created: #{event.event_object['id']}"
+    else
+      puts "Unhandled event type: #{event.event_type}"
+    end
+  end
+end
+
+post '/webhooks/bridge' do
+  payload = request.body.read
+  signature_header = request.env['HTTP_X_WEBHOOK_SIGNATURE']
+  
+  unless signature_header
+    status 400
+    return { error: 'Missing signature header' }.to_json
+  end
+  
+  verification = WebhookHandler.verify_webhook_signature(payload, signature_header, WebhookHandler::WEBHOOK_PUBLIC_KEY)
+  
+  unless verification.is_valid
+    puts "Signature verification failed: #{verification.error}"
+    status 400
+    return { error: 'Invalid signature' }.to_json
+  end
+  
+  begin
+    event_data = JSON.parse(payload)
+    event = WebhookHandler::WebhookEvent.new(
+      api_version: T.cast(event_data['api_version'], String),
+      event_id: T.cast(event_data['event_id'], String),
+      event_category: T.cast(event_data['event_category'], String),
+      event_type: T.cast(event_data['event_type'], String),
+      event_object: T.cast(event_data['event_object'], T::Hash[String, T.untyped]),
+      event_object_changes: T.cast(event_data['event_object_changes'], T.nilable(T::Hash[String, T.untyped])),
+      event_created_at: T.cast(event_data['event_created_at'], String)
+    )
+    
+    WebhookHandler.handle_webhook_event(event)
+    status 200
+    { received: true }.to_json
+  rescue => e
+    puts "Failed to parse webhook event: #{e.message}"
+    status 400
+    { error: 'Invalid JSON' }.to_json
+  end
+end
+```
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+@SpringBootApplication
+@RestController
+public class WebhookHandler {
+    
+    private static final String WEBHOOK_PUBLIC_KEY = """
+        -----BEGIN PUBLIC KEY-----
+        your_webhook_public_key_here
+        -----END PUBLIC KEY-----
+        """;
+    
+    static class WebhookEvent {
+        @JsonProperty("api_version")
+        public String apiVersion;
+        
+        @JsonProperty("event_id")
+        public String eventId;
+        
+        @JsonProperty("event_category")
+        public String eventCategory;
+        
+        @JsonProperty("event_type")
+        public String eventType;
+        
+        @JsonProperty("event_object")
+        public Map<String, Object> eventObject;
+        
+        @JsonProperty("event_object_changes")
+        public Map<String, Object> eventObjectChanges;
+        
+        @JsonProperty("event_created_at")
+        public String eventCreatedAt;
+    }
+    
+    static class SignatureVerificationResult {
+        public boolean isValid;
+        public String error;
+        
+        public SignatureVerificationResult(boolean isValid, String error) {
+            this.isValid = isValid;
+            this.error = error;
+        }
+    }
+    
+    @PostMapping("/webhooks/bridge")
+    public ResponseEntity<Map<String, Object>> handleWebhook(
+            @RequestBody String payload,
+            @RequestHeader(value = "X-Webhook-Signature", required = false) String signatureHeader) {
+        
+        if (signatureHeader == null) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Missing signature header");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+        
+        SignatureVerificationResult verification = verifyWebhookSignature(payload, signatureHeader, WEBHOOK_PUBLIC_KEY);
+        
+        if (!verification.isValid) {
+            System.err.println("Signature verification failed: " + verification.error);
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Invalid signature");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+        
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            WebhookEvent event = mapper.readValue(payload, WebhookEvent.class);
+            handleWebhookEvent(event);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("received", true);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.err.println("Failed to parse webhook event: " + e.getMessage());
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Invalid JSON");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+    
+    private void handleWebhookEvent(WebhookEvent event) {
+        switch (event.eventType) {
+            case "customer.created":
+                System.out.println("New customer created: " + event.eventObject.get("id"));
+                break;
+            case "customer.updated":
+                System.out.println("Customer updated: " + event.eventObject.get("id"));
+                break;
+            case "transfer.created":
+                System.out.println("Transfer created: " + event.eventObject.get("id"));
+                break;
+            default:
+                System.out.println("Unhandled event type: " + event.eventType);
+        }
+    }
+    
+    private SignatureVerificationResult verifyWebhookSignature(String payload, String signatureHeader, String publicKeyPem) {
+        try {
+            // Parse signature header
+            String[] parts = signatureHeader.split(",");
+            String timestamp = null;
+            String signature = null;
+            
+            for (String part : parts) {
+                if (part.startsWith("t=")) {
+                    timestamp = part.substring(2);
+                } else if (part.startsWith("v0=")) {
+                    signature = part.substring(3);
+                }
+            }
+            
+            if (timestamp == null || signature == null) {
+                return new SignatureVerificationResult(false, "Missing timestamp or signature");
+            }
+            
+            // Check timestamp (reject events older than 10 minutes)
+            long currentTime = System.currentTimeMillis();
+            long eventTime = Long.parseLong(timestamp);
+            if (currentTime - eventTime > 600000) {
+                return new SignatureVerificationResult(false, "Timestamp too old");
+            }
+            
+            // Create signed payload
+            String signedPayload = timestamp + "." + payload;
+            
+            // Parse public key
+            String publicKeyContent = publicKeyPem
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\s", "");
+            
+            byte[] keyBytes = Base64.getDecoder().decode(publicKeyContent);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = keyFactory.generatePublic(spec);
+            
+            // Verify signature
+            Signature sig = Signature.getInstance("SHA256withRSA");
+            sig.initVerify(publicKey);
+            sig.update(signedPayload.getBytes());
+            
+            byte[] signatureBytes = Base64.getDecoder().decode(signature);
+            boolean isValid = sig.verify(signatureBytes);
+            
+            return new SignatureVerificationResult(isValid, null);
+            
+        } catch (Exception e) {
+            return new SignatureVerificationResult(false, "Signature verification failed: " + e.getMessage());
+        }
+    }
+    
+    public static void main(String[] args) {
+        SpringApplication.run(WebhookHandler.class, args);
+    }
+}
+```
+
+```go
+// Go (Gin)
+package main
+
+import (
+    "crypto"
+    "crypto/rsa"
+    "crypto/sha256"
+    "crypto/x509"
+    "encoding/base64"
+    "encoding/json"
+    "encoding/pem"
+    "fmt"
+    "net/http"
+    "strconv"
+    "strings"
+    "time"
+    
+    "github.com/gin-gonic/gin"
+)
+
+const WEBHOOK_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+your_webhook_public_key_here
+-----END PUBLIC KEY-----`
+
+type WebhookEvent struct {
+    Type string                 `json:"type"`
+    Data map[string]interface{} `json:"data"`
+}
+
+func verifyWebhookSignature(payload []byte, signatureHeader, publicKeyPEM string) bool {
+    // Parse signature header
+    parts := strings.Split(signatureHeader, ",")
+    var timestamp, signature string
+    
+    for _, part := range parts {
+        if strings.HasPrefix(part, "t=") {
+            timestamp = strings.TrimPrefix(part, "t=")
+        } else if strings.HasPrefix(part, "v0=") {
+            signature = strings.TrimPrefix(part, "v0=")
+        }
+    }
+    
+    if timestamp == "" || signature == "" {
+        return false
+    }
+    
+    // Check timestamp (reject events older than 10 minutes)
+    ts, err := strconv.ParseInt(timestamp, 10, 64)
+    if err != nil {
+        fmt.Printf("Failed to parse timestamp: %v\n", err)
+        return false
+    }
+    
+    currentTime := time.Now().UnixNano() / int64(time.Millisecond)
+    if currentTime-ts > 600000 {
+        fmt.Println("Timestamp too old")
+        return false
+    }
+    
+    // Create signed payload
+    signedPayload := fmt.Sprintf("%s.%s", timestamp, string(payload))
+    
+    // Parse public key
+    block, _ := pem.Decode([]byte(publicKeyPEM))
+    if block == nil {
+        fmt.Println("Failed to parse PEM public key")
+        return false
+    }
+    
+    publicKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+    if err != nil {
+        fmt.Printf("Failed to parse public key: %v\n", err)
+        return false
+    }
+    
+    rsaPublicKey, ok := publicKey.(*rsa.PublicKey)
+    if !ok {
+        fmt.Println("Public key is not RSA")
+        return false
+    }
+    
+    // Decode signature
+    signatureBytes, err := base64.StdEncoding.DecodeString(signature)
+    if err != nil {
+        fmt.Printf("Failed to decode signature: %v\n", err)
+        return false
+    }
+    
+    // Hash the signed payload
+    hashed := sha256.Sum256([]byte(signedPayload))
+    
+    // Verify signature
+    err = rsa.VerifyPKCS1v15(rsaPublicKey, crypto.SHA256, hashed[:], signatureBytes)
+    if err != nil {
+        fmt.Printf("Signature verification failed: %v\n", err)
+        return false
+    }
+    
+    return true
+}
+
+func handleWebhook(c *gin.Context) {
+    payload, err := c.GetRawData()
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to read payload"})
+        return
+    }
+    
+    signatureHeader := c.GetHeader("X-Webhook-Signature")
+    
+    if !verifyWebhookSignature(payload, signatureHeader, WEBHOOK_PUBLIC_KEY) {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid signature"})
+        return
+    }
+    
+    var event WebhookEvent
+    if err := json.Unmarshal(payload, &event); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+        return
+    }
+    
+    switch event.Type {
+    case "customer.created":
+        fmt.Printf("New customer created: %v\n", event.Data["id"])
+    case "customer.updated":
+        fmt.Printf("Customer updated: %v\n", event.Data["id"])
+    }
+    
+    c.JSON(http.StatusOK, gin.H{"received": true})
+}
+
+func main() {
+    r := gin.Default()
+    r.POST("/webhooks/bridge", handleWebhook)
+    fmt.Println("Webhook server listening on port 3000")
+    r.Run(":3000")
+}
+```
+
+# Step 3: Test the Webhook
+
+Before enabling your webhook, test it to ensure it's working correctly.
+
+## Send a Test Event
+
+```curl
+# Send a test event to your webhook
+curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
+  -H "Authorization: Bearer your_bridge_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_type": "customer.created",
+    "test_data": {
+      "id": "test_customer_123",
+      "email": "test@example.com"
+    }
+  }'
+```
+
+## Check Webhook Logs
+
+```curl
+# View webhook delivery logs
+curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
+  -H "Authorization: Bearer your_bridge_api_key"
+```
+
+## Get Webhook Events
+
+```curl
+# Retrieve upcoming events for the webhook
+curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
+  -H "Authorization: Bearer your_bridge_api_key"
+```
+
+# Step 4: Enable the Webhook
+
+Once you've tested your webhook and confirmed it's working, enable it to start receiving live events.
+
+```curl
+curl -X PATCH "https://api.bridge.xyz/webhooks/{webhook_id}" \
+  -H "Authorization: Bearer your_bridge_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "active"}'
+```
+
+**Response:**
+
+```json
+{
+  "id": "webhook_abc123",
+  "status": "active",
+  "url": "https://your-domain.com/webhooks/bridge",
+  "events": ["customer.created", "customer.updated"],
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-01-15T10:35:00Z"
+}
+```
+
+Your webhook is now active and will receive live events from Bridge\!
+
+# Security Best Practices
+
+1. **Always verify webhook signatures** to ensure events are from Bridge
+2. **Use HTTPS endpoints** with valid certificates
+3. **Store webhook secrets securely** (use environment variables)
+4. **Return 200 status quickly** to avoid timeouts
+5. **Implement idempotency** to handle duplicate events
+6. **Log webhook events** for debugging and monitoring
+
+# Common Event Types
+
+- `customer.created` - New customer registration
+- `customer.updated` - Customer information changes
+- `payment.succeeded` - Successful payment processing
+- `payment.failed` - Failed payment attempt
+- `subscription.created` - New subscription
+- `subscription.cancelled` - Subscription cancellation
+
+# Troubleshooting
+
+- **Check webhook logs** for delivery status and error messages
+- **Verify your endpoint URL** is accessible and returns 200
+- **Ensure signature verification** is implemented correctly
+- **Check for certificate issues** on your HTTPS endpoint
+- **Monitor response times** to avoid timeout issues
+
+# Next Steps
+
+- Review the [Webhooks](doc:cards-webhooks) for more event types
+- Implement proper error handling and retry logic
+- Set up monitoring and alerting for webhook failures
+- Consider implementing webhook replay functionality for critical events
+
+This completes your webhook integration with Bridge. Your application will now receive real-time notifications for customer events and can respond accordingly.

@@ -1,0 +1,67 @@
+Bridge has a sandbox environment for you to quickly begin testing your integration without having to move real money. To access this sandbox, you must first reach out to [<u>support@bridge.xyz</u>](mailto:support@bridge.xyz) to get onboarded with a Developer account within Bridge. Afterwards, you'll be able to generate sandbox API keys
+
+## **Step 1: Generate a Sandbox Key**
+
+Go to [<u>https://dashboard.bridge.xyz/</u>](https://dashboard.bridge.xyz/) and log in with your email. Then, ensure the "Sandbox" toggle is turned on (blue). Then, hit the button to generate a sandbox key. Sandbox keys should be prefixed with `sk-test`.
+
+## **Step 2: Hit an API**
+
+Bridge's sandbox is currently functional with the customer creation and KYC process. For example, here is how you can create a Bridge customer.
+
+> ## **📘Note that the base url for Bridge is now **[**<u>https://api.sandbox.bridge.xyz</u>**](https://api.sandbox.bridge.xyz)
+
+```bash
+curl --location --request POST 'https://api.sandbox.bridge.xyz/v0/customers' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "johndoe@johndoe.com",
+  "address": {
+    "street_line_1": "123 Washington St",
+    "street_line_2": "Apt 2F",
+    "city": "San Francisco",
+    "state": "CA",
+    "postal_code": "10001",
+    "country": "USA"
+  },
+  "birth_date": "1989-09-09",
+  "tax_identification_number": "111-11-1111",
+  "phone": "+15555555555",
+  "signed_agreement_id": "<generate a uuid>",
+  "type": "individual"
+}'
+```
+
+We recommend the following steps to get a sense of how to use Bridge:
+
+- Create a customer
+- Fetch that customer
+- Examine simulated KYC
+- Creating fake liquidation addresses, transfers and fiat deposit instructions (Note: there is no real money movement in Sandbox)
+
+## **Differences with Production**
+
+Sandbox differs from production in a few key areas. We highly recommend using the Sandbox only to test API request/response schemas and Production itself for any other kind of testing.
+
+**Onboarding/KYC**
+
+- Customers must be created via the API; they cannot be created using kyc links.
+- Customers are automatically approved (no KYC/KYB flow)
+- Sandbox is subject to arbitrary rate limits; we may drop your requests anytime.
+- The signed agreement ID in production cannot be arbitrary
+- While in production you can have multiple users under the same Developer Account, in Sandbox each of those users will be scoped under their own unique Developer Account. In particular, changes made by one user in the sandbox won't be visible to other users **even if those users share a developer account in production**.
+
+**Payments**
+
+- There is no real money movement in Sandbox.
+- Plaid does not work in Sandbox.
+- There is no testnet support in Sandbox.
+- Virtual Accounts, Static Memos, Liquidation Addresses, and Transfers are created with dummy data.
+- There are no webhooks fired in sandbox.
+
+Wallets and Stablecoin Issuance are only supported in Production
+
+If you have suggests for how to improve our sandbox experience, please reach out to us at [<u>support@bridge.xyz</u>](mailto:support@bridge.xyz), thanks\!
