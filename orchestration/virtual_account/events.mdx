@@ -193,7 +193,7 @@ The events provides a notification that incoming funds are processing through th
 }
 ```
 
-### **In Review Events**
+## **In Review Events**
 
 This event happens when a transaction enters the manual review queue. Bridge may reach out to obtain more information about the transaction before processing.
 
@@ -292,7 +292,7 @@ Note that not all refund events will include a `deposit_id`. This may be omitted
 When a customer links their Virtual Account with another financial platform (e.g. a fintech app or payroll provider), they may be prompted to verify ownership through one of two methods:
 
 - **Microdeposit Verification** – A small amount (typically less than \$1) is deposited and withdrawn to confirm the account is active.
-- **Challenge deposit verification **– One or more microdeposits are made, and the customer must input the exact deposit amounts (e.g. \$0.56 and \$0.84) to pass verification.
+- \*\*Challenge deposit verification \*\*– One or more microdeposits are made, and the customer must input the exact deposit amounts (e.g. \$0.56 and \$0.84) to pass verification.
 
 Bridge supports both of these methods by allowing microdebits and credits to pass through. Please note:
 
