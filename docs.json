@@ -19,8 +19,8 @@
               "guides/getstarted/overview",
               "guides/getstarted/setup",
               "guides/getstarted/createcustomer",
-              "guides/gestarted/createpayment",
-              "guides/gestarted/setupwebhooks",
+              "guides/getstarted/createpayment",
+              "guides/getstarted/setupwebhooks",
               "guides/getstarted/setupsandbox"
             ]
           }
