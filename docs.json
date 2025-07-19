@@ -51,7 +51,7 @@
   },
   "logo": {
     "light": "/logo/bridge_logo.png",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/bridge_logo.png"
   },
   "navbar": {
     "links": [
