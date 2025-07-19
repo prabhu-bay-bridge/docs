@@ -1,0 +1,29 @@
+---
+title: "Authentication"
+---
+
+Bridge uses API keys to authenticate your requests. You can generate them from the [dashboard](http://dashboard.bridge.xyz/app/keys) .
+
+**⚠️ API keys are shown only once** at the time of creation. Be sure to copy and store them securely — they cannot be retrieved later.
+
+### 🔑 How Authentication Works
+
+- Pass your API key in the Api-Key header using HTTP Basic Auth.
+- No username or password is required — just the API key.
+- All requests must be made over HTTPS; requests over plain HTTP are rejected.
+- Invalid or missing keys will return a 401 Unauthorized.
+
+> ❗️ Keep your API keys secure. They grant full access to your account and should never be shared publicly or within internal tools like Slack or dashboards.
+
+### Sandbox Environment
+
+- In the sandbox, API keys are scoped to individual developer accounts.
+- Keys generated in sandbox are not visible to teammates, even if production keys are shared across the org.
+
+### Example Request
+
+```shell
+curl --location --request GET 'https://api.bridge.xyz/v1/customers' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <your-api-key>'
+```

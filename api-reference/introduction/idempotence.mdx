@@ -1,0 +1,49 @@
+---
+title: "Idempotency"
+description: "Description of your new file."
+---
+
+### Idempotency
+
+All `POST` APIs in Bridge require [idempotency](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent) to guarantee safe retries and prevent duplicate operations. You must include an `Idempotency-Key` header with a unique value for each request.
+
+This ensures that if a request is retried (due to network errors, client timeouts, or unexpected failures), Bridge can detect the duplication and return the same response, without performing the operation again.
+
+> Do not include an Idempotency-Key with GET, PUT, PATCH, or DELETE requests. These methods are naturally idempotent and do not require this header.
+
+### How It Works
+
+- Include a unique Idempotency-Key (typically a UUID) in the request header of every POST.
+- Bridge guarantees idempotent behavior for 24 hours after the initial request. During this window, any subsequent request with the same Idempotency-Key will return the original response — with no side effects or duplicated operations.
+  - For example, if a request to create a Customer or a Transfer fails or times out, you can safely retry it using the same key to ensure that only one object is ever created.
+- After the 24-hour window expires, reusing the same Idempotency-Key will result in a 422 Unprocessable Entity error.
+
+### Best Practices
+
+- Use a UUID for each new request.
+- Store the UUID in your database to track request state.
+- Reuse the same UUID when retrying a failed request.
+
+### Example
+
+```shell
+curl --location --request POST 'https://api.bridge.xyz/v1/customers' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <your-api-key>' \
+--header 'Idempotency-Key: <generated-uuid>' \
+--data-raw '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "johndoe@johndoe.com",
+  "address": {
+    "street_line_1": "123 Washington St",
+    "street_line_2": "Apt 2F",
+    "city": "New York",
+    "state": "NY",
+    "postal_code": "10001",
+    "country": "USA"
+  },
+  "birth_date": "1989-09-09",
+  "tax_identification_number": "111-11-1111"
+}'
+```
