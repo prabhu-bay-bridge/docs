@@ -24,6 +24,12 @@
               "guides/getstarted/setupwebhooks",
               "guides/getstarted/setupsandbox"
             ]
+          },
+          {
+            "group": "Move money with Bridge",
+            "pages": [
+              "guides/movemoney/overview"
+            ]
           }
         ]
       },
