@@ -50,7 +50,7 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
+    "light": "/logo/bridge_logo.png",
     "dark": "/logo/dark.svg"
   },
   "navbar": {
