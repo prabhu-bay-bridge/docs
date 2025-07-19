@@ -54,6 +54,38 @@
         ]
       },
       {
+        "tab": "Customers",
+        "groups": []
+      },
+      {
+        "tab": "Orchestration",
+        "groups": []
+      },   
+      {
+        "tab": "Wallets",
+        "groups": []
+      },
+      {
+        "tab": "Issuance",
+        "groups": []
+      },
+      {
+        "tab": "Cards",
+        "groups": []
+      },
+      {
+        "tab": "Compliance",
+        "groups": []
+      },
+      {
+        "tab": "Fees",
+        "groups": []
+      },
+      {
+        "tab": "Logistics",
+        "groups": []
+      },
+      {
         "tab": "API reference",
         "groups": [
           {
