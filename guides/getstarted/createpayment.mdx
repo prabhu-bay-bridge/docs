@@ -112,110 +112,104 @@ When Bridge receives the deposit, we'll transition the transfer state to `funds_
 
 You can use the [Get a transfer](ref:get_transfers-transferid) endpoint to fetch the latest Transfer status.
 
-<RequestExample>
-
-``` cURL
+```bash Request
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/transfer_123' \
      --header 'accept: application/json'
 ```
 
-</RequestExample>
-
-<ResponseExample>
-
-```json Funds received
-{
-  "count": 2,
-  "data": [
+<Tabs>
+  <Tab title="Funds received example">
+    ```json Response
     {
-      "summary": "A successful onramp transfer object",
-      "value": {
-        "id": "transfer_456",
-        "client_reference_id": "client_transfer_id_456",
-        "state": "funds_received", // transfer state
-        "on_behalf_of": "cust_alice",
-        "amount": "500.25",
-        "developer_fee": "0.0",
-        "source": {
-          "payment_rail": "ach",
-          "currency": "usd",
-          "external_account_id": "ext_123"
-        },
-        "destination": {
-          "payment_rail": "ethereum",
-          "currency": "usdc",
-          "to_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
-        },
-        "receipt": {
-          "initial_amount": "500.25",
-          "developer_fee": "0.0",
-          "exchange_fee": "0.0",
-          "subtotal_amount": "500.25",
-          "gas_fee": "0.0",
-          "final_amount": "500.25",
-          "destination_tx_hash": "0xdeadbeef",
-          "url": "https://dashboard.bridge.xyz/transaction/00000000-0000-0000-0000-000000000000/receipt/00000000-0000-0000-0000-000000000000"
-        },
-        "created_at": "2020-01-02T00:00:00.000Z",
-        "updated_at": "2020-01-03T00:00:00.000Z"
-      }
+      "count": 2,
+      "data": [
+        {
+          "summary": "A successful onramp transfer object",
+          "value": {
+            "id": "transfer_456",
+            "client_reference_id": "client_transfer_id_456",
+            "state": "funds_received", // transfer state
+            "on_behalf_of": "cust_alice",
+            "amount": "500.25",
+            "developer_fee": "0.0",
+            "source": {
+              "payment_rail": "ach",
+              "currency": "usd",
+              "external_account_id": "ext_123"
+            },
+            "destination": {
+              "payment_rail": "ethereum",
+              "currency": "usdc",
+              "to_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
+            },
+            "receipt": {
+              "initial_amount": "500.25",
+              "developer_fee": "0.0",
+              "exchange_fee": "0.0",
+              "subtotal_amount": "500.25",
+              "gas_fee": "0.0",
+              "final_amount": "500.25",
+              "destination_tx_hash": "0xdeadbeef",
+              "url": "https://dashboard.bridge.xyz/transaction/00000000-0000-0000-0000-000000000000/receipt/00000000-0000-0000-0000-000000000000"
+            },
+            "created_at": "2020-01-02T00:00:00.000Z",
+            "updated_at": "2020-01-03T00:00:00.000Z"
+          }
+        }
+      ]
     }
-  ]
-}
-```
-
-
-```json Payment processed
-{
-  "count": 2,
-  "data": [
+    ```
+  </Tab>
+  <Tab title="Payments processed example">
+    ```json Response
     {
-      "summary": "A successful onramp transfer object",
-      "value": {
-        "id": "transfer_456",
-        "client_reference_id": "client_transfer_id_456",
-        "state": "payment_processed", // transfer state
-        "on_behalf_of": "cust_alice",
-        "amount": "500.25",
-        "developer_fee": "0.0",
-        "source": {
-          "payment_rail": "ach",
-          "currency": "usd",
-          "external_account_id": "ext_123"
-        },
-        "destination": {
-          "payment_rail": "ethereum",
-          "currency": "usdc",
-          "to_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
-        },
-        "receipt": {
-          "initial_amount": "500.25",
-          "developer_fee": "0.0",
-          "exchange_fee": "0.0",
-          "subtotal_amount": "500.25",
-          "gas_fee": "0.0",
-          "final_amount": "500.25",
-          "destination_tx_hash": "0xdeadbeef",
-          "url": "https://dashboard.bridge.xyz/transaction/00000000-0000-0000-0000-000000000000/receipt/00000000-0000-0000-0000-000000000000"
-        },
-        "created_at": "2020-01-02T00:00:00.000Z",
-        "updated_at": "2020-01-03T00:00:00.000Z"
-      }
+      "count": 2,
+      "data": [
+        {
+          "summary": "A successful onramp transfer object",
+          "value": {
+            "id": "transfer_456",
+            "client_reference_id": "client_transfer_id_456",
+            "state": "payment_processed", // transfer state
+            "on_behalf_of": "cust_alice",
+            "amount": "500.25",
+            "developer_fee": "0.0",
+            "source": {
+              "payment_rail": "ach",
+              "currency": "usd",
+              "external_account_id": "ext_123"
+            },
+            "destination": {
+              "payment_rail": "ethereum",
+              "currency": "usdc",
+              "to_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
+            },
+            "receipt": {
+              "initial_amount": "500.25",
+              "developer_fee": "0.0",
+              "exchange_fee": "0.0",
+              "subtotal_amount": "500.25",
+              "gas_fee": "0.0",
+              "final_amount": "500.25",
+              "destination_tx_hash": "0xdeadbeef",
+              "url": "https://dashboard.bridge.xyz/transaction/00000000-0000-0000-0000-000000000000/receipt/00000000-0000-0000-0000-000000000000"
+            },
+            "created_at": "2020-01-02T00:00:00.000Z",
+            "updated_at": "2020-01-03T00:00:00.000Z"
+          }
+        }
+      ]
     }
-  ]
-}
-```
-
-</ResponseExample>
+    ```
+  </Tab>
+</Tabs>
 
 ## Advanced: Monitoring using webhooks
 
 You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](https://apidocs.bridge.xyz/docs/setting-up-webhooks) for more details on setting up webhooks.
 
-### Example transfer webhook: payment_processed
-
-```json
+```json Example webhook: payment_processed
 {
   "api_version": "v0",
   "event_id": "wh_t8TAhPPYrRV2v8Asi9ed3sw",
