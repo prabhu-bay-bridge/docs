@@ -1,151 +1,216 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
-  "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
-  "favicon": "/favicon.svg",
-  "structure": "tabs",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting Started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "How-to Guides",
-            "pages": ["guides/funding-wallets", "guides/sending-transfers", "guides/testing-environment"]
-          },
-          {
-            "group": "Concepts",
-            "pages": ["guides/architecture", "guides/security", "guides/regions"]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "Authentication & Errors",
-            "pages": ["api-reference/authentication", "api-reference/errors"]
-          },
-          {
-            "group": "Common Models",
-            "pages": ["api-reference/models/customer", "api-reference/models/wallet", "api-reference/models/transfer"]
-          },
-          {
-            "group": "Webhooks",
-            "pages": ["api-reference/webhooks/overview", "api-reference/webhooks/events"]
-          }
-        ]
-      },
-      {
-        "tab": "Orchestration",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["orchestration/overview", "orchestration/use-cases"]
-          },
-          {
-            "group": "Virtual Accounts",
-            "pages": ["orchestration/virtual-accounts/create", "orchestration/virtual-accounts/fund", "orchestration/virtual-accounts/webhooks"]
-          },
-          {
-            "group": "Static Memos",
-            "pages": ["orchestration/static-memos/create", "orchestration/static-memos/usage"]
-          },
-          {
-            "group": "Transfers",
-            "pages": ["orchestration/transfers/create", "orchestration/transfers/status", "orchestration/transfers/webhooks"]
-          },
-          {
-            "group": "Liquidation Addresses",
-            "pages": ["orchestration/liquidation-addresses/create", "orchestration/liquidation-addresses/route"]
-          }
-        ]
-      },
-      {
-        "tab": "Cards",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["cards/introduction", "cards/use-cases"]
-          },
-          {
-            "group": "Card Lifecycle",
-            "pages": ["cards/creating-cards", "cards/viewing-details", "cards/limits", "cards/controls"]
-          },
-          {
-            "group": "Transactions & Webhooks",
-            "pages": ["cards/transactions", "cards/webhooks"]
-          }
-        ]
-      },
-      {
-        "tab": "Wallets",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["wallets/introduction", "wallets/concepts"]
-          },
-          {
-            "group": "Managing Wallets",
-            "pages": ["wallets/creating-wallets", "wallets/retrieving-wallets", "wallets/balances"]
-          },
-          {
-            "group": "Orchestration Flows",
-            "pages": [
-              "wallets/from-virtual-account",
-              "wallets/from-liquidation-address",
-              "wallets/wallet-to-wallet",
-              "wallets/from-fiat"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "Mint Starter Kit",
+    "colors": {
+        "primary": "#16A34A",
+        "light": "#07C983",
+        "dark": "#15803D"
+    },
+    "favicon": "/favicon.svg",
+    "navigation": {
+        "structure": "tabs",
+        "tabs": [
+            {
+                "tab": "Guides",
+                "groups": [
+                    {
+                        "group": "Getting started",
+                        "pages": [
+                            "index",
+                            "quickstart",
+                            "development"
+                        ]
+                    },
+                    {
+                        "group": "Customization",
+                        "pages": [
+                            "essentials/settings",
+                            "essentials/navigation"
+                        ]
+                    },
+                    {
+                        "group": "Writing content",
+                        "pages": [
+                            "essentials/markdown",
+                            "essentials/code",
+                            "essentials/images",
+                            "essentials/reusable-snippets"
+                        ]
+                    },
+                    {
+                        "group": "AI tools",
+                        "pages": [
+                            "ai-tools/cursor",
+                            "ai-tools/claude-code",
+                            "ai-tools/windsurf"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "API reference",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Orchestration",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Customers",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Wallets",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Stablecoin Issuance",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Cards",
+                "groups": [
+                    {
+                        "group": "API documentation",
+                        "pages": [
+                            "api-reference/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Endpoint examples",
+                        "pages": [
+                            "api-reference/endpoint/get",
+                            "api-reference/endpoint/create",
+                            "api-reference/endpoint/delete",
+                            "api-reference/endpoint/webhook"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "global": {
+            "anchors": [
+                {
+                    "anchor": "Documentation",
+                    "href": "https://mintlify.com/docs",
+                    "icon": "book-open-cover"
+                },
+                {
+                    "anchor": "Community",
+                    "href": "https://mintlify.com/community",
+                    "icon": "slack"
+                },
+                {
+                    "anchor": "Blog",
+                    "href": "https://mintlify.com/blog",
+                    "icon": "newspaper"
+                }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Issuance",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["issuance/introduction", "issuance/token-types", "issuance/use-cases"]
-          },
-          {
-            "group": "Issuance APIs",
-            "pages": ["issuance/create", "issuance/redeem", "issuance/burn", "issuance/audit"]
-          }
-        ]
-      }
-    ]
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+        }
+    },
+    "logo": {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Support",
+                "href": "mailto:hi@mintlify.com"
+            }
+        ],
+        "primary": {
+            "type": "button",
+            "label": "Dashboard",
+            "href": "https://dashboard.mintlify.com"
+        }
+    },
+    "footer": {
+        "socials": {
+            "x": "https://x.com/mintlify",
+            "github": "https://github.com/mintlify",
+            "linkedin": "https://linkedin.com/company/mintlify"
+        }
     }
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
-  }
 }
