@@ -1,143 +1,115 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
-  "name": "Example Co.",
-  "description": "Example Co. is a company that provides example content and placeholder text.",
+  "theme": "mint",
+  "name": "Mint Starter Kit",
   "colors": {
-    "primary": "#3B82F6",
-    "light": "#F8FAFC",
-    "dark": "#0F172A"
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
   },
+  "favicon": "/favicon.svg",
   "navigation": {
-    "dropdowns": [
+    "tabs": [
       {
-        "dropdown": "Documentation",
-        "icon": "book",
-        "description": "How to use the Example Co. product",
+        "tab": "Guides",
         "groups": [
           {
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart"
+              "quickstart",
+              "development"
             ]
           },
           {
             "group": "Customization",
             "pages": [
-              "settings",
-              "users",
-              "features"
+              "essentials/settings",
+              "essentials/navigation"
             ]
           },
           {
-            "group": "Billing",
+            "group": "Writing content",
             "pages": [
-              "billing/overview",
-              "billing/payments",
-              "billing/subscriptions"
+              "essentials/markdown",
+              "essentials/code",
+              "essentials/images",
+              "essentials/reusable-snippets"
+            ]
+          },
+          {
+            "group": "AI tools",
+            "pages": [
+              "ai-tools/cursor",
+              "ai-tools/claude-code",
+              "ai-tools/windsurf"
             ]
           }
         ]
       },
       {
-        "dropdown": "Changelog",
-        "icon": "history",
-        "description": "Updates and changes",
-        "pages": [
-          "changelog"
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint examples",
+            "pages": [
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
+            ]
+          }
         ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://mintlify.com/community",
+          "icon": "slack"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://mintlify.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
   },
   "logo": {
-    "light": "/logo-light.svg",
-    "dark": "/logo-dark.svg",
-    "href": "https://example.com"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
       {
-        "label": "Community",
-        "href": "https://example.com/community"
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Get Started",
-      "href": "https://example.com/start"
+      "label": "Dashboard",
+      "href": "https://dashboard.mintlify.com"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/example",
-      "linkedin": "https://www.linkedin.com/company/example",
-      "github": "https://github.com/example",
-      "slack": "https://example.com/community"
-    },
-    "links": [
-      {
-        "header": "Resources",
-        "items": [
-          {
-            "label": "Customers",
-            "href": "https://example.com/customers"
-          },
-          {
-            "label": "Enterprise",
-            "href": "https://example.com/enterprise"
-          },
-          {
-            "label": "Request Preview",
-            "href": "https://example.com/preview"
-          }
-        ]
-      },
-      {
-        "header": "Company",
-        "items": [
-          {
-            "label": "Careers",
-            "href": "https://example.com/careers"
-          },
-          {
-            "label": "Blog",
-            "href": "https://example.com/blog"
-          },
-          {
-            "label": "Privacy Policy",
-            "href": "https://example.com/legal/privacy"
-          }
-        ]
-      }
-    ]
-  },
-  "integrations": {
-    "ga4": {
-      "measurementId": "G-XXXXXXXXXX"
-    },
-    "koala": {
-      "publicApiKey": "pk_example_key_123"
-    },
-    "telemetry": {
-      "enabled": true
-    },
-    "cookies": {
-      "key": "example_cookie_key",
-      "value": "example_cookie_value"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude"
-    ]
-  },
-  "errors": {
-    "404": {
-      "redirect": true
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
     }
   }
 }
