@@ -31,7 +31,8 @@
               "guides/movemoney/overview",
               "guides/movemoney/virtualaccounts",
               "guides/movemoney/recurring",
-              "guides/movemoney/offramp_liquidation"
+              "guides/movemoney/offramp_liquidation",
+              "guides/movemone/fiat_to_fiat"
             ]
           }
         ]
