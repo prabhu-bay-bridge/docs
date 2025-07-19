@@ -73,7 +73,9 @@
           {
             "group": "Virtual Accounts",
             "pages": [
-              "orchestration/virtual_account/virtual_account"
+              "orchestration/virtual_account/virtual_account",
+              "orchestration/virtual_account/events",
+              "orchestration/virtual_account/additional_functionality"
             ]
           },
           {
