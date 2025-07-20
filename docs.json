@@ -112,7 +112,9 @@
             },
             {
                 "tab": "Wallets",
-                "groups": []
+                "pages": [
+                    "orchestration/overview"
+                ]
             },
             {
                 "tab": "Issuance",
