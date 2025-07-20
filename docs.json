@@ -113,7 +113,8 @@
             {
                 "tab": "Wallets",
                 "pages": [
-                    "orchestration/overview"
+                    "wallets/overview",
+                    "wallets/move"
                 ]
             },
             {
