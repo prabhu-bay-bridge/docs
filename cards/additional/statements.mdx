@@ -1,5 +1,17 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Generating card statements"
 ---
 
+# **Overview**
+
+In order to offer a card program to your customers, you will need to generate statements which you send to them _at least_ monthly.
+
+In order to do so, Bridge provides a single API for automatically generating statements in PDF form.
+
+# **Generating a statement**
+
+```bash
+curl --request POST \
+     --url https://api.bridge.xyz/v0/customers/<customerID>/card_accounts/<cardAccountID>/statements/<period>.pdf \
+     --header 'accept: application/pdf'
+```

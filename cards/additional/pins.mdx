@@ -1,5 +1,69 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Managing PINs"
 ---
 
+# **Overview**
+
+Personal Identification Numbers (PINs) are an important security control and help keep your user's funds safe and card program low-risk. By providing an easy to use PIN management flow you can keep your users safe and ensure that transactions are not blocked.
+
+## **Security Considerations**
+
+PINs are sensitive data, so we take special caution to never transmit directly through your servers
+
+In order to address both security and regulatory concerns (PCI) all PIN operations are mediated via time-limited, single-use URLs surfaced in hosted frames.
+
+# **PIN Management Operations**
+
+As of date, Bridge only offers a single PIN management operation:
+
+- **Update Card PIN: **Allows customers to securely set or change their card PIN.\
+  Note that they cannot view their PIN in this flow.
+
+## **Updating a Card PIN**
+
+To allow a customer to update their PIN you will need to request a signed URL from the Bridge API, and then use that URL to render an iframe in your application or a webview.
+
+To do so, you should use the [<u>Create Card PIN Update URL</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-card-accounts-cardaccountid-pin)<u> [todo update link]</u> API to request a signed URL which your user can use to kick off a PIN editing session.
+
+```bash
+curl -x POST https\://<https://api.bridge.xyz/customers/>\<CUSTOMER_ID>/card_accounts/\<CARD_ACCOUNT_ID>/pin  
+-H "Content-Type: application/json"  
+ 	-H "Api-Key: YOUR_API_KEY"
+```
+
+You should then embed this URL via an iframe tag
+
+```html
+<iframe 
+  src="https://secure.example.com/view-pin?token=abc123"
+/>
+```
+
+## **Pin lifecycle events**
+
+You can listen for events from the PIN management iframe to determine when operations are complete:
+
+```javascript
+if (window.addEventListener) {  
+	window.addEventListener("message", function (event) {  
+    	// Modify URL to match environment  
+    	if (event.origin !== "\<BRIDGE_ORIGIN>") {  
+        	return;  
+}  
+    	var statusCode = event.data;  
+    	// Do something with the statusCode...  
+	}, false);  
+}
+```
+
+## **Styling the PIN edit form**
+
+Bridge provides a default set of styles for the PIN edit form, which are designed to be legible and easy to use across a variety of locales. Custom styles which match the design of your application are also supported.
+
+### **Default Styles**
+
+![4c3eaaa3d51629fa588c482b8148c5f48b372c3596e25f3fcfb63b6010297f42-Screenshot_2025-03-24_at_3.29.40_PM (1).png](/images/4c3eaaa3d51629fa588c482b8148c5f48b372c3596e25f3fcfb63b6010297f42-Screenshot_2025-03-24_at_3.29.40_PM\(1\).png)
+
+### **Custom styles**
+
+For more instructions, and to get started designing your custom styles, please see: [<u>https://github.com/withbridge/card-pin-style-server</u>](https://github.com/withbridge/card-pin-style-server)<u>.</u>

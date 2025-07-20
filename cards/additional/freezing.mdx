@@ -1,5 +1,27 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Freezing a card account"
 ---
 
+# **Overview**
+
+If you are concerned about fraud, or if a user loses their card, you may want to freeze or un-freeze their card to prevent new authorizations from coming in.\
+Note: Even if frozen, cards can still receive transaction events, such as settlements, refunds, or “forced” transactions.
+
+# **Freezing a card**
+
+```bash
+curl -X POST '<https://api.bridge.xyz/v0/customers/{customerID}/card_accounts/{cardAccountID}/freeze'>  
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <API Key>' \ 
+ -d initiator="customer" \
+ -d reason="lost_or_stolen"
+```
+
+# **Unfreezing a card**
+
+```bash
+curl -X POST '<https://api.bridge.xyz/v0/customers/{customerID}/card_accounts/{cardAccountID}/unfreeze'>  
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <API Key>' \
+ -d initiator="customer" 
+```
