@@ -1,9 +1,8 @@
 ---
 title: "Make recurring payments using saved payment routes"
-description: "Description of your new file."
 ---
 
-A**static template transfer**  is a saved/reusable payment route let you generate reusable deposit instructions (like an ACH memo) that trigger a transfer automatically when funds are sent to Bridge.
+A **static template transfer** is a saved/reusable payment route that lets you generate reusable deposit instructions (like an ACH memo) that trigger a transfer automatically when funds are sent to Bridge.
 
 ![](https://files.readme.io/90b7930e8ce414f975cccda396c27b11b574bc04d5d29bf43e54632d0faf7372-image.png)
 
@@ -11,9 +10,7 @@ A**static template transfer**  is a saved/reusable payment route let you generat
 
 Use the [Create a transfer](ref:post_transfers) endpoint and set `"static_template": true`.
 
-**Request**
-
-```curl
+```curl Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Key>' \
@@ -36,11 +33,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-**Response**
-
 The response object will contain deposit instructions. You can share these with your customers. Every time your customers send Bridge a deposit with the message `BRGEXAMPLEMEMO`, we will match it to this template, and create a new transfer instance.
 
-```json
+```json Response
 {
   "id": "transfer_template_123",
   "state": "awaiting_funds",
@@ -87,19 +82,15 @@ Each time funds match the template (e.g. via SEPA \+ deposit message), Bridge:
 
 Use the template ID to list all matched transfers.
 
-**Request**
-
-```curl
+```curl Request
 curl --request GET \
   --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
   --header 'Api-Key: <API Key>'
 ```
 
-**Response**
-
 Each resulting transfer instance is represented as a unique transfer object.
 
-```json
+```json Response
 {
   "count": 2,
   "data": [
