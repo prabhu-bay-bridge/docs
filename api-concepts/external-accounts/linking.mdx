@@ -1,5 +1,237 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "External Accounts"
 ---
 
+External Accounts represent your user's financial accounts (bank accounts, debit cards, etc.) that can be used to withdraw funds. Bridge validates all external accounts and performs KYC/KYB on the user so you as a developer don't need to. You can add external accounts in two ways:
+
+1. Bridge API
+2. Plaid (detailed below)
+
+---
+
+# **Bridge API**
+
+You can also add external accounts through our [<u>External account API</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-external-accounts) [todo update link] using the following request.
+
+For fiat destinations, you need to first register your customer's external bank account with us. The following example walks through the option to create external bank accounts via the Bridge API. You also have the option to use Plaid to let your customers link bank accounts, please refer External Accounts for more details.
+
+<Tabs>
+  <Tab title="US Bank Account">
+    ```bash Request expandable
+    curl --location 'https://api.bridge.xyz/v0/customers/<customer-id>/external_accounts' \
+    --header 'Idempotency-Key: ea-7' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Api-Key: <api-key>' \
+    --data '{
+      "currency": "usd",
+      "account_type": "us",
+      "bank_name": "Lead Bank",
+      "account_name": "Ada Checking Account",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "account_owner_type": "individual", // specifies an individual account
+      "account_owner_name": "Ada Lovelace",
+      "account": {
+        "routing_number": "101019644",
+        "account_number": "215268129123",
+        "checking_or_savings": "checking"
+      },
+      "address": {
+        "street_line_1": "923 Folsom Street",
+        "country": "USA",
+        "state": "CA",
+        "city": "San Francisco",
+        "postal_code": "941070000"
+      }
+    }'
+    ```
+
+    ```json Response expandable
+    {
+        "id": "039c270f-a038-40be-be7b-43f550ce0678", // external account id
+        "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
+        "created_at": "2025-07-05T19:03:50.819Z",
+        "updated_at": "2025-07-05T19:03:51.251Z",
+        "bank_name": "Lead Bank",
+        "account_name": "Ada Checking Account",
+        "account_owner_name": "Ada Lovelace",
+        "active": true,
+        "currency": "usd",
+        "account_owner_type": "individual",
+        "account_type": "us",
+        "first_name": "Ada",
+        "last_name": "Lovelace",
+        "business_name": null,
+        "account": {
+            "last_4": "9123",
+            "routing_number": "101019644",
+            "checking_or_savings": "checking"
+        },
+        "beneficiary_address_valid": true,
+        "last_4": "9123"
+    }
+    ```
+  </Tab>
+  <Tab title="SEPA IBAN">
+    ```bash Request expandable
+    curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
+    --header 'Idempotency-Key: ea-5' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Api-Key: <api-key>' \
+    --data '{
+      "currency": "eur",
+      "account_type": "iban",
+      "bank_name": "Modulr Finance, Ireland Branch",
+      "account_owner_name": "Ada Lovelace",
+      "iban": {
+        "account_number": "IE26MODR99035507970528",
+        "bic": "MODRIE22XXX",
+        "country": "IRL"
+      },
+      "address": {
+        "street_line_1": "923 Folsom Street",
+        "country": "USA",
+        "state": "CA",
+        "city": "San Francisco",
+        "postal_code": "941070000"
+      },
+      "account_name": "GGCF Corporate",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "account_owner_type": "individual"
+    }'
+    ```
+
+    ```curl Response
+    curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
+    --header 'Idempotency-Key: ea-6' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Api-Key: <api-key>' \
+    --data '{
+      "currency": "mxn",
+      "account_type": "clabe",
+      "account_owner_name": "Ada Lovelace",
+      "clabe": {
+        "account_number": "626899715090851234"
+      },
+      "account_name": "Ada Checking Account",
+      "bank_name": "BBVA Bancomer",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "account_owner_type": "individual",
+      "address": {
+        "street_line_1": "Av. Reforma",
+        "city": "Mexico City",
+        "state": "CDMX",
+        "postal_code": "06600",
+        "country": "MEX"
+      }
+    }'
+    ```
+  </Tab>
+  <Tab title="MXN CLABE">
+    ```bash Request expandable
+    curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
+    --header 'Idempotency-Key: ea-6' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Api-Key: <api-key>' \
+    --data '{
+      "currency": "mxn",
+      "account_type": "clabe",
+      "account_owner_name": "Ada Lovelace",
+      "clabe": {
+        "account_number": "626899715090851234"
+      },
+      "account_name": "Ada Checking Account",
+      "bank_name": "BBVA Bancomer",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "account_owner_type": "individual",
+      "address": {
+        "street_line_1": "Av. Reforma",
+        "city": "Mexico City",
+        "state": "CDMX",
+        "postal_code": "06600",
+        "country": "MEX"
+      }
+    }'
+    ```
+
+    ```json Response expandable
+    {
+        "id": "2bb5b814-0128-49a8-977a-77b1bc1cdee2",
+        "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
+        "created_at": "2025-07-05T18:59:42.163Z",
+        "updated_at": "2025-07-05T18:59:42.713Z",
+        "bank_name": "BBVA Bancomer",
+        "account_name": "Ada Checking Account",
+        "account_owner_name": "Ada Lovelace",
+        "active": true,
+        "currency": "mxn",
+        "account_owner_type": "individual",
+        "account_type": "clabe",
+        "first_name": "Ada",
+        "last_name": "Lovelace",
+        "business_name": null,
+        "clabe": {
+            "last_4": "1234"
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+# **Plaid**
+
+Integration with [<u>Plaid Link</u>](https://plaid.com/docs/link/) is required to allow users to add their financial accounts through Plaid. Here is a high level summary of the flow:
+
+- Request a Plaid Link Token from Bridge
+- Start the Plaid Link SDK from your application with the Link Token that you received from Bridge
+- When your application has received a Plaid Public Token, send that back up to Bridge so that Bridge can begin an exchange with Plaid to retrieve the linked accounts
+- After Bridge has received the Public Token, Bridge will retrieve the linked accounts and idempotently create Bridge External Accounts for each linked bank account
+- Fetch the Customer's External Accounts to move forward with the money movement process (i.e. create a Transfer, Liquidation Address, etc)
+
+_Please note that WebView support is being dropped among certain banks, refer to the following recommendations for WebViews from Plaid: _[_<u>recommendations</u>_](https://plaid.docsend.com/view/h3qdupjusiwyjvv5?utm_source=product&utm_medium=p2&utm_campaign=2023_04_product_all_p2_chase_inprocess_deprecation_1&utm_term=us_can_eu_uk&utm_content=api_docs&mkt_tok=NDk1LVdSRS01NjEAAAGLLs_Qn6Y7E3wrrQO1CqOlBpruQWox_UmouirHPa3MltCum43qNbR9nS7gWSa6kM63HnuhssBFTYHJhzRP2pFl6G979XUn33pK_QGfgGxNKcoieg)_. Moreover, please be aware that Plaid currently does not support wires for the following banking institutions: Chase and Bank of America. It's important to mention that Plaid is currently in the process of integrating with Chase to ensure comprehensive support for both ACH and wire accounts. As for Bank of America, their current and forthcoming support will remain confined to ACH accounts. If you wish to enable wire transfers for the mentioned banking institutions, please utilize our Bridge API to establish the external account._
+
+First [<u>request a </u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-plaid-link-requests)`link_token`:
+
+```bash Request
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/{customer_id}/plaid_link_requests' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+```
+
+```json Response
+{
+  "link_token": "plaid_link_token_123",
+  "link_token_expires_at": "2023-03-23T03:22:34.086Z",
+  "callback_url": "https://api.bridge.xyz/v0/plaid_exchange_public_token/{uuid}"
+}
+```
+
+Start the Plaid Link SDK using the `link_token` obtained from the initial request. Include an `onSuccess` callback to the endpoint provided in the `callback_url` field. To enhance security, we strongly advise initiating the Bridge endpoint call from the server side to prevent exposure of your API key.
+
+Once the `public_token` has been successfully exchanged, the external accounts are created and stored **asynchronously**. It may take a few minutes for those external accounts to be reflected for the customer.
+
+```bash Request
+curl --location --request POST 'https://api.bridge.xyz/v0/plaid_exchange_public_token/plaid_link_token_123' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--data-raw '{
+      public_token: "plaid_public_token_456",
+    }
+}
+```
+
+```json Response
+{
+  "message": "Successfully Exchanged the Public Token."
+}
+```
+
+After successfully exchanging the public token, Bridge will fetch all of the linked bank accounts from Plaid. This process normally takes a few seconds. Afterwards you can read from Bridge's external accounts endpoint to fetch the customer's newly linked external accounts

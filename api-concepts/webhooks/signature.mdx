@@ -1,5 +1,100 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Webhook Event Signature Verification"
 ---
 
+For each event delivery, Bridge will include a webhook signature header in the HTTP request for event authenticity verification
+
+- The header name is`X-Webhook-Signature` ;
+- The header value format is `t=<timestamp>,v0=<base64 encoded signature>` , where the timestamp is in milliseconds;
+
+To verify the signature, follow these steps:
+
+1. Parse the signature header to extract the `timestamp` and `base64 encoded signature`
+2. Join `timestamp` with the `raw http request body data` with a dot (`.`), and generate a `SHA256` digest;
+3. Perform a strict base64 decoding on the `based64 encoded signature` to get the `decoded signature`;
+4. Verify the signature using the per-endpoint `public key`, `digest` (from Step 2), and `decoded signature` (from Step 3
+
+> ## **🚧To avoid **[**<u>Replay Attacks</u>**](https://en.wikipedia.org/wiki/Replay_attack)**, Bridge advises the receiving endpoint to disregard events that are older than a few minutes, e.g. 10 minutes, and return a 400 status to request retries. For each event delivery retry, Bridge generates a new timestamp.**
+
+# **Sample Code**
+
+Our signature generation is performed with two passes of hashing. Please review the sample code below carefully to ensure your verification code aligns with it and passes the signature example provided below.
+
+## **Test data**
+
+Ruby
+
+```
+public_key = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtqsEE4eI7EmzhcquGJXt\nLX9PMK0UH6Kl1WIR21sv8HtueG8BuvvpP3MiN7ltzmIhS8KaynCjN4l+620PnXeu\nxWG+CSnEdkinL9hCqbEid5vv9zl0j9LWiJx3FkKHqADU7cgm46aa8dKUdIQYF2X+\nO7WmyLkC4wUM/mWhBPMsIQBznashRMZxx7XJjsVp27ACUE4eNIjEXbVYN6U8jSbU\nhG++CfL8xXu+GHDqKmFE6Po6HnuURvLFVnCtE3mXXBcVFlPy+octfx8nOMLT3X8O\n9UehIigJ34o2yMm/Fq3HUJzg2BsiAiGgtr0vmeoV9Q7upSNj9TuOumAzZFi4pYA+\nqwIDAQAB\n-----END PUBLIC KEY-----\n"
+
+signature_header = "t=1705854411204,v0=jz/0dmHJ63FAzacGutrDTEoq+iSz/PHm/ugdooXDQu5NwuVIT2LmZGjsnCsBHgR9Py6OBP9zurzW4dHgygU4EDqmMPTUOvhvndYb4lWt+TY66LihaFI2whL6DAf/jb1QjYjNU0A6x9SLzC45dgE6X7zTDUM+2Z+scG/WEQf6SxQMt4E2sEipl5PqMK5lYUe3otdJV+X2c9D64bGwCEE7QSia+Vhozg8QNOQEk/rdz2IEONIg6oC43CeiN4E2kF9XLAGuy9uAHx9O9OJH5ZPLJZjyo4VcXYeWQgxaQ1gZ1Qu6hEEzgiPSff/1nou58dm4bIIazgCWli/mO0NyGcpfFw=="
+
+body_data = "{\"message\":\"Hello World!\"}"
+```
+
+## **Sample Implementations**
+
+You may reference the following example implementations of signature verification when writing your code. Please contact us if you find any issues with the provided code or if your preferred language is not provided below.
+
+RubyJavaPythonJavaScriptGo
+
+```
+class WebhookController < ApplicationController
+  extend T::Sig
+
+  sig { void }
+  def process_event
+    signature_header = request.headers["X-Webhook-Signature"]
+    _, timestamp, signature = signature_header.match(/^t=(\d+),v0=(.*)$/).to_a
+
+    unless timestamp.present? && signature.present?
+      render_400("Malformed signature header") 
+      return
+    end
+
+    if Time.at(timestamp / 1_000) < 10.minutes.ago
+      render_400("Invalid signature!") 
+      return
+    end
+
+    body_data = request.body.read
+
+    data = "#{timestamp}.#{body_data}"
+    decoded_signature = Base64.strict_decode64(signature)
+
+    digester = OpenSSL::Digest.new('SHA256')
+    digest = digester.digest(data)
+
+    verified = public_key.verify(digester, decoded_signature, digest)
+    unless verified
+      render_400("Invalid signature!")
+      return
+    end
+
+    body_json = JSON.parse(body_data)
+
+    # Store the event for asynchronous processing and return `200` status as
+    # quickly as possible.
+
+    render json: {
+      message: "Event processing OK!",
+    }, status: 200    
+  end
+
+  sig { params(message: String).void }
+  def render_400(message)
+    render json: { message: }, status: 400
+  end
+
+  sig { returns(OpenSSL::PKey::RSA) }
+  def public_key
+    # Assume the public key is initiazed in the app context by invoking an OpenSSL
+    # method with the public key PEM issued by Bridge:
+    #
+    #   OpenSSL::PKey::RSA.new(public_key_pem)
+
+    # Replace the line below with the initialized RSA public key from app context.
+    <initialized RSA public key>
+  end
+end
+```

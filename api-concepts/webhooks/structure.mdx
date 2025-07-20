@@ -1,5 +1,189 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Event Structure"
 ---
 
+We released webhooks for `Customer`, `KYC Link` , `Liquidation Address Drain` , `Static Memo Activity`, `Transfer` and `Virtual Account Activity`, with plans to expand support to additional event categories in the coming weeks.
+
+Your feedback is invaluable to us. Please feel free to suggest priority event categories you'd like us to focus on for future updates.
+
+# **Examples**
+
+Below is a creation event for a Virtual Account Activity event object
+
+JSON
+
+```
+{
+  "api_version": "v0",
+  "event_id": "wh_t8TAhPPYrRV2v8Asi9ed3sw",
+  "event_developer_id": "371983-uery-1238-1238971",
+  "event_category": "virtual_account.activity",
+  "event_type": "virtual_account.activity.created",
+  "event_object_id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+  "event_object_status": null,
+  "event_object": {
+    "id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+    "type": "payment_submitted",
+    "amount": "1970.0",
+    "source": {
+      "description": "EXAMPLE TRANSACTION Brown-Beer Arnoldo Schimmel MD 01202024",
+      "sender_name": "Brown-Beer",
+      "payment_rail": "ach_push",
+      "sender_bank_routing_number": "023883013"
+    },
+    "gas_fee": "0.0",
+    "currency": "usdc",
+    "created_at": "2024-02-01T04:31:43.342Z",
+    "deposit_id": "c7fab38f-7b65-42d3-bc8d-a694cd1901c1",
+    "customer_id": "6ed47d9c-03be-420c-8699-369707ca02e9",
+    "subtotal_amount": "1970.0",
+    "virtual_account_id": "22033ca5-a991-476c-ade9-911d10f0ece6",
+    "exchange_fee_amount": "10.0",
+    "developer_fee_amount": "20.0"
+  },
+  "event_object_changes": {
+  },
+  "event_created_at": "2024-02-01T04:32:28.978Z"
+}
+```
+
+For update events, the field event_object_changes will be populated with diffs from the previous webhook event in the event_object:
+
+JSON
+
+```
+{
+  "api_version": "v0",
+  "event_id": "wh_t8trBtrPEqeFYLrQD9Zjog4",
+  "event_category": "virtual_account.activity",
+  "event_type": "virtual_account.activity.updated",
+  "event_object_id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+  "event_object_status": null,
+  "event_object": {
+    "id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+    "type": "payment_submitted",
+    "amount": "1970.0",
+    "source": {
+      "description": "EXAMPLE TRANSACTION Brown-Beer Arnoldo Schimmel MD 01202024",
+      "sender_name": "Brown-Beer",
+      "payment_rail": "ach_push",
+      "sender_bank_routing_number": "023883013"
+    },
+    "gas_fee": "0.0",
+    "currency": "usdc",
+    "created_at": "2024-02-01T04:31:43.342Z",
+    "deposit_id": "c7fab38f-7b65-42d3-bc8d-a694cd1901c1",
+    "customer_id": "6ed47d9c-03be-420c-8699-369707ca02e9",
+    "subtotal_amount": "1970.0",
+    "virtual_account_id": "22033ca5-a991-476c-ade9-911d10f0ece6",
+    "destination_tx_hash": "0xa7de792daa970f89cdb36dbce93026d10942ea24",
+    "exchange_fee_amount": "10.0",
+    "developer_fee_amount": "20.0"
+  },
+  "event_object_changes": {
+    "destination_tx_hash": [ null, "0xa7de792daa970f89cdb36dbce93026d10942ea24" ]
+  },
+  "event_created_at": "2024-02-01T04:34:13.763Z"
+}
+```
+
+# **Event Definition**
+
+As seen from the event samples above, each webhook event contains the following fields:
+
+- `api_version` currently `v0`, the version in use by Bridge APIs;
+- `event_id` a globally unique identifier assigned to this event;
+
+> ## **💡Once an **`event_id`**gets assigned to an event, it remains unchanged. It’s a good candidate to use as an ** `idempotency key`**by the application logic on the receiving end.** 
+
+- `event_category`
+  - `customer`
+  - `kyc_link`
+  - `liquidation_address.drain`
+  - `static_memo.activity`
+  - `transfer`
+  - `virtual_account.activity`
+- `event_type` is in the form of `"<event_category>.<mutation_type>"`
+  - Possible mutation types include:
+    - `created`
+    - `updated`
+    - `updated.status_transitioned` , if the update involves a status transition, for applicable categories only
+    - `deleted`, for applicable categories only
+  - The initial list of supported event types includes:
+    1. For event category `customer`: [[_<u>Customer Definition</u>_](https://apidocs.bridge.xyz/reference/get_customers-customerid)]
+       - `customer.created`
+       - `customer.updated`
+       - `customer.updated.status_transitioned`
+       - `customer.deleted`
+    2. For event category `kyc_link` : [[_<u>KYC Link Definition</u>_](https://apidocs.bridge.xyz/reference/get_kyc-links)]
+       - `kyc_link.created`
+       - `kyc_link.updated`
+       - `kyc_link.updated.status_transitioned`
+    3. For event category `liquidation_address.drain` : [[_<u>Drain Definition</u>_](https://apidocs.bridge.xyz/reference/get_customers-customerid-liquidation-addresses-liquidationaddressid-drains)]
+       - `liquidation_address.drain.created`
+       - `liquidation_address.drain.updated`
+       - `liquidation_address.drain.updated.status_transitioned`
+    4. For event category `static_memo.activity` : [[_<u>Static Memo Activity Definition</u>_](https://apidocs.bridge.xyz/reference/get_customers-customerid-static-memos-staticmemoid-history)]
+       - `static_memo.activity.created`
+       - `static_memo.activity.updated`
+    5. For event category `transfer` : [[_<u>Transfer Definition</u>_](https://apidocs.bridge.xyz/reference/get_transfers-transferid)]
+       - `transfer.created`
+       - `transfer.updated`
+       - `transfer.updated.status_transitioned`
+    6. For event category `virtual_account.activity` : [[_<u>Virtual Account Activity Definition</u>_](https://apidocs.bridge.xyz/reference/get_customers-customerid-virtual-accounts-virtualaccountid-history)]
+       - `virtual_account.activity.created`
+       - `virtual_account.activity.updated`
+- `event_object_id` has a value identical to the `event_object.id` field, duplicated to the top-level for easy access;
+- `event_object_status` is populated only for categories where the notion of status is applicable. It will be populated with a value that matches the event object’s status, though the status names in `event_object`may vary slightly across different categories;
+  - JSON
+
+    ```
+    {
+        "api_version": "v0",
+        "event_id": "wh_tmyqyd9q5nsVJazfux9EiQC",
+        "event_category": "kyc_link",
+        "event_type": "kyc_link.updated.status_transitioned",
+        "event_object_id": "3694522e-6bed-4660-a803-f599b50c7691",
+        "event_object_status": "incomplete",
+        "event_object": {
+            "id": "3694522e-6bed-4660-a803-f599b50c7691",
+            "type": "individual",
+            "email": "danyka+wintheiser@quigley.xyz",
+            "kyc_link": "<KYC link>",
+            "tos_link": "<ToS link>",
+            "full_name": "Danyka Wintheiser",
+            "created_at": "2024-02-09T16:48:11.531Z",
+            "kyc_status": "incomplete",
+            "tos_status": "approved",
+            "customer_id": null,
+            "persona_inquiry_type": "gov_id_db"
+        },
+        "event_object_changes": {
+            "kyc_status": [
+                "not_started",
+                "incomplete"
+            ],
+            "tos_status": [
+                "pending",
+                "approved"
+            ]
+        },
+        "event_created_at": "2024-02-09T17:00:43.709Z"
+    }
+    
+    ```
+  - As highlighted in the example above, event_object.kyc_status is the status field for the kyc_link event category. Please refer to the API definitions of the event categories for a list of possible values.
+- `event_object` serves as the payload of the actual API object, with definitions that are identical to those outlined in the [<u>Bridge API Reference</u>](https://apidocs.bridge.xyz/reference/get_customers);
+  - For the examples mentioned above, their API definitions can be found in the [<u>Virtual Account Activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-virtual-accounts-virtualaccountid-history) and [<u>KYC Link</u>](https://apidocs.bridge.xyz/reference/get_kyc-links) API reference pages.
+- `event_object_changes` will be populated with diffs from the previous webhook event in the `event_object`, as demonstrated in the `virtual_account.activity.updated` and `kyc_link.updated.status_transitioned` examples mentioned above;\
+  It’s a hash in this form:
+
+  ```
+  {
+  	<changed_event_object_attribute_1>: [<previous_value>, <current_value>],
+  	<changed_event_object_attribute_2>: [<previous_value>, <current_value>],
+    ...
+  }
+  
+  ```
+- `event_created_at` represents the event creation time in ISO 8601 format and will remain unchanged.
