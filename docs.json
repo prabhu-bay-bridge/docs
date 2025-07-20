@@ -1,186 +1,186 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Bridge",
-  "colors": {
-    "primary": "#000000",
-    "light": "#F9FAFB",   
-    "dark": "#111111"    
-  },
-  "favicon": "/logo/favicon.ico",
-  "navigation": {
-    "structure": "tabs",
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "guides/getstarted/overview",
-              "guides/getstarted/setup",
-              "guides/getstarted/createcustomer",
-              "guides/getstarted/createpayment",
-              "guides/getstarted/setupwebhooks",
-              "guides/getstarted/setupsandbox"
-            ]
-          },
-          {
-            "group": "Move money with Bridge",
-            "pages": [
-              "guides/movemoney/overview",
-              "guides/movemoney/virtualaccounts",
-              "guides/movemoney/recurring",
-              "guides/movemoney/offramp_liquidation",
-              "guides/movemoney/fiat_to_fiat"
-            ]
-          },
-          {
-            "group": "Integrate custodial wallets",
-            "pages": [
-              "guides/wallets/overview",
-              "guides/wallets/onramp",
-              "guides/wallets/c2c",
-              "guides/wallets/offramp"
-            ]
-          },
-          {
-            "group": "Provision and make card payments",
-            "pages": [
-              "guides/cards/overview",
-              "guides/cards/spend"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Customers",
-        "pages": [
-          "customers/overview",
-          "customers/api",
-          "customers/kyclinks",
-          "customers/add_req",
-          "customers/endorsements",
-          "customers/rejection_reasons"
-        ]
-      },
-      {
-        "tab": "Orchestration",
-        "pages": [
-          "orchestration/overview"
-        ],
-        "groups": [
-          {
-            "group": "Virtual Accounts",
-            "pages": [
-              "orchestration/virtual_account/virtual_account",
-              "orchestration/virtual_account/events",
-              "orchestration/virtual_account/additional_functionality",
-            ]
-          },
-          {
-            "group": "Transfers",
-            "pages": [
-              "orchestration/transfer/transfer",
-              "orchestration/transfer/statictemplates",
-              "orchestration/transfer/states",
-              "orchestration/transfer/advanced",
-              "orchestration/transfer/details",
-              "orchestration/transfer/returns"
-            ]
-          },
-          {
-            "group": "Liquidation Address",
-            "pages": [
-              "orchestration/liquidation_address/liquidation_address",
-              "orchestration/liquidation_address/drains"
-            ]
-          },
-          {
-            "group": "Prefunded Account",
-            "pages": [
-              "orchestration/prefunded_account/prefunded_accounts"
-            ]
-          },
-          {
-            "group": "Static Memo",
-            "pages": [
-              "orchestration/staticmemo/staticmemos"
-            ]
-          }
-        ]
-      },   
-      {
-        "tab": "Wallets",
-        "groups": []
-      },
-      {
-        "tab": "Issuance",
-        "groups": []
-      },
-      {
-        "tab": "Cards",
-        "groups": []
-      },
-      {
-        "tab": "API Concepts",
-        "groups": []
-      },
-      {
-        "tab": "Compliance",
-        "groups": []
-      },
-      {
-        "tab": "Fees",
-        "groups": []
-      },
-      {
-        "tab": "Logistics",
-        "groups": []
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "api-reference/introduction/authentication",
-              "api-reference/introduction/idempotence",
-              "api-reference/introduction/postman"
-            ]
-          },
-          {
-            "group": "Endpoints",
-            "openapi": {
-              "source": "/api-reference/openapi.json",
-              "directory": "api-reference"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "Bridge",
+    "colors": {
+        "primary": "#000000",
+        "light": "#F9FAFB",
+        "dark": "#111111"
+    },
+    "favicon": "/logo/favicon.ico",
+    "navigation": {
+        "structure": "tabs",
+        "tabs": [
+            {
+                "tab": "Guides",
+                "groups": [
+                    {
+                        "group": "Getting started",
+                        "pages": [
+                            "guides/getstarted/overview",
+                            "guides/getstarted/setup",
+                            "guides/getstarted/createcustomer",
+                            "guides/getstarted/createpayment",
+                            "guides/getstarted/setupwebhooks",
+                            "guides/getstarted/setupsandbox"
+                        ]
+                    },
+                    {
+                        "group": "Move money with Bridge",
+                        "pages": [
+                            "guides/movemoney/overview",
+                            "guides/movemoney/virtualaccounts",
+                            "guides/movemoney/recurring",
+                            "guides/movemoney/offramp_liquidation",
+                            "guides/movemoney/fiat_to_fiat"
+                        ]
+                    },
+                    {
+                        "group": "Integrate custodial wallets",
+                        "pages": [
+                            "guides/wallets/overview",
+                            "guides/wallets/onramp",
+                            "guides/wallets/c2c",
+                            "guides/wallets/offramp"
+                        ]
+                    },
+                    {
+                        "group": "Provision and make card payments",
+                        "pages": [
+                            "guides/cards/overview",
+                            "guides/cards/spend"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Customers",
+                "pages": [
+                    "customers/overview",
+                    "customers/api",
+                    "customers/kyclinks",
+                    "customers/add_req",
+                    "customers/endorsements",
+                    "customers/rejection_reasons"
+                ]
+            },
+            {
+                "tab": "Orchestration",
+                "pages": [
+                    "orchestration/overview"
+                ],
+                "groups": [
+                    {
+                        "group": "Virtual Accounts",
+                        "pages": [
+                            "orchestration/virtual_account/virtual_account",
+                            "orchestration/virtual_account/events",
+                            "orchestration/virtual_account/additional_functionality"
+                        ]
+                    },
+                    {
+                        "group": "Transfers",
+                        "pages": [
+                            "orchestration/transfer/transfer",
+                            "orchestration/transfer/statictemplates",
+                            "orchestration/transfer/states",
+                            "orchestration/transfer/advanced",
+                            "orchestration/transfer/details",
+                            "orchestration/transfer/returns"
+                        ]
+                    },
+                    {
+                        "group": "Liquidation Address",
+                        "pages": [
+                            "orchestration/liquidation_address/liquidation_address",
+                            "orchestration/liquidation_address/drains"
+                        ]
+                    },
+                    {
+                        "group": "Prefunded Account",
+                        "pages": [
+                            "orchestration/prefunded_account/prefunded_accounts"
+                        ]
+                    },
+                    {
+                        "group": "Static Memo",
+                        "pages": [
+                            "orchestration/staticmemo/staticmemos"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Wallets",
+                "groups": []
+            },
+            {
+                "tab": "Issuance",
+                "groups": []
+            },
+            {
+                "tab": "Cards",
+                "groups": []
+            },
+            {
+                "tab": "API Concepts",
+                "groups": []
+            },
+            {
+                "tab": "Compliance",
+                "groups": []
+            },
+            {
+                "tab": "Fees",
+                "groups": []
+            },
+            {
+                "tab": "Logistics",
+                "groups": []
+            },
+            {
+                "tab": "API reference",
+                "groups": [
+                    {
+                        "group": "Introduction",
+                        "pages": [
+                            "api-reference/introduction/authentication",
+                            "api-reference/introduction/idempotence",
+                            "api-reference/introduction/postman"
+                        ]
+                    },
+                    {
+                        "group": "Endpoints",
+                        "openapi": {
+                            "source": "/api-reference/openapi.json",
+                            "directory": "api-reference"
+                        }
+                    }
+                ]
             }
-          }
         ]
-      }
-    ]
-  },
-  "logo": {
-    "light": "/logo/bridge_logo.png",
-    "dark": "/logo/bridge_logo.png"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@bridge.xyz"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Bridge Dashboard",
-      "href": "https://dashboard.bridge.xyz/"
+    },
+    "logo": {
+        "light": "/logo/bridge_logo.png",
+        "dark": "/logo/bridge_logo.png"
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Support",
+                "href": "mailto:support@bridge.xyz"
+            }
+        ],
+        "primary": {
+            "type": "button",
+            "label": "Bridge Dashboard",
+            "href": "https://dashboard.bridge.xyz/"
+        }
+    },
+    "footer": {
+        "socials": {
+            "x": "https://x.com/stablecoin",
+            "linkedin": "https://linkedin.com/company/bridge-apis"
+        }
     }
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/stablecoin",
-      "linkedin": "https://linkedin.com/company/bridge-apis"
-    }
-  }
 }
