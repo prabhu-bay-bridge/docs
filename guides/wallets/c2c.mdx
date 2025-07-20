@@ -4,17 +4,17 @@ title: "Send funds from a Bridge wallet to a crypto address"
 
 Bridge wallets are secure, custodial crypto wallets that let you send and receive stablecoins with ease. Once you've provisioned a wallet for your customer or company, you can send funds directly to external blockchain addresses using the transfers API.
 
-:exclamation:You must use Bridge’s orchestration APIs to move funds. Do not attempt to send directly from the wallet address.
+<Note>
+  You must use Bridge’s orchestration APIs to move funds. **Do not attempt to send directly** from the wallet address.
+</Note>
 
 ![](https://files.readme.io/bcd6a3bfe25913355630174c61719239120611cd39ded4ffb188eaecd2a7bb07-image.png)
 
 ---
 
-# Step 1: Create a Bridge wallet (if you haven’t already)
+# Step 1: Create a Bridge wallet
 
-**Request**
-
-```curl
+```curl Request
 curl --request POST \
   --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
   --header 'Api-Key: <API Key>' \
@@ -25,9 +25,7 @@ curl --request POST \
   }'
 ```
 
-**Response**
-
-```json
+```json Response
 {
   "id": "wallet_123",
   "chain": "solana",
@@ -43,9 +41,7 @@ Note the `id` returned — this is your `bridge_wallet_id`.
 
 Use the [Transfers](ref:transfers) API with `bridge_wallet` as the source.
 
-**Request**
-
-```curl
+```curl Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   --header 'Api-Key: <API Key>' \
   --header 'Idempotency-Key: <Unique Key>' \
@@ -67,9 +63,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   }'
 ```
 
-**Response**
-
-```json
+```json Response
 {
   "id": "transfer_abc",
   "amount": "10.0",
@@ -93,7 +87,7 @@ This will initiate a crypto transfer from your Bridge wallet to the specified bl
 
 Use the Transfer ID returned in the response to monitor progress via the [Get a transfer](ref:get_transfers-transferid) endpoint or by listening to webhooks -- learn more at [Setting up webhooks](doc:setting-up-webhooks).
 
-```curl
+```curl Request
 curl --request GET \
   --url https://api.bridge.xyz/v0/transfers/<transfer_id> \
   --header 'Api-Key: <API Key>'
