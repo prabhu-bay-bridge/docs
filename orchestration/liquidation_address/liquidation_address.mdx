@@ -4,21 +4,11 @@ title: "Liquidation Address"
 
 # **Introduction**
 
-A “Liquidation Address” is a permanent payment route which ties a blockchain address to either a bank account or another blockchain address. When a customer sends crypto, such as USDC, to their liquidation address, the process differs based on the chosen payment rail. If the destination payment rail is `wire`, `sepa` or any of our supported chains, the funds are promptly sent upon receipt. However, for `ACH` payments, the transaction is queued and processed as part of our daily ACH batch submission, which occurs at 1:00 pm EST/EDT.
+A **Liquidation Address** is a permanent payment route which ties a blockchain address to either a fiat or blockchain address. When a customer sends crypto, such as USDC, to their liquidation address, Bridge will automatically send funds to the destination.
 
-Read the [<u>Developer Fees</u>](https://apidocs.bridge.xyz/docs/adding-your-fees) section on how to set fees.
+# [**Point a liquidation address**](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses)** to a fiat destination**
 
-Please see the [<u>Stablecoins and Blockchains</u>](https://apidocs.bridge.xyz/docs/blockchains) page for what is supported, as well as any asset-specific requirements that may apply.
-
-# **Examples**
-
-## [**<u>Create a Liquidation Address</u>**](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses)** with a fiat destination**
-
-### **Request**
-
-Shell
-
-```
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <Api-Key>' \
@@ -33,13 +23,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/l
 }'
 ```
 
-This `destination_wire_message` has very strict rules around its format. You can have at most 3 lines (separated by `"\n"`), each line with a max length of 35 chars. If this standard is not met, the request will be rejected
-
-### **Response**
-
-JSON
-
-```
+```json Response expandable
 {
   "id": "liq_alice_123",
   "chain": "ethereum",
@@ -54,118 +38,11 @@ JSON
 }
 ```
 
-## [**<u>Create a Liquidation Address</u>**](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses)** with a **`SEPA`**destination** 
+The response object contains the blockchain `address` of the liquidation address. Now anytime your customer receives funds on this address, Bridge will automatically convert it to USD and send a wire payment with the wire message.
 
-### **Request**
+# **Create a liquidation address with a crypto destination**
 
-Shell
-
-```
-curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <Api-Key>' \
---header 'Idempotency-Key: <Unique Idempotency Key>' \
---data-raw '{
-  "chain": "ethereum",
-  "currency": "usdc",
-  "external_account_id": "ea_alice_sepa_bank"
-  "destination_sepa_reference": "alice-sepa-123"
-  "destination_payment_rail": "sepa",
-  "destination_currency": "eur"
-}'
-```
-
-This `destination_sepa_reference` has very strict rules around its format. If specified, it must be between `6` and `140` characters. The allowed characters are `a-z`, `A-Z`, `0-9`, spaces, ampersand (`&`), hyphen (`-`), full stop (`.`), and solidus (`/`). If this standard is not met, the request will be rejected
-
-### **Response**
-
-JSON
-
-```
-{
-  "id": "liq_alice_123",
-  "chain": "ethereum",
-  "external_account_id": "ea_alice_sepa_bank",
-  "currency": "usdc",
-  "address": "0xc0ffee",
-  "destination_sepa_reference": "alice-sepa-123",
-  "destination_payment_rail": "sepa",
-  "destination_currency": "eur",
-  "created_at": "2023-11-22T21:31:30.515Z",
-  "updated_at": "2023-11-22T21:31:30.515Z"
-}
-```
-
-For memo-based blockchains, such as Stellar, a `blockchain_memo` will be provided as part of the response. This must be included in the crypto deposit memo. When you forget to include the memo, the liquidation will experience delays.
-
-JSON
-
-```
-{
-  "id": "liq_alice_123",
-  "chain": "stellar",
-  "external_account_id": "ea_alice_bofa",
-  "currency": "usdc",
-  "address": "GDUY7JBRIDGESTELLARLIQUIDATIONADDRESS",
-  "blockchain_memo": "12345",
-  "created_at": "2023-11-22T21:31:30.515Z",
-  "updated_at": "2023-11-22T21:31:30.515Z"
-}
-```
-
-More details [<u>here</u>](https://apidocs.bridge.xyz/docs/on-ramp)
-
-## [**<u>Create a Liquidation Address</u>**](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses)** with a custom developer fee**
-
-### **Request**
-
-Shell
-
-```
-curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <Api-Key>' \
---header 'Idempotency-Key: <Unique Idempotency Key>' \
---data-raw '{
-  "chain": "ethereum",
-  "currency": "usdc",
-  "external_account_id": "ea_alice_bofa"
-  "destination_wire_message": "alice_wire_123"
-  "destination_payment_rail": "wire",
-  "destination_currency": "usd",
-  "custom_developer_fee_percent": "10.2",
-}'
-```
-
-[<u>Setting a custom developer fee</u>](https://apidocs.bridge.xyz/docs/developer-fees#custom-developer-fee) overrides the [<u>default Liquidation Address developer fee</u>](https://apidocs.bridge.xyz/docs/developer-fees#default-developer-fee-percent) for a given Liquidation Address upon [<u>creation</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses).
-
-### **Response**
-
-JSON
-
-```
-{
-  "id": "liq_alice_123",
-  "chain": "ethereum",
-  "external_account_id": "ea_alice_bofa",
-  "currency": "usdc",
-  "address": "0xc0ffee",
-  "destination_wire_messaage": "alice_wire_123",
-  "destination_payment_rail": "wire",
-  "destination_currency": "usd",
-  "custom_developer_fee_percent": "10.2",
-  "created_at": "2023-11-22T21:31:30.515Z",
-  "updated_at": "2023-11-22T21:31:30.515Z"
-}
-```
-
-## [**<u>Create a Liquidation Address</u>**](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses)** with a crypto destination**
-
-### **Request**
-
-Shell
-
-```
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <Api-Key>' \
@@ -179,11 +56,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/l
 }'
 ```
 
-#### **Response**
-
-JSON
-
-```
+```json Response expandable
 {
   "id": "liq_alice_456",
   "chain": "ethereum",
@@ -197,53 +70,49 @@ JSON
 }
 ```
 
-## [**<u>Fetch an existing Liquidation Address</u>**](https://apidocs.bridge.xyz/reference/get_customers-customerid-liquidation-addresses-liquidationaddressid)
+## Memo based blockchains
 
-### **Request**
+<Warning>
+  Don't forget the blockchain memo.
+</Warning>
 
-Shell
+For memo-based blockchains, such as Stellar, a `blockchain_memo` will be provided as part of the response. This must be included in the crypto deposit memo.
 
-```
-curl --request GET \
-     --url 'https://api.bridge.xyz/v0/customers/cust_123/liquidation_addresses/la_123' \
-     --header 'Api-Key: <Api-Key>' \
-     --header 'accept: application/json'
-```
-
-### **Response**
-
-JSON
-
-```
+```json Response expandable
 {
-  "id": "la_123",
-  "chain": "ethereum",
-  "external_account_id": "ext_123",
-  "address": "0x4d0280da2f2fDA5103914bCc5aad114743152A9c",
+  "id": "liq_alice_123",
+  "chain": "stellar",
+  "external_account_id": "ea_alice_bofa",
   "currency": "usdc",
+  "address": "GDUY7JBRIDGESTELLARLIQUIDATIONADDRESS",
+  "blockchain_memo": "12345",
   "created_at": "2023-11-22T21:31:30.515Z",
   "updated_at": "2023-11-22T21:31:30.515Z"
 }
 ```
 
-# **Minimum Amounts**
+# Create a liquidation address with a custom developer fee
 
-The following destination currencies require a minimum amount of funds to complete liquidation:
+[<u>Setting a custom developer fee</u>](https://apidocs.bridge.xyz/docs/developer-fees#custom-developer-fee) overrides the [<u>default Liquidation Address developer fee</u>](https://apidocs.bridge.xyz/docs/developer-fees#default-developer-fee-percent) for a given Liquidation Address upon [<u>creation</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses). [todo update links]
 
-- USDT: minimum of \$20 USD
-- All others: \$1
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "chain": "ethereum",
+  "currency": "usdc",
+  "external_account_id": "ea_alice_bofa"
+  "destination_wire_message": "alice_wire_123"
+  "destination_payment_rail": "wire",
+  "destination_currency": "usd",
+  "custom_developer_fee_percent": "10.2",
+}'
+```
 
-Any deposits below this amount will not be processed.
+---
 
-# **Transfers vs Liquidation Addresses**
+# **Static Template Transfers vs Liquidation Addresses**
 
-An off-ramp transfer does mostly the same thing as a liquidation address: they both take in crypto and output fiat. However, there are a few tradeoffs to consider when deciding between the two products
-
-- A transfer requires exact matching on the `from_address`
-  - When a deposit is made to kick off a transfer, the sender of that deposit must be known before creating the transfer within Bridge.
-  - This can be an issue when your customer is sending from a centralized exchange like Coinbase or Binance, where the sending address is not known ahead of time.
-  - In these situations, a liquidation address is better, as the sender doesn't have to be specified in order for Bridge to orchestrate your customer's funds.
-- A transfer requires exact matching on the `amount`
-  - When a deposit is made to kick off a transfer, the amount of that deposit must be known before creating the transfer within Bridge. This amount needs to be exact.
-  - Similar to the `from_address` issue, this could potentially be a problem from certain exchanges or systems that debit gas from the output amount.
-  - In these situations, a liquidation address is also recommended.
+Static template transfers are similar to liquidation address in that they are both saved payment routes. The key difference is that a liquidation address is a permanent blockchain address, whereas static template transfer rely on the deposit message to route funds. For customers, it's more intuitive to use a unique blockchain address.
