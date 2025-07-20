@@ -1,3 +1,13 @@
 ---
 title: "Customers API"
 ---
+
+The Customers API enables you to directly pass the KYC information to Bridge. This endpoint enables you to control the UI independently and handle all of the back and forth with customers, regardless of whether they are individuals or businesses.
+
+To determine whether a customer is able to use the platform, Bridge monitors the customer's `kyc_status` and the `status` of each requested [<u>endorsement</u>](https://apidocs.bridge.xyz/docs/endorsements), e.g.`base` endorsement for access to US rails.
+
+If Bridge is able to validate the information, the customer will receive KYC approval and be granted the requested endorsement(s) to use Bridge's platform.
+
+If certain information was invalid or missing, the customer object will return the appropriate KYC status, endorsement status, and [<u>endorsement requirements</u>](https://apidocs.bridge.xyz/docs/endorsements#endorsement-requirements).
+
+After obtaining a `signed_agreement_id` (details here: [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service)), you can now use the [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-1) to create customers as follows.
