@@ -4,8 +4,8 @@
     "name": "Bridge",
     "colors": {
         "primary": "#000000",
-        "light": "#F9FAFB",
-        "dark": "#111111"
+        "light": "#07C983",
+        "dark": "#15803D"
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
