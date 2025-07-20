@@ -135,7 +135,26 @@
                     "cards/advanced",
                     "cards/webhooks"
                 ],
-                "groups": []
+                "groups": [
+                    {
+                        "group": "Sandbox",
+                        "pages": [
+                            "cards/sandbox/sandbox",
+                            "cards/sandbox/testing"
+                        ]
+                    },
+                    {
+                        "group": "Additional functionality",
+                        "pages": [
+                            "cards/sandbox/freezing",
+                            "cards/sandbox/statements",
+                            "cards/sandbox/pins",
+                            "cards/sandbox/customizing",
+                            "cards/sandbox/marketing",
+                            "cards/sandbox/details"
+                        ]
+                    }
+                ]
             },
             {
                 "tab": "API Concepts",
