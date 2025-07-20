@@ -2,7 +2,7 @@
 title: "KYC Links for New Customers"
 ---
 
-An alternative to using the [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-api) to KYC/B Customers (both individuals and businesses) is to use [<u>KYC Links</u>](https://apidocs.bridge.xyz/reference/post_kyc-links). KYC Links support individual and business customers from all over the world (US \+ international).
+An alternative to using the [<u>Customers API</u>](/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
 
 KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the [<u>Customer</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid) is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
 
@@ -113,7 +113,7 @@ This endpoint will respond with:
 
 This will result in the customer being redirected to [<u>https://bridge.xyz/example</u>](https://bridge.xyz/example) at the end of the KYC flow.
 
-### **Embedding as an iframe**
+# **Embedding as an iframe**
 
 You can implement a `kyc_link` by using an iframe, which can then be embedded in a custom modal or page.
 
@@ -134,11 +134,95 @@ For help with troubleshooting common issues, please refer to this [<u>article</u
 />
 ```
 
-\
+# \
 **Turnaround response time**
 
 The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
 
-### **KYC Status Transitions**
+# **KYC Status Transitions**
 
 All KYC flows for individual customers begin with customers in a `not_started` status. Once the customer has taken any action to begin the KYC process they move into an `incomplete` status. Based on the information provided a customer can then move to `approved`, `rejected`, or `under_review`.
+
+![00f1a7b-Screenshot_2024-02-02_at_12.42.46_PM.png](/images/00f1a7b-Screenshot_2024-02-02_at_12.42.46_PM.png)
+
+# **KYB Status Transitions**
+
+KYB flows are similar to individual customers, with the additional step of collecting the KYC information for any "ultimate beneficial owners". Every business that goes through our KYB process provides information about the business, information about UBOs, goes through a manual review before being approved or rejected.
+
+![7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png](/images/7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png)
+
+### **Sad Paths**
+
+While KYC/KYB generally works quickly, there are edge cases that are important to account for. Here are a few examples of how the KYC/KYB statuses of a customer could progress:
+
+`not_started` -\> `active`
+
+- This is our happy path. The customer information was submitted, and quickly passed via automated checks within seconds.
+
+`not_started` -\> `under_review` -\> `active`\
+`not_started` -\> `under_review` -\> `rejected`\
+`not_started` -\> `rejected`
+
+#### **Under Review**
+
+In this scenario, the customer starts off `not_started`, but after verifying the initial set of data (name, address, TIN, birth date) there was something off about the customer information. In this scenario, fetching the customer via `GET /customers/:id` would result in something like this:
+
+```json
+{
+  "id": "cust_john_uuid",
+  // ...
+  "status": "under_review",
+  "requirements_due": [
+    "id_verification"
+  ],
+  "created_at": "Thu, 04 May 2023 15:40:40.832827000 UTC +00:00",
+  "updated_at": "Thu, 04 May 2023 15:40:40.832827000 UTC +00:00"
+}
+```
+
+You can see that the customer's KYC status is in `under_review` and that `id_verification` has become an immediate requirement now. That means that id verification is necessary before Bridge can approve this customer.
+
+After submitting your customer for id verification (government photo id like a driver's license or passport), one of two things will happen:
+
+- Bridge will approve your customer, and the KYC status on the customer will move to `active`
+- Bridge will reject your customer, and the KYC status on the customer will move to `rejected`.
+
+#### **Immediate Rejection**
+
+Sometimes, your customer could immediately move from `not_started` to `rejected` and skip `under_review` entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have sent up for your customer (birth date, address, name).
+
+In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer via `[GET /customers/:id](https://apidocs.bridge.xyz/reference/get_customers-customerid)` would result in something like this:
+
+```json
+{
+  "id": "kyc_link_123",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "johndoe@johndoe.com",
+  "type": "individual",
+  "kyc_link": "www.kyclink.com/blah",
+  "tos_link": "www.toslink.com/blah",
+  "kyc_status": "rejected",
+  "rejection_reasons": [
+    {
+      "developer_reason": "Missing required ID details.",
+      "reason": "Cannot validate ID -- upload a clear photo of the full ID",
+      "created_at": "2020-01-02T00:00:00.000Z"
+    },
+    {
+      "developer_reason": "Blurry face portrait.",
+      "reason": "Cannot validate ID -- upload a clear photo of the full ID",
+      "created_at": "2020-01-02T00:00:00.000Z"
+    }
+  ],
+  "tos_status": "approved",
+  "customer_id": "cust_123"
+}
+```
+
+You can see that the customer's KYC status is `rejected` and that there are two fields shared with rejection reasons:
+
+- `developer_reason` is meant to be used by developers for **internal purposes only.** This field can contain sensitive information intended for only the developer and is provided to help with troubleshooting potential issues or protecting against potential abuse.
+- `reason` can be shared by a developer directly with their customers.
+
+For reference, see our page on [<u>Rejection Reasons</u>](/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
