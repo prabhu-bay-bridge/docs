@@ -119,7 +119,12 @@
             },
             {
                 "tab": "Issuance",
-                "groups": []
+                "pages": [
+                    "issuance/overview",
+                    "issuance/usdb",
+                    "issuance/custom",
+                    "issuance/faq"
+                ]
             },
             {
                 "tab": "Cards",
