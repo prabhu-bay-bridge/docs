@@ -1,4 +1,297 @@
 ---
-description: "Fully customized stablecoin"
-title: "Custom Stablecoin ("xUSD")"
+title: "Custom Stablecoin "
+description: "Fully Customized Stablecoin"
 ---
+
+Custom stablecoins (xUSD) are stablecoins issued and managed by Bridge. xUSD is always backed 1:1 by the equivalent value of US dollars. xUSD can be exchanged to and from most stablecoins or fiat using Bridge Orchestration APIs (transfers, liquidation addresses and virtual accounts).
+
+When you or your end users want to swap in and out of xUSD we just use our orchestration API endpoints. We support all the same routes as [<u>Transfers</u>](https://apidocs.bridge.xyz/docs/transfers-1) [<u>Liquidation Addresses</u>](https://apidocs.bridge.xyz/docs/liquidation-address) and [<u>Virtual Accounts</u>](https://apidocs.bridge.xyz/docs/virtual-accounts).
+
+# **Configuring xUSD**
+
+When setting up a custom stablecoin there are a number of steps to complete in the onboarding process.
+
+- **Chain**: Which chain you wish to deploy your custom stablecoin. Right now we support xUSD on Solana and all all Bridge supported EVM chains.
+- **Token Name**: Name of the token.
+- **Token ID:** Ticker symbol of the token.
+- **Token Logo:** What image will show up in your app and tracking websites (32x32 pixels)
+- **Reserves Strategy:** What percentage of your assets you want to hold in cash v.s. Investments (money market funds). We typically ~20% cash to start depending on the nature of your business.
+- **Refundable Deposits**: The dollar value of xUSD you want to hold in “inventory” so that your end users will be able to swap quickly (without additional minting/burning).
+
+It usually takes about 2-4 weeks to get completely set up, due to external account opening dependencies.
+
+# **Cash Reserves and Refundable Deposits**
+
+Cash reserves allow for “fast offramps” because we have the liquidity on hand for users to receive fiat or USDC/T quickly. If there is not enough cash on hand, we need to sell assets from our reserves account which typically settles T\+1.
+
+Refundable deposits allow for “fast onramps” because we will have xUSD tokens on hand for users to swap to very quickly. If there are not enough tokens on hand, we will need to mint them which typically happens on a T\+1 basis via our daily minting ceremony.
+
+Bridge can only guarantee real time swaps during banking hours.
+
+# **Interacting with xUSD**
+
+## **Swapping to xUSD**
+
+To swap from fiat or other stablecoins to xUSD you can issue an API call that looks like this:
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "destination": {
+    "payment_rail": "solana",
+    "currency": "xusd",
+    "to_address": "0xtodeadbeef",
+  },
+}'
+```
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "destination": {
+    "payment_rail": "solana",
+    "currency": "xusd",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+## **Swapping from xUSD to Fiat**
+
+If you want to convert `xUSD` to fiat, you can issue an API call like this:
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "xUSD",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6",
+  },
+}'
+```
+
+#### **Response**
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ethereum",
+    "currency": "xusd",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "to_address": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "source_deposit_instructions": {
+    "payment_rail": "solana",
+    "amount": "10.0",
+    "currency": "xUSD",
+    "from_address": "0xfromdeadbeef",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+## **Swapping from xUSD to other stablecoins**
+
+If you want to convert `xUSD` to other stablecoins, like `USDC`, you can issue an API call like this:
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "xUSD",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xtodeadbeef",
+  },
+}'
+```
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "xUSD",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xtodeadbeef"
+  },
+  "source_deposit_instructions": {
+    "payment_rail": "ethereum",
+    "amount": "10.0",
+    "currency": "xusd",
+    "from_address": "0xfromdeadbeef",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+# **Reporting and Transparency**
+
+We provide the following types of reports:
+
+- **Real time**: API endpoints that show:
+  - total circulating supply of xUSD and
+  - underlying reserve assets that back xUSD
+  - token inventory available for swapping
+- **Monthly**: Summary of transaction activity, balances and earnings delivered by the 5th day of the month.
+- **Quarterly**: Attestations of our tokens and rewards by an independent third party.
+
+### **Circulating Token Supply**
+
+The total circulating supply of xUSD.
+
+```bash Request
+curl --request GET 'https://api.bridge.xyz/v0/transparency/xUSD/supply' \ 
+     --header 'Content-Type: application/json' \ 
+     --header 'Api-Key: <your api key>
+```
+
+```json Response
+"supply": [
+    {
+      "chain": "solana",
+      "currency": "xUSD",
+      "amount": "2.0"
+    }]
+}
+```
+
+### **Reserve Assets**
+
+The reserve asset (mix of cash and treasuries) that back xUSD.
+
+```bash Request
+curl --request GET 'https://api.bridge.xyz/v0/transparency/xUSD/reserves' \     
+     --header 'Content-Type: application/json' \ 
+     --header 'Api-Key: <your api key>'
+```
+
+```json Response
+{
+  "accounts": [
+    {
+      "asset_class": "cash",
+      "currency": "usd",
+      "amount": "1.0"
+    },
+    {
+      "asset_class": "managed_money_market",
+      "currency": "usd",
+      "amount": "1.0"
+    }
+  ]
+}
+```
+
+### **Token Inventory**
+
+The available inventory balance of xUSD tokens for orchestration.
+
+```bash Request
+curl --request GET 'https://api.bridge.xyz/v0/transparency/:symbol/inventory' \     
+     --header 'Content-Type: application/json' \ 
+     --header 'Api-Key: <your api key>'
+```
+
+```json Response
+{
+  "inventory": [
+    {
+      "chain": "solana",
+      "currency": {
+        "name": "xUSD",
+        "address": "0xdeadbeef"
+      },
+      "amount": "$5.00 USD"
+    }
+  ]
+}
+```
+
+If you would like to set up a custom stablecoin reach out to [<u>sales@bridge.xyz</u>](mailto:sales@bridge.xyz)[<u>.</u>](mailto:sales@bridge.xyz.)
