@@ -2,17 +2,21 @@
 title: "Static template (recurring transfers)"
 ---
 
-The static template feature allows the creation of a Transfer template through the API. The response includes standing deposit instructions that can be used multiple times to send funds to the configured destination. The source deposit instructions will remain the same indefinitely including the source memo / wire message / SEPA reference.
+The **static template feature** allows the creation of a Transfer template through the API. The response includes standing deposit instructions that can be used multiple times to send funds to the configured destination. This is useful for making recurring transfers payments.
 
-Every time that funds match the template, Bridge will create a new Transfer record in the API. The id of the template will never change. Transfer instances created from that template will each have unique ids.
+**How it works:** the source deposit instructions will be preserved indefinitely so your customers can continue to use the same deposit message (i.e. memo, reference, etc.) to make payments.
 
-\*\*Note: \*\*Providing an amount is optional but allowed when creating a Static Template. If no amount is provided, the Transfer will automatically have the `flexible_amount` feature enabled as well.
+**Every time that funds match the template**, Bridge will create a new Transfer record in the API. The id of the template will never change. Transfer instances created from that template will each have unique ids.
 
-### **Request**
+<Tip>
+  **Providing an amount is optional **but allowed when creating a Static Template. If no amount is provided, the Transfer will automatically have the `flexible_amount` feature enabled as well.
+</Tip>
 
-Shell
+# **Creating a static template **
 
-```
+Simply add set `static_template` to `true`.
+
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -33,13 +37,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-### **Response**
-
-JSON
-
-```
+```json Response expandable
 {
-  "id": "transfer_template_123",
+  "id": "transfer_template_123", // static template id
   "state": "awaiting_funds",
   "on_behalf_of": "cust_alice",
   "source": {
@@ -72,25 +72,17 @@ JSON
 
 This template will remain in the `awaiting_funds` state unless canceled. Each time Bridge receives funds and matches them to the template, Bridge will expose a new Transfer instance based on the templated configuration.
 
-### **Fetching Transfers after funds received**
-
-**Request**
+# **Fetching Transfers after funds received**
 
 You can query for transfer instances created from the static template using the [<u>Get all transfers</u>](https://apidocs.bridge.xyz/reference/get_transfers) endpoint.
 
-cURL
-
-```
+```bash filename
 curl --request GET \
   --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
   --header 'Api-Key: <API Key>'
 ```
 
-**Response**
-
-JSON
-
-```
+```json Response expandable
 {
   "count": 2,
   "data": [
@@ -169,13 +161,13 @@ JSON
 }
 ```
 
-### **Template Transfers in the API**
+# **Template Transfers in the API**
 
 - The initial template you create will maintain the same id. Use this ID to interact with the Template through our API. Its state will remain `awaiting_source_deposit` as long as it is active. `static_template` feature field will always be true for Template Transfers.
 - Each time we receive funds, we will create a new Transfer. We will send webhooks when the new Transfer is created and any time we update information about each Transfer created from the template. For instances of the template, the `static_template` Transfer feature will not be present in the API response.
 - You can use the [<u>Update Transfer</u>](https://apidocs.bridge.xyz/reference/put_transfers-transferid) endpoint to make changes to the template. This will not change any existing instances of that template, but funds received after the changes will be processed according to the updated template instructions.
 - You can use the `template_id` query parameter to [<u>List All Transfer instances</u>](https://apidocs.bridge.xyz/reference/get_transfers) created from this template.
 
-## **Static Template vs Virtual Accounts**
+# **Static Template vs Virtual Accounts**
 
 Similar to virtual accounts, static templates let you create a reusable set of instructions to let your customers onramp by depositing fiat. However, virtual accounts offer more flexibility and are easier for your customers to use since the fiat addresses are unique to each customer. Static transfer addresses are shared and onramps will require your customer to submit a deposit message.

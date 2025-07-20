@@ -2,15 +2,13 @@
 title: "Returns"
 ---
 
-# **Returning Funds via ACH, Wire, and SEPA**
+# **Returning fiat deposits (ACH, Wire, and SEPA)**
 
-If your customer previously onramped via ACH, Wire, or SEPA, and you would like to return those funds, you can do so by creating a new transfer via the Bridge API. This flow is supported only for returning fiat deposits and is typically used in cases of recalls, refunds, or rejected user activity. Using this API, you can return fiat deposits across any orchestration product, including Transfers and Virtual Accounts.
+If your customer previously onramped via **ACH, Wire, or SEPA, and you would like to return** those funds, you can do so by creating a new transfer via the Bridge API. This flow is supported only for **returning fiat deposits** and is typically used in cases of recalls, refunds, or rejected user activity. Using this API, you can return fiat deposits **across any orchestration product**, including Transfers and Virtual Accounts.
 
-## **Example: Return funds using a crypto source**
+**Example: Return funds using a crypto source**
 
-Shell
-
-```
+```bash
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   --header 'Api-Key: <API Key>' \
   --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -31,12 +29,12 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-### **How it Works**
+## **How it Works**
 
 - Bridge will return a transfer object with crypto funding instructions.
 - After you send the exact amount of crypto to the provided address, Bridge will initiate a return of fiat funds back to the original sender.
 
-### **Validations**
+## **Validations**
 
 When calling this endpoint, Bridge enforces the following rules:
 
@@ -50,13 +48,13 @@ When calling this endpoint, Bridge enforces the following rules:
 
 ## **Recommended to use a Bridge wallet to fund returns**
 
-> ## **💡We recommend using a Bridge wallet for returns.**
->
-> For automatically returning deposits, we recommend that you use a Bridge wallet as your funding source. You can fund the Bridge wallet as needed. When you're ready to fund a return, you can use the Bridge wallet as the transfer source
+<Tip>
+  **We recommend using a Bridge wallet for returns.**
+</Tip>
 
-Shell
+For automatically returning deposits, we recommend that you use a Bridge wallet as your funding source. You can fund the Bridge wallet as needed. When you're ready to fund a return, you can use the Bridge wallet as the transfer source
 
-```
+```bash Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   --header 'Api-Key: <API Key>' \
   --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -84,3 +82,78 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 - Lets you pre-fund once and initiate returns programmatically
 
 You can use your own wallet or the wallet belonging to your customer to fund the return.
+
+# **Returning crypto deposits**
+
+## **⚠️ Set a Crypto Return Policy**
+
+If you're creating transactions that involve crypto deposits, it's critical to configure a **crypto return policy.** Without one, Bridge may be unable to safely return funds in the event of a failed transaction or refund — potentially resulting in lost customer funds.
+
+## **Why Is This Important?**
+
+Unlike fiat payments, crypto transactions are irreversible. If a crypto deposit fails, Bridge needs to know where to return the funds.
+
+You can configure one of two return strategies:
+
+- `refund_to_sender` — risky, not recommended.
+- `static_address` — a known, developer-controlled wallet.
+
+> ❗**Returning funds to the sender is not safe and not the default behavior.**
+>
+> Bridge will not do this unless explicitly configured. Most exchanges use omnibus wallets that serve many users. Returning funds to an exchange wallet often leads to fund loss or lengthy recovery procedures. Stellar and Tron require memos to attribute funds to users — and without a correct memo, funds may be permanently untraceable.
+
+## **✅ Recommended: Use a Static Return Address**
+
+We strongly recommend configuring a Bridge wallet or a developer-controlled wallet as the designated return address.
+
+```json Example
+{
+  "crypto_return_policy": {
+    "strategy": "static_address",
+    "return_address": "0xYourWalletAddressHere",
+    "payment_rail": "ethereum",
+    "currency": "usdc"
+  }
+}
+```
+
+- `strategy`: Set to static_address.
+- `return_address`: A wallet you own and control.
+- `payment_rail`: The blockchain the address belongs to (e.g., ethereum, solana).
+- `currency`: The expected refund asset.
+
+## **Limitations and Edge Cases**
+
+### **One Return Address per Currency and Chain**
+
+When using the static_address strategy, you can define only **one return address per currency and chain combination.**
+
+- For example, if you've configured a static_address for USDC on Ethereum, **all USDC deposits on Ethereum will be refunded to that address.**
+- If Bridge cannot find an exact match for the currency and chain (e.g., USDC on Base), we will fall back to a **compatible address for the same currency on a different chain.**
+
+So if you’ve only set a return address for **USDC × Ethereum**, then **USDC × Base** deposits will also be returned to the **Ethereum address.**
+
+> ⚠️ This fallback behavior is best-effort and may not work in all cases — especially if the recipient wallet isn’t cross-chain compatible. When in doubt, explicitly define return addresses for each chain-currency pair you intend to support.
+
+### **Unsupported Chains for Returns**
+
+Some chains are supported for **deposits** but not for **refunds**.
+
+| **Chain** | **Limitation**                                                                                                           |
+| :-------- | :----------------------------------------------------------------------------------------------------------------------- |
+| Tron      | We can receive USDT, but cannot return funds via Tron.                                                                   |
+| Stellar   | We cannot include memos when refunding. If the destination wallet doesn’t auto-credit without a memo, funds may be lost. |
+
+**Recommendations:**
+
+- Use Ethereum as the refund chain for USDT.
+- Avoid using Stellar unless your wallet provider supports auto-crediting (e.g., Airtm has confirmed this works for them).
+
+### **Daisy-Chained Transfers**
+
+Some developers break transfers into multi-step flows (e.g., `USD` → `USDC` → `EUR`):
+
+- If the final step fails (e.g., SEPA payout), the funds may be refunded to the wrong wallet, such as an internal hot wallet from a previous step.
+- This may result in stuck funds that are not attributable to an end-user.
+
+**Recommendation:** Use Bridge wallets for all intermediate steps and refund paths to ensure full traceability.

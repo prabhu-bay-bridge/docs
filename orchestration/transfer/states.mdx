@@ -4,17 +4,21 @@ title: "Transfer States"
 
 The transfer status refers to the current state of a transfer. There are several possible states that a transfer can be in, including:
 
-- `awaiting_funds` - Bridge is waiting to receive funds from the customer before it can start to process the transfer. This state only exists when Bridge is awaiting funds from the customer (ex: crypto deposits, wires, ACH push).
-- `in_review` - This is a temporary state that is rarely triggered. If it does occur, it usually resolves automatically within seconds. However, if we are unable to confirm the transaction information by the end of the 24-hour period, we will reach out to the developer with the next steps.
-- `funds_received` - This is an acknowledgment that Bridge has received your funds and is in the process of moving funds on your customer's behalf.
-- `payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. Depending on the payment rail, this can take anywhere from minutes (Crypto) to hours (Wires) to days (ACH push)
-- `payment_processed` - The transfer has been completed. The funds have been sent to your specified destination.
-- `undeliverable` - Bridge was unable to send the funds to the specified destination. Some examples of this case are an invalid routing number/account number or attempting to send an asset not supported by the destination.
-- `returned` - Bridge has sent the payment, but received notification that it wasn't successful. The funds have been returned to Bridge, and the refund to the sender is in process.
-- `refunded` - The funds for this transfer have been sent back to the original sender.
-- `canceled` - The transfer has been canceled. (Transfers can only be canceled when in the `awaiting_funds` state).
-- `error` - There was a problem preventing Bridge from processing this transfer. This may require manual intervention to resolve. Please reach out to Bridge if you haven't already been contacted about this transfer.
+| **Status**          | **Description**                                                                                                                                                   |
+| :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `awaiting_funds`    | Bridge is waiting to receive funds from the customer before processing the transfer. This applies to incoming crypto deposits, wires, or ACH pushes.              |
+| `in_review`         | A rare, temporary state triggered when transfer data needs further confirmation. Typically resolves in seconds; otherwise, Bridge will reach out within 24 hours. |
+| `funds_received`    | Bridge has received the funds and is preparing to move them on the customer’s behalf.                                                                             |
+| `payment_submitted` | Bridge has initiated the payment and is awaiting confirmation. Time to completion depends on the payment rail: minutes (Crypto), hours (Wires), or days (ACH).    |
+| `payment_processed` | The transfer is complete and funds have been successfully delivered to the destination.                                                                           |
+| `undeliverable`     | Bridge was unable to deliver funds due to an issue like an invalid account or unsupported asset at the destination.                                               |
+| `returned`          | The payment was sent but failed. Funds have returned to Bridge and a refund to the sender is underway.                                                            |
+| `refunded`          | The transfer was refunded back to the original sender.                                                                                                            |
+| `canceled`          | The transfer was canceled. This can only happen from the `awaiting_funds` state via the DELETE `/v0/transfers/{transferID}` endpoint.                             |
+| `error`             | A problem occurred that blocked processing. This typically requires manual review or developer action.                                                            |
 
 Please note that a transfer will always progress from `awaiting_funds` → `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
 
 `canceled` can only be progressed to from `awaiting_funds`, and is done by hitting our [<u>DELETE </u>](https://apidocs.bridge.xyz/reference/delete_transfers-transferid)`/v0/transfers/{transferID}` endpoint.
+
+Other states like `returned`, `refunded`, `undeliverable`, or `error` indicate exception paths.
