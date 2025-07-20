@@ -66,10 +66,13 @@
             },
             {
                 "tab": "Orchestration",
-                "pages": [
-                    "orchestration/overview"
-                ],
                 "groups": [
+                    {
+                        "group": "",
+                        "pages": [
+                            "orchestration/overview"
+                        ]
+                    },
                     {
                         "group": "Virtual Accounts",
                         "pages": [
