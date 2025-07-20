@@ -12,7 +12,7 @@ This guide walks you through creating a crypto wallet for a customer, then linki
 
 Create a new Bridge-managed crypto wallet for your customer. This wallet will hold funds (e.g. USDB) and can earn yield.
 
-```curl Request expandable
+```bash Request expandable
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
      --header 'Api-Key: <API Key>' \
@@ -40,7 +40,7 @@ curl --request POST \
 
 Now, link the wallet to a virtual account. Any fiat deposits into the account will be automatically converted to USDB and delivered to the wallet.
 
-```curl Request expandable
+```bash Request expandable
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts \
      --header 'Api-Key: <API Key>' \
@@ -91,7 +91,7 @@ Share the virtual account details (account and routing number) with your custome
 
 Use this API to check wallet balances and confirm the funds have landed.
 
-```curl Request expandable
+```bash Request expandable
 curl --request GET  
      --url <https://api.bridge.xyz/v0/customers/customerId/wallets/walletId>  
      --header 'Api-Key: <API Key>'  

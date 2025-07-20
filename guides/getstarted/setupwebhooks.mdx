@@ -15,7 +15,7 @@ Bridge webhooks allow you to receive real-time notifications when events occur i
 
 First, create a webhook endpoint using the Bridge API. The webhook will be created in `disabled` state initially.
 
-```curl Request expandable
+```bash Request expandable
 curl -X POST "https://api.bridge.xyz/webhooks" \
   -H "Authorization: Bearer your_bridge_api_key" \
   -H "Content-Type: application/json" \
@@ -693,7 +693,7 @@ Before enabling your webhook, test it to ensure it's working correctly.
 
 ## Send a Test Event
 
-```curl expandable
+```bash expandable
 # Send a test event to your webhook
 curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
   -H "Authorization: Bearer your_bridge_api_key" \
@@ -709,7 +709,7 @@ curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
 
 ## Check Webhook Logs
 
-```curl expandable
+```bash expandable
 # View webhook delivery logs
 curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
   -H "Authorization: Bearer your_bridge_api_key"
@@ -717,7 +717,7 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
 
 ## Get Webhook Events
 
-```curl expandable
+```bash expandable
 # Retrieve upcoming events for the webhook
 curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
   -H "Authorization: Bearer your_bridge_api_key"
@@ -727,7 +727,7 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
 
 Once you've tested your webhook and confirmed it's working, enable it to start receiving live events.
 
-```curl Request expandable
+```bash Request expandable
 curl -X PATCH "https://api.bridge.xyz/webhooks/{webhook_id}" \
   -H "Authorization: Bearer your_bridge_api_key" \
   -H "Content-Type: application/json" \

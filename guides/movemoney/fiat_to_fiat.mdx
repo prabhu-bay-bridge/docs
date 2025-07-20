@@ -22,7 +22,7 @@ Use Bridge's APIs to convert from one fiat currency to another using a method we
 
 This wallet will hold stablecoins (USDC) used as the source for FX transfers. You can provision the wallet under your own customer id that you use for developing on Bridge.
 
-```curl Request expandable
+```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/cust_alice/wallets' \
 --header 'Api-Key: <API-Key>' \
 --header 'Idempotency-Key: w1' \
@@ -49,7 +49,7 @@ Use the returned wallet `id` in all future orchestration and payout requests.
 
 This is where your USD deposits (via ACH or Wire) will land. Funds will be auto-converted to USDC into your Bridge Wallet.
 
-```curl Request expandable
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <Api-Key>' \
@@ -98,7 +98,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/v
 
 Create an external account representing the recipient of the MXN funds. This only needs to be created once per recipient.
 
-```curl Request expandable
+```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
 --header 'Idempotency-Key: ea-6' \
 --header 'Content-Type: application/json' \
@@ -134,7 +134,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d
 
 In step 1-3, you've created a virtual account that will receive USD deposits. With every USD deposit, we will forward those funds as USDC to your Bridge wallet. The last step is to go from USDC to MXN\!
 
-```curl Request expandable
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \

@@ -14,7 +14,7 @@ Bridge wallets are secure, custodial crypto wallets that let you send and receiv
 
 # Step 1: Create a Bridge wallet
 
-```curl Request expandable
+```bash Request expandable
 curl --request POST \
   --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
   --header 'Api-Key: <API Key>' \
@@ -41,7 +41,7 @@ Note the `id` returned — this is your `bridge_wallet_id`.
 
 Use the [Transfers](ref:transfers) API with `bridge_wallet` as the source.
 
-```curl Request expandable
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   --header 'Api-Key: <API Key>' \
   --header 'Idempotency-Key: <Unique Key>' \

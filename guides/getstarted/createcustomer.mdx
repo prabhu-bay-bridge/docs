@@ -38,7 +38,7 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
 
 Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
 
-```curl Request
+```bash Request
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -88,7 +88,7 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
 
 Create U.S. based customer:
 
-```curl Request expandable
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -134,7 +134,7 @@ Endorsements represent an approval of a customer to onboard and transact with Br
 
 ## Checking Customer Endorsement Status
 
-```curl Request expandable
+```bash Request expandable
 curl --request GET \
      --url https://api.bridge.xyz/v0/customers/{customerID} \
      --header 'accept: application/json'

@@ -14,7 +14,7 @@ You can issue a virtual or physical card that spends directly from a Bridge-mana
 
 First, create a Bridge wallet (optional if you're using an external wallet). Use the wallet’s `address` when issuing a card.
 
-```curl Request expandable
+```bash Request expandable
 curl --request POST \
   --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
   --header 'Api-Key: <API Key>' \
@@ -39,7 +39,7 @@ Keep note of the wallet ID and address as you will need this in the next step.
 
 The below example uses Bridge's transfer API to fund the wallet. There are a variety of methods to fund the wallet using Bridge's orchestration APIs (virtual accounts, transfers, or liquidation addresses). Learn more at [Bridge Wallets](ref:bridge-wallets) [todo update link]
 
-```curl expandable
+```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -64,7 +64,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 Now create a card account tied to a Bridge wallet.
 
-```curl expandable
+```bash expandable
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/customerID/card_accounts \
      --header 'accept: application/json' \
@@ -83,7 +83,7 @@ curl --request POST \
 
 Access  card metadata, expiration, and access a secure image of the card.
 
-```curl Request expandable
+```bash Request expandable
 curl -X GET 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts/<cardAccountID>' \
 --header 'Api-Key: <API Key>'
 ```

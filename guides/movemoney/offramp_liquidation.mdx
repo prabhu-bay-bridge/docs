@@ -26,7 +26,7 @@ For fiat destinations, you need to first register your customer's external bank 
 
 <Tabs>
   <Tab title="US Bank Account">
-    ```curl Request expandable
+    ```bash Request expandable
     curl --location 'https://api.bridge.xyz/v0/customers/<customer-id>/external_accounts' \
     --header 'Idempotency-Key: ea-7' \
     --header 'Content-Type: application/json' \
@@ -83,7 +83,7 @@ For fiat destinations, you need to first register your customer's external bank 
     ```
   </Tab>
   <Tab title="SEPA IBAN">
-    ```curl Request
+    ```bash Request expandable
     curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
     --header 'Idempotency-Key: ea-5' \
     --header 'Content-Type: application/json' \
@@ -142,31 +142,35 @@ For fiat destinations, you need to first register your customer's external bank 
     ```
   </Tab>
   <Tab title="MXN CLABE">
-    ```json Request
-    {
-        "id": "c8948ce6-26ac-4d37-a336-742f961a76f3",
-        "customer_id": "23c2d400-4c69-4c5a-b31a-88d035d7e8ae",
-        "created_at": "2025-07-05T18:45:50.728Z",
-        "updated_at": "2025-07-05T18:45:51.373Z",
-        "bank_name": "Modulr Finance, Ireland Branch",
-        "account_name": "GGCF Corporate",
-        "account_owner_name": "Ada Lovelace",
-        "active": true,
-        "currency": "eur",
-        "account_owner_type": "individual",
-        "account_type": "iban",
-        "first_name": "Ada",
-        "last_name": "Lovelace",
-        "business_name": null,
-        "iban": {
-            "last_4": "0528",
-            "bic": "MODRIE22XXX",
-            "country": "IRL"
-        }
-    }
+    ```bash Request expandable
+    curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/external_accounts' \
+    --header 'Idempotency-Key: ea-6' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Api-Key: <api-key>' \
+    --data '{
+      "currency": "mxn",
+      "account_type": "clabe",
+      "account_owner_name": "Ada Lovelace",
+      "clabe": {
+        "account_number": "626899715090851234"
+      },
+      "account_name": "Ada Checking Account",
+      "bank_name": "BBVA Bancomer",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "account_owner_type": "individual",
+      "address": {
+        "street_line_1": "Av. Reforma",
+        "city": "Mexico City",
+        "state": "CDMX",
+        "postal_code": "06600",
+        "country": "MEX"
+      }
+    }'
     ```
 
-    ```json Response
+    ```json Response expandable
     {
         "id": "2bb5b814-0128-49a8-977a-77b1bc1cdee2",
         "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
@@ -198,7 +202,7 @@ With the liquidation address, you can configure
 - the destination chain, currency, and details you want to send funds to
 - :exclamation:the `return_address` so we know where to send funds to if your customer's transaction fails or is returned by the destination.
 
-```curl Request expandable
+```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -240,7 +244,7 @@ You'll get a response containing the blockchain address we've created.
 
 You also have the option to create a liquidation address with a crypto destination (crypto to crypto)
 
-```curl Request expandable
+```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -306,7 +310,7 @@ The `state` field tracks the status of each drain through its lifecycle. Here ar
 
 ## Fetching liquidation address drain history
 
-```curl Request expandable
+```bash Request expandable
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_addresses/<liquidation_address_id>/drains' \
      --header 'Api-Key: <Api-Key>' \

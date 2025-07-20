@@ -32,7 +32,7 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
 
 <Tabs>
   <Tab title="USD Virtual Account">
-    ```curl Request expandable
+    ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
     --header 'Content-Type: application/json' \
     --header 'Api-Key: <Api-Key>' \
@@ -54,7 +54,7 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
     }'
     ```
 
-    ```json Response
+    ```json Response expandable
     {
         "id": "1a400dae-f7fc-4f75-8105-212a14d4132d",
         "status": "activated",
@@ -84,7 +84,7 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
     ```
   </Tab>
   <Tab title="SEPA Virtual IBAN">
-    ```curl Request expandable
+    ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
     --header 'Content-Type: application/json' \
     --header 'Api-Key: <Api-Key>' \
@@ -106,7 +106,7 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
     }'
     ```
 
-    ```json Response
+    ```json Response expandable
     {
         "id": "393c6358-4c19-4cb7-bbfa-d4a56be58309",
         "status": "activated",
@@ -134,7 +134,7 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
     ```
   </Tab>
   <Tab title="MXN Virtual Account">
-    ```curl Request expandable
+    ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
     --header 'Content-Type: application/json' \
     --header 'Api-Key: <Api-Key>' \
@@ -234,7 +234,7 @@ Below are the different types of virtual account events you may receive. You can
 
 ## Fetching virtual account activity
 
-```curl Request expandable
+```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts/<virtual_account_id>/history' \
 --header 'Accept: application/json' \
 --header 'Api-Key: <api-key>'
