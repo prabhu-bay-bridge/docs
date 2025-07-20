@@ -1,5 +1,19 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Advanced money movement flows"
 ---
 
+# **Overview**
+
+As your card program scales, less common flows will become more prevalent, and you should expect to implement logic to handle a variety of advanced scenarios.
+
+# **Advanced money movement flows**
+
+> **For more details on webhook based flows please refer to the **[**<u>card webhook guide</u>**](/cards/webhooks)
+
+| **Flow name**              | **Behavior**                                                                                                                                                                                                      | **How bridge will notify you**                                                                                                                                          |
+| :------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Forced captures            | A transaction is created without an accompanying authorization.                                                                                                                                                   | Transaction events will be created via the standard `card_transaction` and `posted_card_account_transaction` event streams.                                             |
+| Refunds                    | A user is refunded a portion (or all) of a transaction’s amount.                                                                                                                                                  | A webhook will be sent updating the `card_transaction` to a “refunded” state. A `posted_card_account_transaction` webhook will also be sent when the webhook does post. |
+| Incremental authorizations | An adjustment to an existing authorization amount in order to hold more funds. Integrations have the ability to deny incremental authorizations if there are not sufficient funds or the transaction looks risky. | A webhook of type `card_transaction` updating the amount on the transaction object.                                                                                     |
+| Multi-captures.            | A settled transaction captures a portion (but not all) of an authorizations’ amount.                                                                                                                              | A `card_transaction` as well as `posted_card_account_transaction` webhook will be sent for each leg of the capture.                                                     |
+| Authorization Expiration   | An indication that the authorization is no longer valid and that funds can be returned.                                                                                                                           | A webhook indicating that the authorization’s sta                                                                                                                       |

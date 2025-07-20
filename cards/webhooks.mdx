@@ -1,5 +1,648 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Webhooks"
+description: "Description of your new file."
 ---
 
+# **Overview**
+
+In order to keep your application up to date, and notify your users of changes to their card account, you should listen to webhooks originated by Bridge and sent to your servers.
+
+# **Webhook types**
+
+| **Object**         | **Event category**                | **Description**                                                                                                                                        |
+| :----------------- | :-------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Card account       | `card_account`                    | Represents changes to a given card account.                                                                                                            |
+| Transaction        | `card_transaction`                | Represents a transaction arriving from the card network. This transaction may or may not be actionable or final depending on its state.                |
+| Posted Transaction | `posted_card_account_transaction` | Represents finalized transactions..                                                                                                                    |
+| Dispute            | `card_dispute`                    | Represents state changes in disputes made on cards issued in your card program.                                                                        |
+| Card withdrawal    | `card_withdrawal`                 | Reflects status changes for withdrawals from custodial card accounts. Only funds flows which use pre-funded balances will receive these notifications. |
+
+# **Example webhooks**
+
+## **Scenario 1: Successful Transaction**
+
+In a normal, successful transaction, an `approved` event will be published at the time of the initial purchase.
+
+### **Event 1: Card transaction approved**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tpHJpYMbNCFLDJRVqEhZsEG",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "billing_amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+```
+
+When the transaction is officially confirmed, a `settled` event will be published for the full amount of the transaction.
+
+### **Event 2: Card transaction settled**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_txyRrWPzNQWpDKSFo9YVidJ",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "settled",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "billing_amount": "-10.25",
+    "settled_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "settled",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "posted_at": "2025-02-06T03:01:30.000Z",
+    "updated_at": "2025-02-06T03:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status": ["approved", "settled"],
+    "settled_amount": [null, "-10.25"],
+    “posted_at”: [null, “2025-02-06T03:01:30.000Z”],
+    "updated_at": ["2025-02-04T05:19:25.000Z", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+```
+
+## **Scenario 2: Transaction Denied**
+
+In the case of a card transaction decline, a single event will be published with the transaction in a `denied` state. See [<u>a below section</u>](https://apidocs.bridge.xyz/null/null#card-transaction-status-reasons) on a comprehensive listing of the possible `status_reason`s.
+
+### **Event 1: Card transaction denied**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tuHVvfgAmwkRVCVpM4seVRw",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "denied",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "denied",
+    "status_reason": "insufficient_funds",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+## **Scenario 3: Authorization Reversal**
+
+A transaction may also be reversed before it gets settled. The original authorization event will look largely the same as scenario 1:
+
+### **Event 1: Card transaction approved**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tuBanrSfjeeuGnFqCejHoAT",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+```
+
+When the card transaction gets reversed, the transaction will move into a state of `reversed`, and the amount will change to reflect that no funds have been settled. The original authorization amount will still be available on the `original_amount` field.
+
+### **Event 2: Card transaction reversed**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tq25mCgyAvAxzu7LB4brUJg",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "reversed",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "0.0",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "reversed",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at":  "2025-02-04T05:25:25.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status": ["approved", "reversed"],
+    "amount": ["-10.25", "0.0"]
+    "updated_at": ["2025-02-04T05:19:20.000Z", "2025-02-04T05:25:25.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:25:25.000Z",
+}
+```
+
+## **Scenario 4: Refund After Settlement**
+
+If a card transaction gets refunded after settlement, our system will see an authorization and settlement for a positive amount. (Note that up until now, events for normal purchases have been denoted as negative amounts against the card account balance.) In the webhook event, the category of the transaction will be denoted as `refund`.
+
+### **Event 1: Refund transaction approved**
+
+```json
+{
+  "api_version": "v0",
+  "event_id": "wh_t9NG1G1LAn6RVjw6VHGUZ3P",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "10.25",
+    "original_amount": "10.25",
+    "currency": "usd",
+    "category": "refund",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+```
+
+Subsequently, a `settled` event will be published when the refund transaction is settled.
+
+### **Event 2: Refund transaction settlement**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tfSrbYH1y6XLpqw1eQSJzwR",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "settled",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "10.25",
+    "original_amount": "10.25",
+    "settled_amount": "10.25",
+    "currency": "usd",
+    "category": "refund",
+    "status": "settled",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status": ["approved", "settled"],
+    "settled_amount": [null, "10.25"],
+    "updated_at": ["2025-02-04T05:19:25.000Z", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-06T03:01:30.000Z",
+}
+
+```
+
+## **Scenario 5: Incremental Authorization**
+
+In many situations, the amount of a transaction will change after it has been authorized but before it has been settled. The original authorization event will look largely similar to the other scenarios outlined in this document, but after that, more events will be published to provide information about the additional amount.
+
+### **Event 1: Card transaction approved**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_t2FtTJGPUxcNJ5oMqU5uTRL",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+Subsequently, when an additional amount gets on authorized the same transaction, an `incremental_auth_approved` event will be published for the full amount of the transaction. Note that the `authorized_at` timestamp will still reflect the timestamp of the original authorization approval. The original authorization amount will still be available on the `original_amount` field.
+
+### **Event 2a: Additional amount authorized**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tdyGu3gdDtjLDCpr3rFXGtz",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "incremental_auth_approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-13.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "incremental_auth_approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T06:30:20.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status":["approved", "incremental_auth_approved"],
+    "amount": ["-10.25", "-13.25"],
+    "updated_at": ["2025-02-04T05:19:20.000Z", "2025-02-04T06:30:20.000Z"],
+  },
+  "event_created_at": "2025-02-04T06:30:20.000Z",
+}
+
+
+```
+
+Alternatively, an incremental authorization may also be denied:
+
+### **Event 2b: Additional amount authorized**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tuM2MCuFJ4xasgjRQJ6Yvty",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "incremental_auth_denied",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "incremental_auth_denied",
+    "status_reason": "insufficient_funds",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-06T03:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status":["approved", "incremental_auth_denied"],
+    "status_reason": [null, "insufficient_funds"],
+    "updated_at": ["", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+After a successful incremental auth (event 2a), the settlement object looks the same as in scenario 1, but the `settled_amount` reflects the full amount of the transaction after the incremental authorization.
+
+### **Event 3: Total amount settled**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tk8qNbY1Hf1HuJ2RXp2ADDZ",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "settled",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-13.25",
+    "original_amount": "-10.25",
+    "settled_amount": "-13.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "settled",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "posted_at": "2025-02-07T11:01:30.000Z",
+    "updated_at": "2025-02-07T11:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status":["incremental_auth_approved", "settled"],
+    "settled_amount": [null, "-13.25"],
+    “posted_at”: [null, “2025-02-07T11:01:30.000Z”],
+    "updated_at": ["2025-02-04T06:30:20.000Z", "2025-02-07T11:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-07T11:01:30.000Z",
+}
+```
+
+## **Scenario 6: Authorization Expiration**
+
+Authorizations are not indefinite, and can expire. This is rare but not impossible in the real world. For example, if you check in at a hotel, the front desk might place a temporary hold on the balance for incidental charges, but the card authorization will expire after some period of time after checking out of the hotel.
+
+### Event 1: Card transaction approved
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_toKLoUUEVvaxyNTqVhDQ9CK",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+When the authorization expires, an `expired` event will be published, with the amount changed.
+
+### Event 2: Card transaction expired
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tskbQCBHBuVxYXMm7o285Rh",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "expired",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "0.0",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "expired",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "expired_at": "2025-02-10T11:01:30.000Z",
+    "updated_at": "2025-02-10T11:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "amount": ["-10.25", "0.0"],
+    "status": ["approved", "expired"],
+    "updated_at": ["2025-02-04T05:19:20.000Z", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+Note that card transactions may still be settled after the authorization expires. This is even rarer, but not impossible.
+
+### **Event 3: Card transaction settled after auth expiration**
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tkVWUbDGpUgSBQxkRrCEpYb",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "settled",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "settled_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "settled",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-06T03:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status": ["expired", "settled"],
+    "amount": ["0.0", "-10.25"]
+    "settled_amount": [null, "-10.25"],
+    "updated_at": ["2025-02-04T05:19:25.000Z", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+```
+
+# **Card Transaction Status Reasons**
+
+Below is a comprehensive listing of the possible `status_reason` values you may receive in the `card_transaction` webhook event object.
+
+Note that many of them are very uncommon. The most common reasons for denied transactions are the following:
+
+- `insufficient_funds_or_delinquent_credit`
+- `transaction_not_permitted_to_cardholder`
+- `suspected_fraud`
+- `exceeds_amount_limit`
+
+### **Approval Related**
+
+- `approved`: Transaction approved normally
+- `partial_approval`: Transaction approved for a partial amount
+- `partial_approval_for_sales_amount_only`: Transaction approved for sales amount only
+- `avs_success_or_mobile_wallet_provisioning_yellow_path`: Address verification successful or mobile wallet provisioning in yellow path. This will not be present except on authorizations to link the card to a mobile wallet.
+
+### **Card Status Related**
+
+- `card_inactive`: Card is not active
+- `restricted_or_frozen_card`: Card has been restricted or frozen
+- `card_expired_or_expiry_date_mismatch`: Card is expired or expiration date doesn't match
+- `closed_account`: Associated account has been closed
+- `lost_and_pick_up`: Card reported as lost
+- `stolen_and_pick_up`: Card reported as stolen
+- `capture_card`: Card should be captured/retained
+
+### **Security Related**
+
+- `security_violation`: Security violation detected
+- `suspected_fraud`: Transaction has been flagged for suspected fraud by our risk systems. We are working on surfacing additional information in the webhook events. For now, please reach out in your shared Slack channel with Bridge for more information.
+- `invalid_pin`: Incorrect PIN entered
+- `pin_count_exceeded`: Too many incorrect PIN attempts
+- `invalid_cvv1`, `invalid_cvv2`: [<u>One of the security codes</u>](https://en.wikipedia.org/wiki/Card_security_code#Types) related to cards is invalid.
+- `cannot_verify_pin`: Unable to verify PIN
+
+### **Limit Related**
+
+- `exceeds_amount_limit`: Transaction amount exceeds allowed limit
+- `exceeds_count_limit`: Number of transactions exceeds allowed limit
+- `maximum_system_amount_reached`: System-wide maximum amount reached
+
+### **Technical Issues**
+
+- `format_error`: Transaction format error
+- `system_error`: General system error
+- `issuer_error`: Error on the issuer's side
+- `issuer_did_not_respond_in_time`: Issuer timeout
+- `denied_by_timeout`: Transaction denied due to timeout
+- `track_data_format_error`: Error in card track data
+
+### **Account Related**
+
+- `insufficient_funds_or_delinquent_credit`: Insufficient funds or credit issues
+- `invalid_pan`: Invalid card number
+- `invalid_from_account_for_atm_balance_inquiry`: Invalid account for ATM balance check
+- `no_checking_account_found_for_an_atm_balance_inquiry`: No checking account found
+- `no_savings_account_found_for_an_atm_balance_inquiry`: No savings account found
+- `no_credit_account_found_for_an_atm_balance_inquiry`: No credit account found
+
+### **Transaction Type Related**
+
+- `mcc_blocked`: Merchant category code is blocked
+- `transaction_not_permitted_to_cardholder`: Usually indicates that there was an issue while creating a transaction with the crypto wallet associated with this card.
+- `cash_service_not_permitted`: Cash services not allowed
+- `settlement_without_authorization`: Settlement attempted without prior authorization
+- `no_support_for_msi_installments_or_loan_terms_invalid`: Installment or loan terms not supported
+
+### **Crypto Specific**
+
+- `crypto_wallet_spend_not_permitted_temporarily`: Temporary restriction on crypto wallet spending -- this is only applicable if your funding strategy is non-custodial and creating transactions on the wallet linked to the card account is blocked for a non-balance reason, such as pending proposals on the crypto wallet.
+
+### **Other**
+
+- `other`: Catch-all for unspecified or unmapped response codes
