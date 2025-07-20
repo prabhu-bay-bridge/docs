@@ -15,29 +15,27 @@ Each `VirtualAccountEvent` includes detailed information about the deposit, sour
 
 # **Event Types**
 
-## **Transaction Status Events**
+Below are the different types of virtual account events you may receive. You can identify the type of each event by checking the `type` field in the virtual account event object.
 
-`funds_received` - This is an acknowledgment that Bridge has received funds and is in the process of moving funds on the customer's behalf.\
-`payment_submitted` - This means Bridge has sent the payment and is currently awaiting verification. This usually takes just a few minutes to confirm the crypto transaction on chain\
-`payment_processed` - The transaction has been completed. The funds have arrived at your specified destination. This is a terminal state.
+### Payment Lifecycle
 
-Please note that a transaction will always progress from `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
+| Type                | Description                                                           |
+| :------------------ | :-------------------------------------------------------------------- |
+| `funds_received`    | Bridge received funds via ACH or wire.                                |
+| `payment_submitted` | Bridge submitted the crypto payment.                                  |
+| `payment_processed` | Payment confirmed on-chain. Final state.                              |
+| `funds_scheduled`   | (ACH only) Incoming funds are in transit with estimated arrival date. |
+| `in_review`         | Transaction is under manual review.                                   |
+| `refunded`          | Funds could not be delivered and were refunded to the sender.         |
 
-`funds_scheduled` - The events provides a notification that incoming funds are processing through an external system and an estimated arrival date for the credit. This event does not occur for all payments. Only ACH transactions can trigger a `funds_scheduled` event.
+### Other
 
-`in_review` - A temporary state triggered when a transaction is undergoing review. Bridge may reach out to collect more information before progressing the transaction.
-
-`refunded` - If Bridge is unable to complete the transaction and needs to return the funds to the sender, this event will be triggered.
-
-## **Non-transactional Events**
-
-`microdeposit` - These events are triggered when a sending bank initiates a microdeposit verification process. This is the only event emitted for this verification process. These funds are never onramped and don't go through the transaction statuses above.
-
-`account_update` - Triggered when the details of a Virtual Account (e.g. destination currency or address) are changed.
-
-`deactivation` - This event is fired when a Virtual Account is deactivated which prevents it from accepting any incoming transactions
-
-`reactivation` - Triggered if a previously deactivated account is later reactivated.
+| Type             | Description                                                   |
+| :--------------- | :------------------------------------------------------------ |
+| `account_update` | Virtual Account was updated (e.g. new destination address).   |
+| `deactivation`   | Virtual Account was deactivated.                              |
+| `reactivation`   | Virtual Account was reactivated.                              |
+| `microdeposit`   | Microdeposit verification detected. Funds are never onramped. |
 
 <Tip>
   **Deposit ID**\
