@@ -23,7 +23,6 @@ Let’s say you want to offramp **\$100,100.119999 USDT** with a **10 bps develo
 
 1. **Bridge truncates to whole cents**:\
    Note that USDT, like many other stablecoins, has 6 digits of precision. However, because Bridge only supports whole cents, we will first truncate this amount down to \$100,100.11.\
-   \
    `$100,100.119999 → rounded down to $100,100.11`
 2. **Bridge calculates developer fee**:\
    `0.1% of $100,100.11 = $100.10011 → rounded up to $100.11`
