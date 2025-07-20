@@ -1,5 +1,148 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Sandbox Integration"
 ---
 
+# **Overview**
+
+The cards sandbox environment enables you to test your card issuance logic and product experience from your first day developing, without requiring any approval by our bank partner, issuance partner, or card network.
+
+While most endpoints are the same as the standard Bridge API, we do offer some additional features in order to allow you to test money movement in a safe and entirely programmatic fashion.
+
+> **📘When interacting with the sandbox, all requests should go to   **`https://api.sandbox.bridge.xyz`
+
+# **Integration**
+
+## **Setup**
+
+In order to start your integration, you will need to call the following API which bootstraps your sandbox environment and funds flow.
+
+> While you likely use a different funding strategy in production, `top_up` is the only funding strategy supported in the sandbox.
+
+```bash
+
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/cards/enable' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"funding_strategy": "top_up"}'
+```
+
+## **Creating a card account**
+
+You should follow the steps outlined [<u>here</u>](/cards/guide) to create a customer and a card account, using the sandbox API URL.
+
+## **Simulate balance top up**
+
+In production, you could top up the card balance by sending funds to the address specified in the `funding_instructions` of the card account. As it is a normal crypto address, this could be done in a variety of ways, including using Bridge’s very own transfers and virtual accounts APIs.
+
+In sandbox, you can simulate topping up the card balance with the following API:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_balance_top_up' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount": "1000.0"}'
+```
+
+## **Simulate card transactions**
+
+### **Simulate authorization and settlement**
+
+**Scenario** A cardholder dines at a restaurant with a bill totaling \$100. The cardholder adds a \$15 tip. The transaction is authorized at the point of sale for \$100 and later settled for \$\$115.
+
+**Step 1 Use the following API call to simulate the initial card authorization:**
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount: "100.0", "merchant_name": "test"}'
+```
+
+When a card transaction is authorized but not yet settled, you will be able to retrieve it using the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+
+**Step 2 To simulate the card settlement:**
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount": "115.0", "merchant_name": "test", "authorization_id": "<CardAuthoriztionIdFromStep1>"}'
+```
+
+### **Simulate incremental authorization**
+
+**Scenario** A cardholder checks into a hotel and the front desk puts a hold on the card for \$200 for incidental charges. The cardholder incurs \$20 charge for room service during their stay. At check-out, the charge for the card holder for the whole stay is \$20 and the transaction is settled for \$20.
+
+**Step 1** Start with simulating a card preauthorization of the initial hold:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_incremental_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount": "200.0", "merchant_name": "test", "transaction_type": "preauthorization"}'
+```
+
+You should see the new card authorization when calling the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+
+**Step 2** With the additional room service, the card authorization amount needs to be increased by \$20 from the preauthorization. To simulate this incremental authorization, copy the `authorization_id` from the response in Step 1, and use it as the `original_authorization_id` by calling the following API:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_incremental_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount":"20.0","merchant_name":"test","transaction_type":"incremental_preauthorization","original_authorization_id":"<CardAuthorizationIdFromStep1>"}'
+```
+
+You should see in the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint, the card authorization from Step 1 has been replaced with the new incremental authorization you just submitted.
+
+**Step 3** At check-out, the card authorization is completed for \$20 total charge. To simulate the authorization completion, copy the `authorization_id` from the response in Step 2, and use it as the `original_authorization_id` by calling the following API:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_incremental_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount":"20.0","merchant_name":"test","transaction_type":"completion","original_authorization_id":"<CardAuthorizationIdFromStep2>"}'
+```
+
+Again, you should see the new authorization when calling the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+
+**Step 4** To simulate the card transaction settlement, copy the `authorization_id` from the response in Step 3, and use it as the `authorization_id`in the call to the the following API:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount": "20.0", "merchant_name": "test", "authorization_id": "<CardAuthoriztionIdFromStep3>"}'
+```
+
+### **Simulate authorization and reversal**
+
+**Scenario** A cardholder completes a \$40 purchase at a retail store and returns the item shortly after. The merchant processes a full \$40 reversal before the transaction is settled.
+
+**Step 1** Use the following API call to simulate the initial card authorization:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount: "40.0", "merchant_name": "test"}'
+```
+
+**Step 2** To simulate the authorization reversal, copy the `authorization_id` from the latest authorization response and use it as the `original_authorization_id` by calling the following API:
+
+```bash
+curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_accounts/<CardAccountId>/simulate_incremental_authorization' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <ApiKey>' \
+ --header 'Idempotency-Key: <IdempotencyKey>' \
+ -d '{"amount":"40.0","merchant_name":"test","transaction_type":"reversal","original_authorization_id":"<CardAuthorizationIdFromStep1>"}'
+```
