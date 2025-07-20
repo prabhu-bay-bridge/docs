@@ -135,11 +135,11 @@
                     {
                         "group": "Overview",
                         "pages": [
-                          "cards/overview",
-                          "cards/concepts",
-                          "cards/guide",
-                          "cards/advanced",
-                          "cards/webhooks"
+                          "cards/overview/overview",
+                          "cards/overview/concepts",
+                          "cards/overview/guide",
+                          "cards/overview/advanced",
+                          "cards/overview/webhooks"
                         ]
                     },
                     {
@@ -152,12 +152,12 @@
                     {
                         "group": "Additional functionality",
                         "pages": [
-                            "cards/sandbox/freezing",
-                            "cards/sandbox/statements",
-                            "cards/sandbox/pins",
-                            "cards/sandbox/customizing",
-                            "cards/sandbox/marketing",
-                            "cards/sandbox/details"
+                            "cards/additional/freezing",
+                            "cards/additional/statements",
+                            "cards/additional/pins",
+                            "cards/additional/customizing",
+                            "cards/additional/marketing",
+                            "cards/additional/details"
                         ]
                     }
                 ]
