@@ -1,5 +1,20 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Processing Windows & Cutoff Times"
 ---
 
+# **📆 Fiat Rails**
+
+Bridge accesses fiat rails only on **banking days.** Refer to the table below for **cutoff times and settlement speeds **for payments with fiat destinations (**offramps**):
+
+| **Currency** | **Rail**         | **Cutoff (ET)**           | **Settlement Time**                | **Notes**                                                                                                                         |
+| :----------- | :--------------- | :------------------------ | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| **USD**      | **Next Day ACH** | 1:00 PM                   | 8:30 AM next business day          | Bridge submits batches at 1:00 PM ET daily. Post-cutoff, we will process next day. ACH funds typically land in 1–2 business days. |
+| **USD**      | **Same Day ACH** | 9:30 AM, 1:45 PM, 3:45 PM | 1:00 PM, 5:00 PM, 6:00 PM same day | Same-day settlement at receiving bank. Availability depends on that bank.                                                         |
+| **USD**      | **Wire**         | 4:45 PM                   | ~1 hour after sending              | Transactions after 4:45 PM ET are sent next business day                                                                          |
+| **EUR**      | **SEPA Instant** | N/A                       | \<30 seconds                       | 24/7/365. Requires beneficiary bank support.                                                                                      |
+| **EUR**      | **SEPA Credit**  | 9:00 AM                   | 1–2 business days                  | Used for transactions \> €100K                                                                                                    |
+| **MXN**      | **SPEI**         | N/A                       | \<30 seconds                       | 24/7/365. Always-on domestic rail in Mexico.                                                                                      |
+
+# **Onramps (fiat to crypto)**
+
+Bridge will typically send crypto within minutes of fiat landing in our bank account.

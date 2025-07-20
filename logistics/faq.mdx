@@ -1,5 +1,74 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "FAQ Guidance for Your Users"
+description: "Description of your new file."
 ---
 
+Bridge requires its developers to include the following FAQs in their support pages. These are common questions that users ask from support channels.
+
+Anything enclosed in [], such as [support_email], must be filled out based on the developer.
+
+We do not require you to use our exact copy as long as the questions are covered. Translations in other languages such as Spanish are accepted as well.
+
+## **Common Payment Questions**
+
+#### **I have a question about a payment. How can I contact support?**
+
+Reach out to [developer_name] at [support_email], [phone_number] or [social_media_handles]. Please avoid contacting our banking partners directly, as they are not best suited to help you.
+
+#### **My funds are missing or have not landed in my account.**
+
+Contact us at [support_email]/[support_phone]/[whatsapp] and we will investigate. If you have sent funds from your bank account, request a Trace ID for an ACH payment or an IMAD for a wire from your bank. Providing this information will help us track down the transaction faster.
+
+#### **When will the funds land in the account?**
+
+Next-day ACH transactions can take 1-3 days to arrive in your account. Same-day ACH transactions sent before 4 pm EST will arrive at their destination on the same day.\
+Wires can take a few hours to process, but they will be processed the same day as long as they are received before 5 p.m. EST.
+
+#### **What is the minimum amount that I can send or receive?**
+
+As a developer, you can modify the language depending on the type of payment. Refer [<u>here</u>](https://apidocs.bridge.xyz/docs/transaction-costs) for documentation on minimum transaction amounts.
+
+#### **Where do I input the memo when making a payment?**
+
+Memos can be entered in the Memo or reference field when creating the ACH or Wire.\
+For JP Morgan Chase, the correct field is called “Message to Recipient.”\
+For Mercury, the correct field is called “Message to Recipient.”
+
+We recommend reaching out to your bank if you are not sure where the memo should go
+
+## **My bank doesn’t recognize the Routing Number for the payment. What should I do?**
+
+The correct routing numbers for Lead Bank are 101019644 for virtual accounts and 101206101 for most memo-based payments. Both can be found on FRB Services' website at [frbservices.org](http://frbservices.org). The American Bankers Association (ABA) also provides an online lookup tool for routing numbers, which can be accessed here.
+
+If you encounter any errors, please contact your bank's support and inform them that these routing numbers are listed on the websites mentioned above and should be recognized to support wire and ACH payments.
+
+## **Virtual Account FAQs**
+
+If you are utilizing Bridge Virtual Accounts, we require the following questions to be covered in your FAQs.
+
+#### **Does [developer_name] provide SWIFT codes or account numbers to its Customers?**
+
+Virtual accounts with [developer_name] do not currently support SWIFT payments, only ACH and US domestic wires.
+
+#### **My bank did a microdeposit to my virtual account. How do I get the amounts for the microdeposits?**
+
+Notifications for Microdeposits made to virtual accounts are sent to [email, SMS, push notification]. It can take up to 1 day for the microdeposits to arrive.
+
+#### **I am being asked for a 3-letter code by Plaid that was sent to my virtual account. Where can I find this code?**
+
+The 3 letter code is included as part of the descriptor of the microdeposit.
+
+#### **What types of transactions can I receive in my virtual account?**
+
+**Virtual accounts are fully permitted to receive the following transactions for non-US residents.**
+
+1. First-party payments where you are sending USD from your bank, fintech app, or brokerage account
+2. Third-party payment where a registered business sends USD from its bank account
+3. Third-party payment from a family member’s bank account, where you share a surname
+4. Third-party Person-to-Person payment for an amount less than \$4,000
+
+**The following types of transactions are fully permitted to be received by virtual accounts for US residents.**
+
+1. First-party payments where you are sending USD from your bank, fintech app, or brokerage account
+2. Payroll payments from businesses
+3. Third party payments in most states except for a few, please refer [<u>First and Third-Party Payment Support</u>](/whatwesupport/1pp)

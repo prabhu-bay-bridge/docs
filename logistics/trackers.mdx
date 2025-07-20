@@ -1,5 +1,48 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Payment tracking identifiers"
 ---
 
+When accepting fiat payments via Bridge, it's essential to **track and reconcile deposits** using standardized identifiers. These identifiers vary by payment rail and are surfaced in both APIS & webhooks. This guide outlines the fields to expect, how to match them programmatically, and how to display them to users.
+
+## **🚧 Make sure customers include deposit messages**
+
+For **Transfers and Static Memos**, it's critical that customers include the source deposit message (e.g. memo, SEPA reference, or wire message) so Bridge can automatically match incoming funds to the intended transfer.
+
+**Virtual Accounts and Liquidation Addresses** do not require deposit messages — the unique address itself is enough to match the payment.
+
+## Identifiers by Payment Rail
+
+### ⛓️ **Crypto**
+
+| **Field**          | **Description**                                                                               |
+| :----------------- | :-------------------------------------------------------------------------------------------- |
+| `transaction hash` | Unique hash of the on-chain transaction.                                                      |
+| `memo`             | Optional field required by some blockchains (e.g. Tron, Stellar) to route payments correctly. |
+
+### 🇺🇸 **ACH**
+
+| **Field**       | **Description**                                                                                            |
+| :-------------- | :--------------------------------------------------------------------------------------------------------- |
+| `trace number`  | Unique identifier used to track ACH payments through the U.S. banking system.                              |
+| `ach reference` | Optional statement descriptor that may appear on the customer’s bank statement. Useful for reconciliation. |
+
+### 🇺🇸 **Wire**
+
+| **Field**      | **Description**                                                                                                              |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `imad`         | Unique identifier to track wire payments.                                                                                    |
+| `wire message` | Optional free-form field containing sender-provided text.                                                                    |
+| `uetr`         | A globally unique transaction reference (UUID format) included in ISO 20022-compliant wires. Supported by most modern banks. |
+
+### 🇪🇺 **SEPA**
+
+| **Field**        | **Description**                                                                                                                                                                                           |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sepa reference` | Freeform message provided by the sender. Strongly recommended to use a UUID for automated matching.<br /><br />⚠️ When initiating SEPA payouts with Bridge, always include a UUID in the reference field. |
+
+### 🇲🇽 **SPEI**
+
+| **Field**         | **Description**                                                                                   |
+| :---------------- | :------------------------------------------------------------------------------------------------ |
+| `tracking number` | Unique identifier or tracing SPEI payments through the Mexican payment system.                    |
+| `spei reference`  | Optional reference field provided by the sender. Often used to describe or label the transaction. |
