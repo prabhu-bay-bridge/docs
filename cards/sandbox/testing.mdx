@@ -1,5 +1,137 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Testing webhooks in sandbox"
+description: "Description of your new file."
 ---
 
+# **Overview**
+
+Although we don’t send webhook events in the sandbox environment, you can still view the events that would have been sent. To do this, you can set up a webhook endpoint just as you would in production, and then query for events that would have been delivered.
+
+# **Testing webhooks**
+
+## **1. Set Up Webhook Endpoint**
+
+To create a webhook endpoint, you can `POST` to `v0/webhooks` as you would in production with a payload like so:
+
+```json
+{
+    "url": "https://example.com/api/webhooks/bridge_webhook_event_testing",
+    "event_epoch": "beginning_of_time"
+}
+```
+
+<Note>
+  You should use a more accurate `event_epoch` as your event epoch in your integration.
+</Note>
+
+In a successful response, you should receive a payload like the following:
+
+```json
+{
+    "id": "wep_tir8iiYS3khF4TqEe7jpKje",
+    "url": "https://example.com/api/webhooks/bridge_webhook_event_testing",
+    "status": "disabled",
+    "public_key": "-----BEGIN PUBLIC KEY-----<KEY>-----END PUBLIC KEY-----\n",
+    "created_at": "2025-02-11T00:42:08.581Z",
+    "updated_at": "2025-02-11T00:42:08.806Z"
+}
+```
+
+## **2. Activate the webhook endpoint**
+
+To activate the webhook endpoint, you can send a `PUT` request to `v0/webhooks/{webhook\_id}` just as you would in production. The `webhook_id` is the same `id` returned from the response of the `POST` request from the previous step.
+
+ To activate the endpoint, you set the status with a payload like so:
+
+```bash
+...
+{
+    "status": "active"
+}
+...
+```
+
+In a successful response, you should see a payload like the following:
+
+```json
+{
+    "id": "wep_tir8iiYS3khF4TqEe7jpKje",
+    "url": "https://example.com/api/webhooks/bridge_webhook_event_testing",
+    "status": "active",
+    "public_key": "-----BEGIN PUBLIC KEY-----<KEY>-----END PUBLIC KEY-----\n",
+    "created_at": "2025-02-11T00:42:08.581Z",
+    "updated_at": "2025-02-11T03:03:30.918Z"
+}
+```
+
+## **3. View Webhook Events**
+
+To view events that would have been sent to the webhook endpoint, you can send a `GET` request to `https://api.sandbox.bridge.xyz/v0/webhooks/{webhook_id}/events`. The `webhook_id` is the same as per the previous. No payload is required, but in sandbox you can pass in a category query parameter to specify which exact events you would like in the payload.
+
+For example, to see card account specific events, you can `GET https://api.sandbox.bridge.xyz/v0/webhooks/{webhook_id}/events?category=card_account`. The response will have a format like so:
+
+```json expandable
+{
+    "data": [
+        {
+            "api_version": "v0",
+            "event_id": "wh_tn3ZFia7M5541nzLVJDtj8P",
+            "event_sequence": 2,
+            "event_category": "card_account",
+            "event_type": "card_account.updated.status_transitioned",
+            "event_object_id": "f1843b06-1e80-430e-8e13-51999cf66fb8",
+            "event_object_status": "active",
+            "event_object": {
+                "id": "f1843b06-1e80-430e-8e13-51999cf66fb8",
+                "status": "active",
+                "freezes": [],
+                "balances": {
+                    "hold": {
+                        "amount": "100.0",
+                        "currency": "usdc"
+                    },
+                    "available": {
+                        "amount": "200.0",
+                        "currency": "usdc"
+                    }
+                },
+                "customer_id": "7e3de6c3-2848-4fe4-9651-b287f464257e",
+                "card_details": {
+                    "bin": "1234",
+                    "expiry": "03/30",
+                    "last_4": "0000"
+                },
+                "card_image_url": "https://<image_url>",
+                "funding_instructions": {
+                    "chain": "base",
+                    "address": "0xdeadbeef2usdcbase5fe073f0-67ef-4d9b-906b-a859f22baf56",
+                    "currency": "usdc"
+                }
+            },
+            "event_object_changes": {
+                "status": [
+                    "frozen",
+                    "active"
+                ],
+                "freezes": [
+                    [
+                        {
+                            "reason": "lost_or_stolen",
+                            "ending_at": null,
+                            "initiator": "developer",
+                            "created_at": "2025-02-11T03:03:28Z",
+                            "starting_at": null,
+                            "reason_detail": null
+                        }
+                    ],
+                    []
+                ],
+                "card_image_url": [
+                    "https://<image_url>",
+                ]
+            },
+            "event_created_at": "2025-02-11T03:03:37.680Z"
+        }
+    ]
+}
+```
