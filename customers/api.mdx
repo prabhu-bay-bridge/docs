@@ -262,7 +262,7 @@ Upon customer creation, Bridge will review the submitted customer information an
 
 Upon customer creation, Bridge will review all KYCs for the customer and return a `status` field that denotes the KYC status (as applicable) for the user (example KYC statuses include `not_started`, `active`, or `rejected`). The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
 
-```json Response
+```json Response expandable
 // 201 CREATED
 {
   "id": "cust_john_uuid",
@@ -286,3 +286,52 @@ While KYC generally works quickly, there are edge cases that are important to ac
 - `not_started` -\> `rejected`
 
 ![db44208-Screenshot_2024-02-02_at_12.42.46_PM.png](/images/db44208-Screenshot_2024-02-02_at_12.42.46_PM.png)
+
+## **KYC rejection**
+
+Sometimes, your customer could immediately move from not_started to rejected and skip under_review entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have submitted for your customer (birth date, address, name, or business details).
+
+In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer via `[GET /customers/:id](https://apidocs.bridge.xyz/reference/get_customers-customerid)` would result in something like this:
+
+```json expandable
+{
+  "id": "d99a4ee8-03a8-48a6-9cbf-7746a3ce1050",
+  "email": "john@doe.com",
+  "first_name": "John",
+  "last_name": "Doe",
+  "status": "rejected",
+  "type": "individual",
+  "created_at": "2024-02-19T17:16:20.561Z",
+  "website_url": null,
+  "persona_idv_link": "...",
+  "tos_link": "...",
+  "tos_complete": false,
+  "persona_inquiry_type": "gov_id_db",
+  "rejection_reasons": [
+    {
+      "developer_reason": "Identity cannot be verified agains third-party databases",
+      "reason": "Your information could not be verified",
+      "created_at": "2024-02-19T19:01:59.529Z"
+    }
+  ]
+}
+```
+
+You can see that the customer's KYC status is `rejected` and that there are two fields shared with rejection reasons:
+
+- `developer_reason` is meant to be used by developers for **internal purposes only.** This field can contain sensitive information intended for only the developer and is provided to help with troubleshooting potential issues or protecting against potential abuse.
+- `reason` can be shared by a developer directly with their customers.
+
+For reference, see our page on [<u>Rejection Reasons</u>](/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
+
+## **Updating Customers**
+
+Customer information can be updated at `PUT /customers/:id` . This endpoint accepts the same shape of data as the creation endpoint.
+
+Notes:
+
+- Even if information was submitted in the first attempt and has not changed, it must still be submitted in the update.
+  - Bridge currently supports partial updates (e.g., not including all fields in the request) only the following parameters are included: `endorsements, residential_address, physical_address, verified_proof_of_address_at, documents` (with purpose = proof_of_address)
+- Updating the customer object won't clear their rejection reasons from earlier attempts, but that won't prevent them passing KYC.
+
+## **Supported Government ID's by Country**
