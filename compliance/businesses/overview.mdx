@@ -1,5 +1,42 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Businesses"
+description: "To onboard a business, Bridge is required to collect and verify information about the business and its ownership."
 ---
 
+# **Standard Business Onboarding Requirements**
+
+- Legal Entity Name
+- Registered Address
+- Principal Operating Address
+- EIN/TIN (or non-US equivalent identification number)
+- [<u>Business Entity Type</u>](https://apidocs.bridge.xyz/docs/business-entity-types)
+- [<u>Business Formation Documents</u>](https://apidocs.bridge.xyz/docs/business-formation-documents)
+- [<u>Business Ownership Documents</u>](https://apidocs.bridge.xyz/docs/business-ownership-documents)
+- KYC on all Beneficial Owners and/or Control Owners (per [<u>US</u>](https://apidocs.bridge.xyz/docs/us-residents) or [<u>International</u>](https://apidocs.bridge.xyz/docs/international-residents) requirements)
+  - All Ultimate Beneficial Owners (UBO): Individual or entity that has complete ownership and control over a business, institution, or legal entity
+  - or Control Person (if different than the Ultimate Beneficial Owners): an individual with significant responsibility to control or direct business; typically an executive officer (CEO, CFO, COO, President)
+- [<u>Proof of Address Documents</u>](https://apidocs.bridge.xyz/docs/proof-of-address-requirements) (if applicable–Individuals and Business)
+  - Required when conflicting location signals are detected such as the business claiming a low risk operating address when the control person resides in high risk region
+- Business Description
+- Business Website
+- DAO Status
+
+# **Enhanced Business Onboarding Requirements**
+
+Includes [<u>Standard Business Onboarding Requirements</u>](https://apidocs.bridge.xyz/docs/business-accounts#intermediate-business-onboarding-requirements) plus:
+
+- Source of Funds
+- Estimated Annual Revenue
+- Disclosure of High Risk Activities
+- Disclosure of High Risk Geographies (Cuba, Iran, Myanmar, North Korea, or Syria)
+- Disclosure of Customer Money Transmission
+  - If moving customer funds, explanation of compliance screening
+- Primary Account Purpose
+- Expected Monthly Transaction Volume (USD)
+
+Please note that Bridge may request the following information in specific instances where additional diligence is required:
+
+- Proof of Funds (e.g. bank statements)
+- Proof of Operating Activity (e.g. bills of lading, invoices, receipts, commercial contracts)
+- Licensing information for businesses operating in regulated industries
+- Ad-hoc requests

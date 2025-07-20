@@ -1,5 +1,138 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Business Ownership Documents"
 ---
 
+To onboard, businesses must provide business ownership documents. This guide outlines acceptable ownership documents for each business entity type.
+
+# **Key Points**
+
+- Bridge is required to confirm of all individual ultimate beneficial owners who own 25% or more of the underlying entity.
+- The identities provided to Bridge must either be attested to by a control person of the business _or_ substantiated by an ownership document.
+
+# **Definitions**
+
+- Ultimate Beneficial Owners (UBO): Individual or entity that has complete ownership and control over a business, institution, or legal entity
+- Control Person (if different than the Ultimate Beneficial Owners): an individual with significant responsibility to control or direct business; typically an executive officer (CEO, CFO, COO, President) or Director
+
+# **Ownership Structure Attestation**
+
+- It is sufficient for a control person of the entity to attest that the associated persons being provided to Bridge include all ultimate beneficial owners who own more than 25% of the entity.
+- In the Bridge-hosted KYB flow, this attestation is a checkbox in the flow, and is sufficient if the person completing the flow is a control person of the underlying entity.
+- For API-based KYB flows, this attestation can be provided as a timestamp through each associated person's `attested_ownership_structure_at` field. It is sufficient for at least one associated person with `has_control`true (e.g., a control person) to attest to the ownership structure.
+
+```json
+associated_persons: [{
+  ...
+  "first_name": "Sammy",
+  "last_name": "Sample",
+  "has_control": true, // If has_control isn't true, then the below attestation is not sufficient to satisfy Bridge's ownership requirements.
+  "attested_ownership_structure_at": "2025-06-01T10:45:05-04:00", #
+  ...
+}]
+```
+
+# **Ownership Document Requirements**
+
+- Without an attestation from a control person, Bridge requires the ownership structure to be confirmed by a provided document.
+- Self-generated documents or attestations confirming shareholders should be dated and signed by a verified control person (e.g. CEO), or alternatively, a lawyer or third party CPA
+  - Detailed capitalization tables clearly produced by well-known equity management companies (e.g. Carta, AngelList, or Securitize) do not require a signature from a Lawyer or third party CPA
+- Please ensure that 100% of ownership can be derived or clearly accounted for in the document
+- If the entity is owned by another entity (or multiple entities), we will require similar documents verifying the subsidiaries’ shareholders
+- Please ensure the document lists the name of the entity it pertains to
+- Generally speaking, if the entity does not have individual beneficial shareholders, we will need to confirm the individuals who significantly control the entity instead, such as its directors and officers
+
+# **Acceptable Ownership Documents By Entity Type**
+
+<AccordionGroup>
+  <Accordion title="Sole Proprietorships">
+    - **Business License**–listing the sole proprietor as the owner
+    - **Trade Name Registration (DBA)**--indicating the owner if the business operates under a different name
+    - **Tax Filings: **Individual tax returns (Schedule C) showing business income and expenses reported by the sole proprietor
+  </Accordion>
+  <Accordion title="Partnerships">
+    - **General Partnerships (GP)**
+      - **Partnership Agreement**–listing the partners and their respective ownership interests
+      - **Certificate of Partnership**–if the partnership is registered, listing the partners
+      - **Trade Name Registration (DBA)**--including information on the multiple partners
+    - **Limited Partnerships (LP)**
+      - **Certificate of Limited Partnership**–filed with secretary of state or similar government body, naming the general and limited partners
+      - **Limited Partnership Agreement**–detailing the ownership structure, roles, and contributions of each partner
+      - **Schedule of Partners**–listing all partners and their ownership percentages
+      - **K-1 Forms**–issued to partners for tax purposes, showing their share of profits or loss
+    - **Limited Liability Partnership (LLP)**
+      - **Registration of Limited Liability Partnership**–filed with secretary of state or similar government body, listing the partners
+      - **LLP Agreement**–listing the partners and their ownership interests
+      - **K-1 Forms**–for tax filings, indicating the limited partner’s’ share of profits or losses
+  </Accordion>
+  <Accordion title="Corporations">
+    - **Articles of Incorporation**–listing the shareholders
+      - _Note: control persons (directors/officers) listed without shareholders are not sufficient. Please ensure that this document confirms the entity’s shareholders, which are not necessarily one in the same as the entity’s directors, officers, or incorporators_
+    - **Stock Certificates**–issues to shareholders, representing ownership in the corporation
+    - **Shareholder Ledger or Cap Table**– listing all shareholders and their ownership percentages
+    - **Shareholders' Agreement**–listing shareholders and their ownership percentages
+    - **Board Meeting Minutes**–listing shareholders and their ownership percentages
+    - **SEC Filings (for public companies)**--including information on significant shareholders and controlling parties
+    - **K-1 Forms**–provided to shareholders, showing their share of the corporation's profit or loss
+  </Accordion>
+  <Accordion title="Limited Liability Company (LLC)">
+    - **Articles of Organization**–filed with the secretary of state or similar government body, sometimes listing the members (owners)
+    - **Operating Agreement**–detailing the ownership structure, members' contributions, and percentages of ownership interest
+    - **Membership Certificates**–issued to members to represent their ownership interest in the LLC
+    - **Membership Ledger**–internal document tracking all members and their ownership interests
+    - **K-1 Forms**–provided to members, showing their share of the LLC's profit or loss
+    - **IRS 147(c) EIN Letters**–for sole-member LLCs
+  </Accordion>
+  <Accordion title="Nonprofit Organizations">
+    <Info>
+      Nonprofit Organizations usually do not have individual beneficial shareholders. We are required to confirm control person(s) instead.
+    </Info>
+    - **Articles of Incorporation**–filed with the secretary of state or similar government body, listing directors or founders
+    - **Bylaws**–defining the governance structure, listing directors and officers
+    - **Board Meeting Minutes**–documenting decisions and changes in the controlling parties, board members, directors, and officers
+    - **IRS Determination Letter**–confirming the nonprofit's tax-exempt status including details on controlling parties
+    - **Annual Reports**–filed with the secretary of state or similar government body, listing current directors and officers
+  </Accordion>
+  <Accordion title="Foundations">
+    <Info>
+      Foundations usually do not have individual beneficial shareholders. We are required to confirm control person(s) instead.
+    </Info>
+    - **Articles of Incorporation**–filed with the secretary of state or similar government body, listing initial directors or founders
+    - **Trust Documents**–establishing the foundation, listing trustees or board members
+    - **Bylaws**–defining the governance and control structure
+    - **Board Meeting Minutes**–detailing the actions and changes in the foundation's controlling parties
+    - **IRS Determination Letter**–confirming the nonprofit's tax-exempt status including details on controlling parties
+    - **Annual Reports**–filed with the secretary of state or similar government body, listing current directors and officers
+  </Accordion>
+  <Accordion title="Decentralized Autonomous Organizations (DAOs)">
+    - **Membership Agreements**–outlining the ownership percentages of members or token holders
+    - **Voting Records**–documenting decisions and controlling parties based on token voting or other consensus mechanisms
+    - **Other Documents:**
+      - White Paper
+      - Membership or Token Agreement
+      - Governance Framework
+  </Accordion>
+  <Accordion title="Trusts">
+    - **Trust Deed**–establishing the trust and outlining the roles of the trustors, trustees, beneficiaries, and terms of the trust
+    - **Certificate of Trust**–proving the existence of the trust and the trustee's authority
+    - **Notarized Trustee’s Affidavit**–confirming the identity and authority of the trust parties
+  </Accordion>
+  <Accordion title="Cooperatives">
+    - **Articles of Incorporation**–filed with the state, establishing the cooperative listing its members
+    - **Membership Agreement**–outlining the terms of membership, rights, and responsibilities of cooperative members
+    - **Membership Ledger**–listing all members and their ownership stakes or voting rights
+    - **Members’ Meeting Minutes**–documenting decisions made by the members and any changes in membership or control
+    - **Share Certificates (if applicable)**--representing ownership stakes or member contributions in the cooperative
+  </Accordion>
+</AccordionGroup>
+
+\
+**Other Forms of Business Ownership Documents**
+
+<Tip>
+  Use this section as a guide for other potential options to confirm ownership when the other suggested documents are not available or sufficient in order to confirm the individual beneficial ownership of the entity
+</Tip>
+
+- **Ownership Org Charts**–visually detailing complex ownership structures along with the shareholding percentages of each unit
+- **Signed Ownership Attestation Letter**–confirming ultimate individual beneficial owners and their ownership percentages, signed by a Lawyer or third party CPA
+- **Capitalization Table**–listing the names of shareholders and their ownership percentages signed by a Lawyer or third party CPA
+  - Detailed capitalization tables produced by well-known equity management companies such as Carta or Angellist do not require a signature from a Lawyer or third party CPA
