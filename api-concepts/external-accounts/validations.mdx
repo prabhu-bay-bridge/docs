@@ -2,9 +2,9 @@
 title: "External Account Validations"
 ---
 
-# **US External Bank Accounts**
+# 🇺🇸 **US External Bank Accounts**
 
-## **Beneficiary Address Validation**
+## Beneficiary Address Requirements
 
 To ensure addresses meet banking requirements and avoid transaction issues, Bridge applies the following validation rules:
 
@@ -20,42 +20,55 @@ To ensure addresses meet banking requirements and avoid transaction issues, Brid
    Street Line 1: 3–35 characters\
    Street Line 2: Maximum of 35 characters\
    Each formatted address line sent to the bank must not exceed 35 characters (bank imposed restrictions)
-5. Beneficiary Address Validation\
+5. **Formatting**\
    Bridge formats the address into three lines before submission:\
    Line 1: Street Line 1\
    Line 2: Street Line 2\
    Line 3: City, State, Postal Code (and Country if not U.S.)
 
-**Examples**:\
-San Francisco, CA 94105\
-London, England SE10 9NF, United Kingdom
+If **Line 3 exceeds 35 characters**, Bridge automatically shifts words from Line 3 upward into Line 2 (if space allows). If the **country name doesn't fit**, it's abbreviated using a 3-letter ISO-like code (e.g., `"Korea"` → `"Kor"`).
 
-If Line 3 exceeds 35 characters, Bridge automatically attempts to accept the address by shifting leading words upward into line 2, if space allows. The original word order is always preserved. If the country name does not fit on Line 3, we abbreviate it using a three-letter code (e.g., “Korea” → “Kor”)
+## Examples of Automatic Adjustments
 
-**Examples of Bridge Automatic Adjustments (for reference)**
+**❌ Before (Line 3 too long):**
 
-❌ Before (line 3 too long)\
-Street Line 1: "123 really_long_street_name st"\
-Street Line 2: ""\
-City: "my_city_name_is_2_long_2_be_valid"\
-State: "CA"\
-Postal Code: "94105"\
-✅ After (leading word is moved to line 2)\
-Line 1: "123 really_long_street_name st"\
-Line 2: "my_city_name_is_2_long_2_be_valid"\
+```json
+Street Line 1: "123 really_long_street_name st"
+Street Line 2: ""
+City: "my_city_name_is_2_long_2_be_valid"
+State: "CA"
+Postal Code: "94105"
+```
+
+**✅ After:**
+
+```json
+Line 1: "123 really_long_street_name st"
+Line 2: "my_city_name_is_2_long_2_be_valid"
 Line 3: "CA 94105"
+```
 
-❌ Before (line 3 too long)\
-Street Line 1: "123 main st"\
-Street Line 2: "apt 1"\
-City: "my_city_name_is_2_long_2_be_valid"\
-State: "CA"\
-Postal Code: "94105"\
-✅ After (leading words are moved to line 1 & 2)\
-Line 1: "123 main st, apt 1"\
-Line 2: "my_city_name_is_2_long_2_be_valid"\
+**❌ Before (Line 3 too long):**
+
+```json
+Street Line 1: "123 main st"
+Street Line 2: "apt 1"
+City: "my_city_name_is_2_long_2_be_valid"
+State: "CA"
+Postal Code: "94105"
+```
+
+**✅ After:**
+
+```json
+Line 1: "123 main st, apt 1"
+Line 2: "my_city_name_is_2_long_2_be_valid"
 Line 3: "CA 94105"
+```
 
-# **MXN External CLABE Accounts**
+# 🇲🇽 **MXN External CLABE Accounts**
 
-Customer must have the SPEI Endorsement to create a CLABE account.
+To create a CLABE-based external account in Mexico:
+
+- The customer **must have the SPEI Endorsement**
+- SPEI-based accounts without this endorsement will be rejected at creation time
