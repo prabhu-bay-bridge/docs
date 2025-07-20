@@ -1,0 +1,97 @@
+---
+title: "Advanced Transfer Features"
+---
+
+# **Advanced Features**
+
+## **Flexible Amounts**
+
+To create a Transfer that will match any funds sent using the source deposit instructions regardless of amount, use the `flexible_amount` feature.
+
+Because the amount is not known ahead of time, Transfers with the `flexible_amount` feature only support a percentage based `developer_fee_percent`. Flexible amount Transfers do not support setting a fixed `developer_fee`.
+
+**Note:** Static templates have this feature enabled automatically if no amount is provided when they are created.
+
+**Request**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+  "developer_fee_percent": "1.0", // A 1% developer fee
+  "features": {
+    "flexible_amount": true,
+  }
+}'
+```
+
+**Response**
+
+JSON
+
+```
+{
+  "id": "flexible_transfer_789",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd"
+  },
+  "destination": {
+    "payment_rail": "polygon",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef"
+  },
+  "source_deposit_instructions": {
+    // ...Bridge banking details
+    "currency": "usd",
+    "deposit_message": "BVI7depositmessage",
+  },
+ "features": {
+    "flexible_amount": true
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+After Bridge receives funds and matches them to the Transfer, the amount will be included in API responses
+
+JSON
+
+```
+{
+  "id": "flexible_transfer_789",
+  "amount": "1337.0",
+  ...
+}
+```
+
+## **Allow Any From Address**
+
+JSON
+
+```
+"features": {
+  "allow_any_from_address": true,
+}
+```
+
+- By default, Bridge requires the sending address of the wallet sending the funds to be specified upon creating a Transfer.
+- For some use cases like consumer sending funds from an exchange, this is difficult or impossible to know ahead of time.
+- To support these use cases, Bridge has the `allow_any_from_address` feature.
+- If this feature is enabled, no `from_address` needs to be specified at Transfer creation time and any funds sent to the source deposit instructions will be matched regardless of the `from_address`.

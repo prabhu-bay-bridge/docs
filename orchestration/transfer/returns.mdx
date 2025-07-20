@@ -1,0 +1,86 @@
+---
+title: "Returns"
+---
+
+# **Returning Funds via ACH, Wire, and SEPA**
+
+If your customer previously onramped via ACH, Wire, or SEPA, and you would like to return those funds, you can do so by creating a new transfer via the Bridge API. This flow is supported only for returning fiat deposits and is typically used in cases of recalls, refunds, or rejected user activity. Using this API, you can return fiat deposits across any orchestration product, including Transfers and Virtual Accounts.
+
+## **Example: Return funds using a crypto source**
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+  --header 'Api-Key: <API Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "amount": "50.0",
+    "on_behalf_of": "cust_alice",
+    "source": {
+      "payment_rail": "base",
+      "currency": "usdc",
+      "from_address": "0xdeadbeef"
+    },
+    "destination": {
+      "payment_rail": "fiat_deposit_return",
+      "currency": "usd",
+      "deposit_id": "deposit_123"
+    }
+}'
+```
+
+### **How it Works**
+
+- Bridge will return a transfer object with crypto funding instructions.
+- After you send the exact amount of crypto to the provided address, Bridge will initiate a return of fiat funds back to the original sender.
+
+### **Validations**
+
+When calling this endpoint, Bridge enforces the following rules:
+
+| **Constraint**                             | **Description**                                                                                                   |
+| :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| `source.currency`                          | Must be a supported **crypto** (e.g. `usdc`, `usdb`).                                                             |
+| `source.currency` ↔ `destination.currency` | Must be equivalent (e.g. `usdc` → `usd`).                                                                         |
+| `on_behalf_of`                             | Must match the original deposit’s customer ID.                                                                    |
+| `amount`                                   | For **ACH returns**, must match the original deposit amount. For **Wire** and **SEPA**, can be ≤ original amount. |
+| Time window                                | Returns must be initiated **within 60 days** of the original deposit.                                             |
+
+## **Recommended to use a Bridge wallet to fund returns**
+
+> ## **💡We recommend using a Bridge wallet for returns.**
+>
+> For automatically returning deposits, we recommend that you use a Bridge wallet as your funding source. You can fund the Bridge wallet as needed. When you're ready to fund a return, you can use the Bridge wallet as the transfer source
+
+Shell
+
+```
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+  --header 'Api-Key: <API Key>' \
+  --header 'Idempotency-Key: <Unique Idempotency Key>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "amount": "50.0",
+    "on_behalf_of": "cust_alice",
+    "source": {
+      "payment_rail": "bridge_wallet",
+      "currency": "usdb",
+      "bridge_wallet_id": "the-wallet-uuid"
+    },
+    "destination": {
+      "payment_rail": "fiat_deposit_return",
+      "currency": "usd",
+      "deposit_id": "deposit_123"
+    }
+}'
+```
+
+### **Why use a Bridge Wallet?**
+
+- Simplifies automation of return flows
+- Avoids funding delays or incorrect on-chain transfers
+- Lets you pre-fund once and initiate returns programmatically
+
+You can use your own wallet or the wallet belonging to your customer to fund the return.
