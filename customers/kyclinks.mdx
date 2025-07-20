@@ -1,4 +1,144 @@
 ---
 title: "KYC Links for New Customers"
-description: "Description of your new file."
 ---
+
+An alternative to using the [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-api) to KYC/B Customers (both individuals and businesses) is to use [<u>KYC Links</u>](https://apidocs.bridge.xyz/reference/post_kyc-links). KYC Links support individual and business customers from all over the world (US \+ international).
+
+KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the [<u>Customer</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid) is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
+
+There response will contain two different links that will need to be completed:
+
+- `tos_link` will contain a link to Bridge's Terms of Service, which can be seen [<u>here</u>](https://www.bridge.xyz/legal). These terms need to be accepted by the customer before they can be approved.
+- `kyc_link` will contain a link to a hosted KYC/B flow with our partner. Customers will need to go through this flow and submit information to Bridge before they can be approved.
+
+> NOTE: for a business customer use case, please enter the full legal name of the business entity under the `full_name` parameter
+
+To create a KYC Link, use the following endpoint:
+
+```bash Request
+curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "full_name": "John Doe",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business",
+}'
+```
+
+```json Response
+{
+  "id": "kyc_link_uuid",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business"
+  "kyc_link": "persona.com/blah",
+  "tos_link": "bridge.xyz/tos?blah=blah",
+  "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
+  "tos_status": "pending", // or "approved"
+  "created_at": "Wed, 14 Jun 2023 20:44:57.375900000 UTC +00:00"
+}
+```
+
+To create a KYC Link with `Proof-of-Address` step enabled for non-EEA customers, an `endorsements` array field including an element with the value `sepa`can be specified in the request:
+
+```bash
+curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "full_name": "John Doe",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business"
+  "endorsements": ["sepa"]
+}'
+```
+
+You can check the status of your customers kyc_link by using the `GET /v0/kyc_links/:kyc_links_id` endpoint
+
+```bash
+curl --location --request GET 'https://api.bridge.xyz/v0/kyc_links/:kyc_link_id' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+```
+
+This responds with a `kyc_link` object.
+
+```json
+{
+  "id": "kyc_link_uuid",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business"
+  "kyc_link": "persona.com/blah",
+  "tos_link": "bridge.xyz/tos?blah=blah",
+  "kyc_status": "approved",
+  "tos_status": "approved",
+  "created_at": "Wed, 14 Jun 2023 20:44:57.375900000 UTC +00:00",
+  "customer_id": "fa03ab80-2c75-4010-8d2f-224282cf25bf"
+}
+```
+
+When creating a KYC Link, you can optionally provide a `redirect_uri` in the request body that points to the location that your customers should be redirected to once the KYC flow is complete. The API will take that `redirect_uri` and embed it into the KYC Link that gets returned.
+
+To embed a `redirect_uri`in KYC Link, pass in the optional `redirect_uri` in the POST request:
+
+```bash
+curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "full_name": "John Doe",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business",
+  "redirect_uri": "https://bridge.xyz/example"
+}'
+```
+
+This endpoint will respond with:
+
+```json
+{
+  "id": "kyc_link_uuid",
+  "email": "johndoe@johndoe.com",
+  "type": "individual", // or "business"
+  "kyc_link": "persona.com/blah?redirect-uri=https%3A%2F%2Fbridge.xyz%2Fexample",
+  "tos_link": "bridge.xyz/tos?blah=blah",
+  "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
+  "tos_status": "pending", // or "approved"
+  "created_at": "Wed, 14 Jun 2023 20:44:57.375900000 UTC +00:00"
+}
+```
+
+This will result in the customer being redirected to [<u>https://bridge.xyz/example</u>](https://bridge.xyz/example) at the end of the KYC flow.
+
+### **Embedding as an iframe**
+
+You can implement a `kyc_link` by using an iframe, which can then be embedded in a custom modal or page.
+
+There are **2 critical** steps to follow when embedding the KYC link into an Iframe:
+
+- Pass an `iframe-origin` query parameter with the value encoded as the current `window.location.origin`.
+- Replace the sub-path `/verify` with `/widget`.
+
+For help with troubleshooting common issues, please refer to this [<u>article</u>](https://docs.withpersona.com/docs/troubleshooting-common-issues-webview#camera-capture-flows-do-not-show-at-all-or-show-as-fullscreen).
+
+```html
+<iframe
+  allow="camera;"
+  src={
+    `https://bridge.withpersona.com/widget?environment=production&inquiry-template-id={template_id}&fields[iqt_token]={iqt_token}&iframe-origin=${encodeURIComponent(window.location.origin)}`
+    }
+  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation"
+/>
+```
+
+\
+**Turnaround response time**
+
+The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
+
+### **KYC Status Transitions**
+
+All KYC flows for individual customers begin with customers in a `not_started` status. Once the customer has taken any action to begin the KYC process they move into an `incomplete` status. Based on the information provided a customer can then move to `approved`, `rejected`, or `under_review`.
