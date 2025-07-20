@@ -10,7 +10,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
 
 Use the [Create a transfer](ref:post_transfers) endpoint and set `"static_template": true`.
 
-```curl Request
+```curl Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Key>' \
@@ -35,7 +35,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 The response object will contain deposit instructions. You can share these with your customers. Every time your customers send Bridge a deposit with the message `BRGEXAMPLEMEMO`, we will match it to this template, and create a new transfer instance.
 
-```json Response
+```json Response expandable
 {
   "id": "transfer_template_123",
   "state": "awaiting_funds",
@@ -82,7 +82,7 @@ Each time funds match the template (e.g. via SEPA \+ deposit message), Bridge:
 
 Use the template ID to list all matched transfers.
 
-```curl Request
+```curl Request expandable
 curl --request GET \
   --url 'https://api.bridge.xyz/v0/transfers?template_id=transfer_template_123' \
   --header 'Api-Key: <API Key>'
@@ -90,7 +90,7 @@ curl --request GET \
 
 Each resulting transfer instance is represented as a unique transfer object.
 
-```json Response
+```json Response expandable
 {
   "count": 2,
   "data": [

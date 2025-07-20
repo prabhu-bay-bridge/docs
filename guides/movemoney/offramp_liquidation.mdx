@@ -26,7 +26,7 @@ For fiat destinations, you need to first register your customer's external bank 
 
 <Tabs>
   <Tab title="US Bank Account">
-    ```curl Request
+    ```curl Request expandable
     curl --location 'https://api.bridge.xyz/v0/customers/<customer-id>/external_accounts' \
     --header 'Idempotency-Key: ea-7' \
     --header 'Content-Type: application/json' \
@@ -56,7 +56,7 @@ For fiat destinations, you need to first register your customer's external bank 
     }'
     ```
 
-    ```json Response
+    ```json Response expandable
     {
         "id": "039c270f-a038-40be-be7b-43f550ce0678", // external account id
         "customer_id": "23c2d462-4c69-4c5a-b31a-88d035d7e8ae",
@@ -198,7 +198,7 @@ With the liquidation address, you can configure
 - the destination chain, currency, and details you want to send funds to
 - :exclamation:the `return_address` so we know where to send funds to if your customer's transaction fails or is returned by the destination.
 
-```curl Request
+```curl Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -217,7 +217,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_a
 
 You'll get a response containing the blockchain address we've created.
 
-```json Response
+```json Response expandable
 {
     "id": "5ef43832-cb43-4c64-8678-e87c518b364f", // unique Bridge identifier for the liquidation address
     "chain": "ethereum",
@@ -240,7 +240,7 @@ You'll get a response containing the blockchain address we've created.
 
 You also have the option to create a liquidation address with a crypto destination (crypto to crypto)
 
-```curl Request
+```curl Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/liquidation_addresses' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -258,7 +258,7 @@ curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d
 
 The response will contain the crypto address ready to start taking payments.
 
-```json Response
+```json Response expandable
 {
     "id": "24dc5860-c208-4ded-82ad-451cd88c6acd",
     "chain": "ethereum",
@@ -306,14 +306,14 @@ The `state` field tracks the status of each drain through its lifecycle. Here ar
 
 ## Fetching liquidation address drain history
 
-```curl Request
+```curl Request expandable
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/customers/<customer_id>/liquidation_addresses/<liquidation_address_id>/drains' \
      --header 'Api-Key: <Api-Key>' \
      --header 'accept: application/json'
 ```
 
-```json Response
+```json Response expandable
 [
   {
     "id": "drain_123",

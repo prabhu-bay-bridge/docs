@@ -41,7 +41,7 @@ For detailed information, see [Transfers](doc:transfers-2).
 
 Let's create a transfer for an onramp from a USD ACH deposit to a USDC Ethereum address.
 
-```curl Request
+```curl Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -62,7 +62,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "transfer_123",
   "state": "awaiting_funds",
@@ -112,7 +112,7 @@ When Bridge receives the deposit, we'll transition the transfer state to `funds_
 
 You can use the [Get a transfer](ref:get_transfers-transferid) endpoint to fetch the latest Transfer status.
 
-```bash Request
+```bash Request expandable
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/transfer_123' \
      --header 'accept: application/json'
@@ -120,7 +120,7 @@ curl --request GET \
 
 <Tabs>
   <Tab title="Funds received example">
-    ```json Response
+    ```json Response expandable
     {
       "count": 2,
       "data": [
@@ -209,7 +209,7 @@ curl --request GET \
 
 You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](https://apidocs.bridge.xyz/docs/setting-up-webhooks) for more details on setting up webhooks.
 
-```json Example webhook: payment_processed
+```json Example webhook: payment_processed expandable
 {
   "api_version": "v0",
   "event_id": "wh_t8TAhPPYrRV2v8Asi9ed3sw",

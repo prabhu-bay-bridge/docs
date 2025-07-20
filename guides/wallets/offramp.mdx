@@ -18,7 +18,7 @@ Before you start, make sure you have
 
 Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
 
-```curl Request
+```curl Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Key>' \
@@ -43,13 +43,13 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
 
-```curl Request
+```curl Request expandable
 curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
 --header 'Api-Key: <API Key>' \
 --header 'accept: application/json'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "transfer_xyz",
   "state": "payment_processed",

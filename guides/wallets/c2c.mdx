@@ -14,7 +14,7 @@ Bridge wallets are secure, custodial crypto wallets that let you send and receiv
 
 # Step 1: Create a Bridge wallet
 
-```curl Request
+```curl Request expandable
 curl --request POST \
   --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
   --header 'Api-Key: <API Key>' \
@@ -25,7 +25,7 @@ curl --request POST \
   }'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "wallet_123",
   "chain": "solana",
@@ -41,7 +41,7 @@ Note the `id` returned — this is your `bridge_wallet_id`.
 
 Use the [Transfers](ref:transfers) API with `bridge_wallet` as the source.
 
-```curl Request
+```curl Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   --header 'Api-Key: <API Key>' \
   --header 'Idempotency-Key: <Unique Key>' \
@@ -63,7 +63,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   }'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "transfer_abc",
   "amount": "10.0",
@@ -87,7 +87,7 @@ This will initiate a crypto transfer from your Bridge wallet to the specified bl
 
 Use the Transfer ID returned in the response to monitor progress via the [Get a transfer](ref:get_transfers-transferid) endpoint or by listening to webhooks -- learn more at [Setting up webhooks](doc:setting-up-webhooks).
 
-```curl Request
+```curl Request expandable
 curl --request GET \
   --url https://api.bridge.xyz/v0/transfers/<transfer_id> \
   --header 'Api-Key: <API Key>'

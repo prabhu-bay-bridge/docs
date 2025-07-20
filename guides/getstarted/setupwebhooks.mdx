@@ -15,7 +15,7 @@ Bridge webhooks allow you to receive real-time notifications when events occur i
 
 First, create a webhook endpoint using the Bridge API. The webhook will be created in `disabled` state initially.
 
-```curl Request
+```curl Request expandable
 curl -X POST "https://api.bridge.xyz/webhooks" \
   -H "Authorization: Bearer your_bridge_api_key" \
   -H "Content-Type: application/json" \
@@ -25,7 +25,7 @@ curl -X POST "https://api.bridge.xyz/webhooks" \
   }'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "webhook_abc123",
   "status": "disabled",
@@ -45,7 +45,7 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
 
 <Tabs>
   <Tab title="Python">
-    ```python
+    ```python expandable
     from flask import Flask, request, jsonify
     from typing import Dict, Any, Optional, Union
     import json
@@ -148,7 +148,7 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
     ```
   </Tab>
   <Tab title="Typescript">
-    ```typescript
+    ```typescript expandable
     import express, { Request, Response } from 'express';
     import crypto from 'crypto';
     
@@ -255,7 +255,7 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
     ```
   </Tab>
   <Tab title="Ruby">
-    ```ruby
+    ```ruby expandable
     # typed: strict
     require 'sinatra'
     require 'json'
@@ -371,7 +371,7 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
     ```
   </Tab>
   <Tab title="Java">
-    ```java
+    ```java expandable
     import org.springframework.boot.SpringApplication;
     import org.springframework.boot.autoconfigure.SpringBootApplication;
     import org.springframework.web.bind.annotation.*;
@@ -545,7 +545,7 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
     ```
   </Tab>
   <Tab title="Go">
-    ```go
+    ```go expandable
     // Go (Gin)
     package main
     
@@ -693,7 +693,7 @@ Before enabling your webhook, test it to ensure it's working correctly.
 
 ## Send a Test Event
 
-```curl
+```curl expandable
 # Send a test event to your webhook
 curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
   -H "Authorization: Bearer your_bridge_api_key" \
@@ -709,7 +709,7 @@ curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
 
 ## Check Webhook Logs
 
-```curl
+```curl expandable
 # View webhook delivery logs
 curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
   -H "Authorization: Bearer your_bridge_api_key"
@@ -717,7 +717,7 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
 
 ## Get Webhook Events
 
-```curl
+```curl expandable
 # Retrieve upcoming events for the webhook
 curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
   -H "Authorization: Bearer your_bridge_api_key"
@@ -727,14 +727,14 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
 
 Once you've tested your webhook and confirmed it's working, enable it to start receiving live events.
 
-```curl Request
+```curl Request expandable
 curl -X PATCH "https://api.bridge.xyz/webhooks/{webhook_id}" \
   -H "Authorization: Bearer your_bridge_api_key" \
   -H "Content-Type: application/json" \
   -d '{"status": "active"}'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "webhook_abc123",
   "status": "active",
