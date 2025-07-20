@@ -1,5 +1,14 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Core Concepts"
 ---
 
+Below are the core API objects and flows of the Card product.
+
+**API Objects**
+
+| **Object**            | **Description**                                                                                                                                            | **API Reference [todo update links]**                                                                                   |
+| :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| Customer              | Represents an end-user of your product and contains their personal information.<br /><br />Customer objects can be shared across multiple Bridge products. | [<u>link</u>](https://apidocs.bridge.xyz/reference/get_customers)                                                       |
+| Card account          | Represents an account for cards issued to a given customer.<br /><br />As of date, each customer may have only a single card account.                      | [<u>link</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid)                |
+| Pending authorization | Represents a card transaction which has not yet been settled by the network.                                                                               | [<u>link</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) |
+| Transaction           | Represents a card transaction which has been settled by the network.                                                                                       | [<u>link</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-transactions)   |

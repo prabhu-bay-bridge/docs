@@ -1,5 +1,151 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Create and test your first card"
 ---
 
+Creating a card and running your first transaction is the best way to get a feel for the Bridge Cards API. To create your first card you will need to both create a customer and then create a card for them to use.
+
+# **Step 1: Create a customer**
+
+Before issuing a card, you must first onboard a customer. Learn more at [<u>Create your first customer</u>](/guides/getstarted/createcustomer).
+
+# **Step 2: Provision a Card Account**
+
+Once your customer is onboarded, you can create a card account. Each card is tied to a single currency and network. This cannot be changed after creation.
+
+```bash Request expandable
+curl -X POST 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts' \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <API Key>' \
+ --header 'Idempotency-Key: <generate a uuid>' \
+ --data-raw '{
+   "client_reference_id": "test-card-reference-id1",
+   "currency": "usdc",
+   "chain": "solana",
+    "crypto_account": {
+      "type": "bridge_wallet",
+		  "address": "7bHbB8RwQgyNgxXZx8Q2kNzjEkmyv9Kb1DKZa63K3CtB"
+    }
+ }'
+
+```
+
+# **Step 3: View card details**
+
+After provisioning the card, retrieve its details to display to your user. This includes metadata like the BIN, expiration, and a secure `card_image_url` that reveals full card data including CVV and PIN.
+
+```bash Request
+curl --request GET \
+     --url https://api.bridge.xyz/v0/customers/{customer_id}/card_accounts/{card_account_id} \
+     --header 'accept: application/json'
+```
+
+```json Response expandable
+{
+  "id": "XXX-YYY",
+  "status": "active",
+  "card_image_url": "https://...",
+  "card_details": {
+    "last_4": "1264",
+    "expiry": "10/24",
+    "bin": "44325280"
+  },
+  ...
+}
+```
+
+# **Step 4: Create a test transaction**
+
+You can now use your test card with any e-commerce site that accepts cards. We recommend using a known merchant with stable infrastructure.
+
+# **Step 5: Listen for pending transactions**
+
+Track real-time authorizations using the `card_transaction.created` webhook. This gives you a view of authorized but not yet settled transactions.
+
+```json Response expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_tpHJpYMbNCFLDJRVqEhZsEG",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.created",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "approved",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "approved",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "updated_at": "2025-02-04T05:19:25.000Z",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "merchant_category_code": "4121",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {},
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+
+
+```
+
+If you want, you can also fetch pending transactions ad hoc via the following API:
+
+```bash Request
+curl -X POST 'https://api.bridge.xyz/v0/customers/{customerID}/card_accounts/{cardAccountID}/authorizations\
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <API Key>'
+```
+
+# **Step 6: Listen for settled transactions**
+
+Use the `card_transaction.updated.status_transitioned` webhook to track settlement status.
+
+```json expandable
+{
+  "api_version": "v0",
+  "event_id": "wh_txyRrWPzNQWpDKSFo9YVidJ",
+  "event_category": "card_transaction",
+  "event_type": "card_transaction.updated.status_transitioned",
+  "event_object_id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+  "event_object_status": "settled",
+  "event_object": {
+    "id": "77f4381c-a39d-5f6e-a383-0b71007c4f19",
+    "card_account_id": "5a86836d-cee5-44a5-a89b-5957470334b2",
+    "customer_id": "15ff6495-9947-4b18-8b46-319668cbd69a",
+    "amount": "-10.25",
+    "original_amount": "-10.25",
+    "settled_amount": "-10.25",
+    "currency": "usd",
+    "category": "purchase",
+    "status": "settled",
+    "created_at": "2025-02-04T05:19:20.000Z",
+    "authorized_at": "2025-02-04T05:19:25.000Z",
+    "posted_at": "2025-02-06T03:01:30.000Z",
+    "updated_at": "2025-02-06T03:01:30.000Z",
+    "merchant_category_code": "4121",
+    "merchant_name": "ROCKET RIDES",
+    "merchant_location": "SAN FRANCISCO, CAUS",
+    "transaction_description": "ROCKET RIDES 8442613753, CAUS"
+  },
+  "event_object_changes": {
+    "status": ["approved", "settled"],
+    "settled_amount": [null, "-10.25"],
+    “posted_at”: [null, “2025-02-06T03:01:30.000Z”],
+    "updated_at": ["2025-02-04T05:19:25.000Z", "2025-02-06T03:01:30.000Z"],
+  },
+  "event_created_at": "2025-02-04T05:19:20.000Z",
+}
+```
+
+If you want, you can also fetch all settled transactions via the following API:
+
+```bash Request
+curl 'https://api.bridge.xyz/v0/customers/{customerID}/card_accounts/{cardAccountID}/transactions \
+ --header 'Content-Type: application/json' \
+ --header 'Api-Key: <API Key>'
+```
