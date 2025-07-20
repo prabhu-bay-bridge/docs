@@ -221,11 +221,21 @@
             },
             {
                 "tab": "Fees",
-                "groups": []
+                "pages": [
+                    "fees/devfees",
+                    "fees/mins",
+                    "fees/pricing"
+                ]
             },
             {
                 "tab": "Logistics",
-                "groups": []
+                "pages": [
+                    "logistics/cutoffs",
+                    "logistics/support",
+                    "logistics/holidays",
+                    "logistics/faq",
+                    "logistics/trackers"
+                ]
             },
             {
                 "tab": "API reference",
