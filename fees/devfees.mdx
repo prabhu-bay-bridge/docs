@@ -1,5 +1,178 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Developer Fees"
 ---
 
+# **Introduction**
+
+Bridge allows developers to collect **custom, per-transaction fees** from their users. These developer fees are automatically withheld from the customer’s transaction amount and set aside in a ledger reserved for you.
+
+Fees are settled and **paid out monthly** on the 5th of each month to your configured external account. You can use the [<u>Configure a fee External Account</u>](https://apidocs.bridge.xyz/reference/post_developer-fee-external-account)<u> [todo update link]</u> API to configure the external account you want to get paid out in.
+
+<Note>
+  **Fees are optional.** Leaving the developer_fee or developer_fee_percent field blank is treated as a fee of 0.0.
+</Note>
+
+---
+
+# **Transfers**
+
+## **Transfers with fixed amounts**
+
+For transfers with a fixed amount, Bridge supports developer fees expressed in USD (as a fixed decimal amount). You can set `developer_fee` in the [<u>API request</u>](https://apidocs.bridge.xyz/reference/post_transfers)
+
+```bash expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "50.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5", # developer fee
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "external_account_123",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+}'
+```
+
+In this example:
+
+- Customer sends: \$50.00
+- Developer fee withheld: \$0.50
+- Amount delivered to destination: \$49.50
+
+**Examples**
+
+| **Input amount** | **Developer Fee** | **Net to Destination** | **Result** |
+| :--------------- | :---------------- | :--------------------- | :--------- |
+| 99.99            | 0.99              | 99.00                  | ✅ valid    |
+| 21.20            | 5.19              | 16.01                  | ✅ valid    |
+| 5.00             | 5.00              | 0                      | ❌ rejected |
+| 5.00             | 5.01              | -                      | ❌ rejected |
+
+**Validations**
+
+- Currency: `developer_fee` is denominated in USD, not a percentage.
+- Per-Transaction: You specify the fee with each request — allowing full control.
+- Must have sufficient minimum: You cannot deduct more than the total transaction amount. After we deduct the fee, there must be enough for the transaction minimum. Refer [<u>Transaction Minimums</u>](/fees/mins).
+- Precision: Up to 2 decimal places (e.g., 10.99 is valid, 10.999 is not).
+- Destination amount: Always equal to amount - developer_fee.
+- The fee is only valid on transactions where funds are transferred by Bridge (not to Bridge)
+
+## **Transfers with flexible amounts**
+
+When you're creating Transfers with `flexible_amount` enabled, only percentage-based fees are supported via the `developer_fee_percent` field.
+
+```bash expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "on_behalf_of": "cust_alice",
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xdeadbeef",
+  },
+  "developer_fee_percent": "2.0", // A 2% developer fee
+  "features": {
+    "flexible_amount": true,
+  }
+}'
+```
+
+For example:
+
+- Customer sends: \$100.00
+- Developer fee withheld: \$2
+- Amount delivered to destination: \$98
+
+---
+
+# **Virtual Accounts**
+
+When using Virtual Accounts, the exact amount of incoming funds is not known ahead of time. As a result, developer fees must be specified as a percentage, using the `developer_fee_percent` field.
+
+```bash
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "source": {
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "address": "0xDEADBEEF"
+  },
+  "developer_fee_percent": "1.0" // 1%.
+}'
+```
+
+**Validations**
+
+- The fee is always in the source currency.
+- The fee must be less than the customer's transaction amount.
+- The fee has maximum 5 digits of precision, i.e. `0.00119` is allowed, but `0.0000001` is not
+- The fee is optional. If `developer_fee_percent` is blank, then it’s equivalent to the fee being set to `0.0`
+- The fee is only valid on transactions where funds are transferred by Bridge (not to Bridge)
+
+---
+
+# **Liquidation Address**
+
+## **Global default developer fee percent**
+
+To set a global fee that applies to all Liquidation Addresses, use the [<u>developer fees API</u>](https://apidocs.bridge.xyz/reference/post_developer-fees).
+
+```bash
+curl --location --request POST 'https://api.bridge.xyz/v0/developer/fees' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "default_liquidation_address_fee_percent": 0.5,
+}'
+```
+
+In this example:
+
+- If a user deposits \$50.00, they receive \$49.75
+- \$0.25 (0.5%) is credited to the developer's fee ledger
+
+## **Per address developer fee percent**
+
+To override the default for a specific address, include `custom_developer_fee_percent` when [<u>creating a Liquidation Address</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses).
+
+```bash expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <Api-Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "chain": "ethereum",
+  "currency": "usdc",
+  "external_account_id": "ea_alice_bofa"
+  "destination_wire_message": "alice_wire_123"
+  "destination_payment_rail": "wire",
+  "destination_currency": "usd",
+  "custom_developer_fee_percent": "10.2",
+  "created_at": "2023-11-22T21:31:30.515Z",
+  "updated_at": "2023-11-22T21:31:30.515Z"
+}'
+```
+
+<Info>
+  custom_developer_fee_percent must be a positive decimal (e.g., 10.2 means 10.2%).
+</Info>
