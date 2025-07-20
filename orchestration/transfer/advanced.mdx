@@ -2,9 +2,11 @@
 title: "Advanced Transfer Features"
 ---
 
-# **Advanced Features**
+# **Flexible Amounts**
 
-## **Flexible Amounts**
+<Tip>
+  **Highly advised. **We recommend using a flexible amounts to avoid payment validation failures.
+</Tip>
 
 To create a Transfer that will match any funds sent using the source deposit instructions regardless of amount, use the `flexible_amount` feature.
 
@@ -12,11 +14,7 @@ Because the amount is not known ahead of time, Transfers with the `flexible_amou
 
 **Note:** Static templates have this feature enabled automatically if no amount is provided when they are created.
 
-**Request**
-
-Shell
-
-```
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -38,11 +36,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-**Response**
-
-JSON
-
-```
+```json Response expandable
 {
   "id": "flexible_transfer_789",
   "state": "awaiting_funds",
@@ -69,11 +63,9 @@ JSON
 }
 ```
 
-After Bridge receives funds and matches them to the Transfer, the amount will be included in API responses
+After Bridge receives funds and matches them to the Transfer, the amount will be included in API responses.
 
-JSON
-
-```
+```json Response
 {
   "id": "flexible_transfer_789",
   "amount": "1337.0",
@@ -81,14 +73,18 @@ JSON
 }
 ```
 
-## **Allow Any From Address**
+# **Allow Any From Address**
 
-JSON
+<Tip>
+  **Highly advised. **We recommend using this feature especially for crypto deposits. If your customer sends funds from an exchange, they won't be able to control the sending address.
+</Tip>
 
-```
+```bash Request
+...
 "features": {
   "allow_any_from_address": true,
 }
+...
 ```
 
 - By default, Bridge requires the sending address of the wallet sending the funds to be specified upon creating a Transfer.
