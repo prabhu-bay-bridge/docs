@@ -1,0 +1,75 @@
+---
+title: "Link a bank account with Plaid Link"
+---
+
+# **Plaid Link**
+
+Integrating with [**Plaid Link** ](https://plaid.com/docs/link/)allows your users to connect their financial accounts via Bridge. This flow enables ACH and wire money movement through linked bank accounts.
+
+# Overview of the Flow
+
+1. **Request a Plaid Link Token** from Bridge
+2. **Initialize the Plaid Link SDK** in your frontend using the `link_token`
+3. **Exchange the Plaid Public Token** back to Bridge
+4. Bridge **fetches and creates External Accounts** for linked bank accounts
+5. **Retrieve External Accounts** to initiate Transfers, Liquidation Addresses, etc.
+
+# Step-by-Step Integration
+
+<Steps>
+  <Step title="First request a link_token">
+    ```bash Request
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers/{customer_id}/plaid_link_requests' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    ```
+
+    ```json Response
+    {
+      "link_token": "plaid_link_token_123",
+      "link_token_expires_at": "2023-03-23T03:22:34.086Z",
+      "callback_url": "https://api.bridge.xyz/v0/plaid_exchange_public_token/{uuid}"
+    }
+    ```
+  </Step>
+  <Step title="Initialize the Plaid SDK">
+    Start the Plaid Link SDK using the `link_token` obtained from the initial request. Include an `onSuccess` callback to the endpoint provided in the `callback_url` field. To enhance security, we strongly advise initiating the Bridge endpoint call from the server side to prevent exposure of your API key.
+
+    Once the `public_token` has been successfully exchanged, the external accounts are created and stored **asynchronously**. It may take a few minutes for those external accounts to be reflected for the customer.
+
+    ```bash Request
+    curl --location --request POST 'https://api.bridge.xyz/v0/plaid_exchange_public_token/plaid_link_token_123' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --data-raw '{
+          public_token: "plaid_public_token_456",
+        }
+    }
+    ```
+
+    ```json Response
+    {
+      "message": "Successfully Exchanged the Public Token."
+    }
+    ```
+  </Step>
+  <Step title="Fetch Plaid linked bank accounts ">
+    After successfully exchanging the public token, Bridge will fetch all of the linked bank accounts from Plaid. This process normally takes a few seconds. Afterwards you can read from Bridge's external accounts endpoint to fetch the customer's newly linked external accounts
+
+    ```bash Request
+    curl --request GET \
+      --url https://api.bridge.xyz/v0/customers/{customerID}/external_accounts \
+      --header 'Api-Key: <api-key>'
+    ```
+  </Step>
+</Steps>
+
+# WebView & Bank Limitations
+
+- **WebView support is deprecated** for certain banks. See [Plaid's WebView recommendations](https://plaid.docsend.com/view/h3qdupjusiwyjvv5?utm_source=product&utm_medium=p2&utm_campaign=2023_04_product_all_p2_chase_inprocess_deprecation_1&utm_term=us_can_eu_uk&utm_content=api_docs&mkt_tok=NDk1LVdSRS01NjEAAAGLLs_Qn6Y7E3wrrQO1CqOlBpruQWox_UmouirHPa3MltCum43qNbR9nS7gWSa6kM63HnuhssBFTYHJhzRP2pFl6G979XUn33pK_QGfgGxNKcoieg).
+- **Wire support is limited**:
+  - **Chase**: ACH only (wire support in progress)
+  - **Bank of America**: ACH only
+
+If you need wire capabilities for these institutions, use the **Bridge API directly** to create external accounts instead of relying solely on Plaid.
