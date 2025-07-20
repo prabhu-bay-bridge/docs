@@ -238,7 +238,7 @@ You'll get a response containing the blockchain address we've created.
 
 # Routing crypto deposits to a crypto destination
 
-## Create a liquidation address with a crypto destination (crypto to crypto)
+You also have the option to create a liquidation address with a crypto destination (crypto to crypto)
 
 ```curl Request
 curl --location 'https://api.bridge.xyz/v0/customers/23c2d462-4c69-4c5a-b31a-88d035d7e8ae/liquidation_addresses' \
@@ -279,14 +279,14 @@ The response will contain the crypto address ready to start taking payments.
 
 # Monitoring liquidation address payments
 
-# Drain History
+## Drain History
 
 When funds are deposited to a Liquidation Address, Bridge automatically “drains” those funds—converting and forwarding them to the configured destination. Each drain operation creates a **Drain Record**, which reflects the lifecycle of that individual payment.
 
 - You can retrieve the full drain history for a given liquidation address using the [Get drain history of a liquidation address](ref:get-drain-history-of-a-liquidation-address) endpoint.
 - Bridge will also send you a **real time webhook** for new drains and state changes.
 
-# Drain States
+## Drain States
 
 The `state` field tracks the status of each drain through its lifecycle. Here are the possible values:
 
@@ -302,9 +302,9 @@ The `state` field tracks the status of each drain through its lifecycle. Here ar
 | `error`             | A system or network issue prevented processing. Manual intervention may be required.                                                      |
 | `canceled`          | The payment was canceled before submission—usually due to AML/EFE review or because it did not meet the minimum transfer threshold.       |
 
-> Drains can only move forward (funds_received → payment_submitted → payment_processed) and cannot go backward.
+> Drains can only move forward (`funds_received` → `payment_submitted` → `payment_processed`) and cannot go backward.
 
-# Fetching liquidation address drain history
+## Fetching liquidation address drain history
 
 ```curl Request
 curl --request GET \
