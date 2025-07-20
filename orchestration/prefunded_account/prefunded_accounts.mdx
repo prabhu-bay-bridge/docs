@@ -2,18 +2,17 @@
 title: "Prefunded Accounts"
 ---
 
-Prefunded Accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Currently, Prefunded Accounts support USD.
+Prefunded accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Prefunded accounts currently only support USD.
 
 # **Funding a Prefunded Account**
 
-The currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account. In order to add funds to a Prefunded Account, it can be set as the destination of a Transfer.
+The destination currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account. 
 
-Prefunded Accounts can be funded using the Transfers API:
+## Funding via Transfer API
 
-Shell
+In order to add funds to a Prefunded Account, it can be set as the destination of a Transfer.
 
-```
-// REQUEST
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -35,12 +34,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-Prefunded Accounts can also be funded using a Liquidation Address:
+## Funding via Liquidation Address API
 
-Shell
-
-```
-// REQUEST
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID>/liquidation_addresses' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -55,14 +51,11 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID
 }
 ```
 
-## **Using Prefunded Accounts for Instant Onramps**
+# **Using Prefunded Accounts for Instant Onramps**
 
-Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD.
+Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD. 
 
-Shell
-
-```
-// REQUEST
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -84,10 +77,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-Shell
-
-```
-// RESPONSE
+```json Response expandable
 {
   "id": "tr_123456",
   "state": "in_review",
