@@ -1,5 +1,251 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "USDB"
+description: "Bridge's Treasury Backed Stablecoin"
 ---
 
+USDB is a stablecoin issued and managed by Bridge. **USDB is always backed 1:1 by the equivalent value of US dollars.** USDB can be exchanged to and from most stablecoins or fiat using Bridge Orchestration APIs. 
+
+Onboarding is easy - just switch any stablecoin to `USDB` in your API calls.
+
+When you or your end users want to swap in and out of USDB we just use our orchestration API endpoints: [Transfers](/orchestration/transfer/transfer), [Virtual Accounts](/guides/movemoney/virtualaccounts), and [Liquidation Addresses](/orchestration/liquidation_address/liquidation_address).
+
+# **Interacting with USDB**
+
+## **Swapping to USDB**
+
+To swap from fiat or other stablecoins to USDB, you can use the [Transfers](/orchestration/transfer/transfer) API.
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "destination": {
+    "payment_rail": "solana",
+    "currency": "usdb",
+    "to_address": "0xtodeadbeef",
+  },
+}'
+```
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "destination": {
+    "payment_rail": "solana",
+    "currency": "usdb",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+## **Swapping from USDB to Fiat**
+
+If you want to convert `USDB` to fiat, you can issue an API call like this:
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "usdb",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "840ac7f3-555d-49ff-8128-28709afff2a6",
+  },
+}'
+```
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "ethereum",
+    "currency": "xusd",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "to_address": "840ac7f3-555d-49ff-8128-28709afff2a6"
+  },
+  "source_deposit_instructions": {
+    "payment_rail": "solana",
+    "amount": "10.0",
+    "currency": "usdb",
+    "from_address": "0xfromdeadbeef",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+## **Swapping from USDB to other stablecoins**
+
+If you want to convert `USDB` to other stablecoins, like `USDC`, you can issue an API call like this:
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "usdb",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xtodeadbeef",
+  },
+}'
+```
+
+```json Response expandable
+{
+  "id": "transfer_123",
+  "state": "awaiting_funds",
+  "on_behalf_of": "cust_alice",
+  "amount": "10.0",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "solana",
+    "currency": "usdb",
+    "from_address": "0xfromdeadbeef"
+  },
+  "destination": {
+    "payment_rail": "ethereum",
+    "currency": "usdc",
+    "to_address": "0xtodeadbeef"
+  },
+  "source_deposit_instructions": {
+    "payment_rail": "ethereum",
+    "amount": "10.0",
+    "currency": "xusd",
+    "from_address": "0xfromdeadbeef",
+    "to_address": "0xtodeadbeef"
+  },
+  "receipt": {
+    "initial_amount": "10.0",
+    "developer_fee": "0.5",
+    "exchange_fee": "0.0",
+    "gas_fee": "0.0",
+    "subtotal_amount": "9.5",
+    "final_amount": "9.5",
+  },
+  "created_at": "2023-05-05T19:39:14.316Z",
+  "updated_at": "2023-05-05T19:39:15.231Z"
+}
+```
+
+# **Reporting and Transparency**
+
+We provide the following types of reports:
+
+- **Real time**: API endpoints that show:
+  - total circulating supply of USDB and
+  - underlying reserve assets that back USDB
+- **Monthly**: Summary of transaction activity, balances and earnings delivered by the 5th day of the month.
+- **Quarterly**: Attestations of our tokens and rewards by an independent third party.
+
+## **Circulating Token Supply**
+
+The total circulating supply of USDB.
+
+```bash Request
+curl --request GET 'https://api.bridge.xyz/v0/transparency/xUSD/supply' \ 
+     --header 'Content-Type: application/json' \ 
+     --header 'Api-Key: <your api key>
+```
+
+```json Response
+{
+  "supply": [
+    {
+      "chain": "solana",
+      "currency": "usdb",
+      "amount": "2.0"
+    }]
+}
+```
+
+### **Reserve Assets**
+
+The reserve asset (mix of cash and treasuries) that back USDB.
+
+```bash Request
+curl --request GET 'https://api.bridge.xyz/v0/transparency/xUSD/reserves' \     
+     --header 'Content-Type: application/json' \ 
+     --header 'Api-Key: <your api key>'
+```
+
+```json Response expandable
+{
+  "accounts": [
+    {
+      "asset_class": "cash",
+      "currency": "usd",
+      "amount": "1.0"
+    },
+    {
+      "asset_class": "managed_money_market",
+      "currency": "usd",
+      "amount": "1.0"
+    }
+  ]
+}
+```
+
+If you would like to use `USDB`reach out to [<u>sales@bridge.xyz</u>](mailto:sales@bridge.xyz)[<u>.</u>](mailto:sales@bridge.xyz.)
