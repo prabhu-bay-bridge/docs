@@ -1,5 +1,5 @@
 ---
-title: "Onramp stablecoins using Bridge Wallet & Virtual Account"
+title: "Onramp to stablecoins using virtual accounts"
 ---
 
 This guide walks you through creating a crypto wallet for a customer, then linking it to a virtual account so fiat deposits (e.g. ACH, SEPA) are automatically converted and delivered to the wallet as stablecoins.
@@ -12,9 +12,7 @@ This guide walks you through creating a crypto wallet for a customer, then linki
 
 Create a new Bridge-managed crypto wallet for your customer. This wallet will hold funds (e.g. USDB) and can earn yield.
 
-**Request**
-
-```curl
+```curl Request
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
      --header 'Api-Key: <API Key>' \
@@ -25,9 +23,7 @@ curl --request POST \
      }'
 ```
 
-**Response**
-
-```json
+```json Response
 {
   "id": "wallet_abc123",
   "chain": "solana",
@@ -36,15 +32,15 @@ curl --request POST \
 }
 ```
 
-:bulb:Use the bridge_wallet_id (wallet_abc123 above) when referencing the wallet in other Bridge APIs.
+<Note>
+  Use the `bridge_wallet_id` (wallet_abc123 above) when referencing the wallet in other Bridge APIs.
+</Note>
 
 # Step 2: Create a virtual account that onramps to the wallet
 
 Now, link the wallet to a virtual account. Any fiat deposits into the account will be automatically converted to USDB and delivered to the wallet.
 
-**Request**
-
-```curl
+```curl Request
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts \
      --header 'Api-Key: <API Key>' \
@@ -62,9 +58,7 @@ curl --request POST \
      }'
 ```
 
-**Response**
-
-```json
+```json Response
 {
   "id": "va_123",
   "status": "activated",
@@ -97,18 +91,14 @@ Share the virtual account details (account and routing number) with your custome
 
 Use this API to check wallet balances and confirm the funds have landed.
 
-**Request**
-
-```curl
+```curl Request
 curl --request GET  
      --url <https://api.bridge.xyz/v0/customers/customerId/wallets/walletId>  
      --header 'Api-Key: <API Key>'  
      --header 'accept: application/json'
 ```
 
-**Response**
-
-```json
+```json Response
 {  
   "id": "uuid",  
   "chain": "solana",  

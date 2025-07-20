@@ -6,7 +6,7 @@ This guide walks you through how to offramp funds from a Bridge-managed wallet t
 
 # Prerequisites
 
-Before you start:
+Before you start, make sure you have
 
 - A Bridge wallet with sufficient balance
 - A verified customer (via KYC or business onboarding)
@@ -18,9 +18,7 @@ Before you start:
 
 Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
 
-**Request**
-
-```curl
+```curl Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Key>' \
@@ -45,17 +43,13 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
 
-**Request**
-
-```curl
+```curl Request
 curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
 --header 'Api-Key: <API Key>' \
 --header 'accept: application/json'
 ```
 
-**Response**
-
-```json
+```json Response
 {
   "id": "transfer_xyz",
   "state": "payment_processed",
@@ -78,7 +72,7 @@ Common states:
 
 # Related Docs
 
-- [Transfers](doc:transfers-2)
-- [External Accounts](doc:external-accounts)
-- [Wallets](doc:custodial-wallets)
-- [Setting up webhooks](doc:setting-up-webhooks)
+- [Transfers](/orchestration/transfer/transfer)
+- [External Accounts](doc:external-accounts) [todo update link]
+- [Wallets](doc:custodial-wallets) [todo update link]
+- [Setting up webhooks](/guides/getstarted/setupwebhooks)
