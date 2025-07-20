@@ -11,3 +11,276 @@ If Bridge is able to validate the information, the customer will receive KYC app
 If certain information was invalid or missing, the customer object will return the appropriate KYC status, endorsement status, and [<u>endorsement requirements</u>](https://apidocs.bridge.xyz/docs/endorsements#endorsement-requirements).
 
 After obtaining a `signed_agreement_id` (details here: [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service)), you can now use the [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-1) to create customers as follows.
+
+# **Individual customer creation**
+
+You can use the following endpoint.
+
+<Tabs>
+  <Tab title="US based customer">
+    ```bash expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "email@example.com",
+      "residential_address": {
+        "street_line_1": "123 Main St",
+        "city": "New York City",
+        "subdivision": "New York",
+        "postal_code": "10001",
+        "country": "USA"
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "identifying_information": [
+        {
+          "type": "ssn",
+          "issuing_country": "usa",
+          "number": "xxx-xx-xxxx"
+        },
+        {
+          "type": "drivers_license",
+          "issuing_country": "usa",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+          "image_back": "data:image/jpg;base64,..."
+        }
+      ]
+    }
+    ```
+  </Tab>
+  <Tab title="International customer">
+    ```bash expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "johndoe@johndoe.com",
+      "phone": "+12223334444",
+      "residential_address": {
+        "street_line_1": "Juncal 2091",
+        "street_line_2": "B1648",
+        "city": "Tigre",
+        "state": "B", // ISO 3166-2 Subdivision code without the country prefix
+        "postal_code": "B7000",
+        "country": "ARG" // ISO 3166-1 alpha3 Country code
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "employment_status": "employed",
+      "expected_monthly_payments": "5000_9999",
+      "acting_as_intermediary": "no",
+      "most_recent_occupation": "291291",
+      "account_purpose": "purchase_goods_and_services",
+      "account_purpose_other": null,
+      "source_of_funds": "salary",
+      "identifying_information": [
+        {
+          "type": "passport",
+          "issuing_country": "arg",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+          "image_back": "data:image/jpg;base64,..."
+        }
+      ]
+    }
+    
+    ```
+  </Tab>
+  <Tab title="EEA customer">
+    ```bash expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "email@example.com",
+      "residential_address": {
+        "street_line_1": "80 Queens Road",
+        "street_line_2": "Suite 3B",
+        "city": "Manchester",
+        "subdivision": "MAN", // ISO 3166-2 Subdivision code without the country prefix
+        "postal_code": "M1 1AE",
+        "country": "GBR" // ISO 3166-1 alpha3 Country code
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "identifying_information": [
+        {
+          "type": "passport",
+          "issuing_country": "gbr",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+        }
+      ],
+      "documents": [
+        {
+          "purposes": [
+            "proof_of_address"
+          ],
+          "file": "data:image/jpg;base64,..."
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Note: `proof_of_address_document` may be required for individual customers from `European Economic Area (EEA)`, or customers who wish to use SEPA/Euro services offered by Bridge, if conflicting location signals are detected. Please refer to [<u>SEPA/Euro Transactions</u>](https://apidocs.bridge.xyz/docs/sepa-euro-transactions) page for details.
+
+For international customers, submit an [<u>ISO 3166-1 alpha-3</u>](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) country code and an [<u>ISO 3166-2 subdivision code</u>](https://en.wikipedia.org/wiki/ISO_3166-2:AR) (minus the country prefix) for the state. So for the above example, `GB-MAN` is the code, but just `MAN` is submitted.
+
+# **Business customer creation**
+
+```bash expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "type": "business",	
+  "registered_address": {
+    street_line_1: "123 Main St",
+    city: "New York City",
+    subdivision: "New York",
+    postal_code: "10001",
+    country: "USA",
+  },
+  "business_type": "corporation",
+  "business_industry": "1153",
+  "compliance_screening_explanation": "Ut similique dolores quo.",
+  "business_description": "A business",
+  "email": "team@business.co",
+  "is_dao": false,
+  "is_high_risk": false,
+  "business_legal_name": "My Business",
+  "has_material_intermediary_ownership": false,
+  "service_usage_description": "Description",
+  "signed_agreement_id": "7262662f-6622-46d1-9ac1-0e840d78598f",
+  "estimated_annual_revenue_usd": "250000000_plus",
+  "expected_monthly_payments_usd": 101307,
+  "operates_in_prohibited_countries": "no",
+  "account_purpose": "receive_payments_for_goods_and_services",
+  "account_purpose_other": null,
+  "high_risk_activities": [
+    "none_of_the_above"
+  ],
+  "source_of_funds": "business_loans",
+  "source_of_funds_description": "Minima aperiam cum aut.",
+  "conducts_money_services": true,
+  "conducts_money_services_using_bridge": true,
+  identifying_information: [
+    {
+      type: "ein",
+      issuing_country: "usa",
+      number: "xxx-xx-xxxx",
+    },
+  ],
+  documents: [
+    {
+      purposes: ["statement_of_funds"],
+      file: "data:image/jpg;base64,...",
+    },
+    {
+      purposes: ["flow_of_funds"],
+      file: "data:image/jpg;base64,...",
+    },
+    {
+      purposes: ["ownership_document", "proof_of_address_document"],
+      file: "data:image/jpg;base64,...",
+    },
+    {
+      purposes: ["formation_document"],
+      file: "data:image/jpg;base64,...",
+    },
+  ],
+  "ultimate_beneficial_owners": [
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "birth_date": "1990-01-01",
+      "email": "john.doe@gmail.com",
+      "phone": "1234567890",
+      identifying_information: [
+        {
+          type: "ssn",
+          issuing_country: "usa",
+          number: "xxx-xx-xxxx",
+        },
+        {
+          type: "drivers_license",
+          issuing_country: "usa",
+          number: "xxxxxxxxxxxxx",
+          image_front: "data:image/jpg;base64,...",
+          image_back: "data:image/jpg;base64,...",
+        },
+      ],
+      documents: [
+        {
+          purposes: ["proof_of_address"],
+          file: "data:image/jpg;base64,...",
+        },
+      ],
+      "address": {
+        "street_line_1": "1482 Brock Walk",
+        "street_line_2": "Suite 927",
+        "city": "Lake Shirley",
+        "subdivision": null,
+        "postal_code": null,
+        "country": "BVT"
+      },
+      "has_ownership": true,
+      "ownership_percentage": "25",
+      "is_director": true,
+      "has_control": true,
+      "is_signer": true,
+      "title": "CEO",
+      "relationship_established_at": "2015-01-01",
+    }
+  ],
+  "primary_website": "http://google.com"
+}
+```
+
+# **Customer status**
+
+Upon customer creation, Bridge will review the submitted customer information and return statuses for both overall KYC (`kyc_status`) as well as a status for each requested endorsement (e.g. `base`, the endorsement for US rails, will have its own `status`). Bridge recommends using **both** `kyc_status`and endorsement `status` to determine the customer's ability to use the Bridge platform.
+
+## **KYC status**
+
+Upon customer creation, Bridge will review all KYCs for the customer and return a `status` field that denotes the KYC status (as applicable) for the user (example KYC statuses include `not_started`, `active`, or `rejected`). The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
+
+```json Response
+// 201 CREATED
+{
+  "id": "cust_john_uuid",
+  "first_name": "John",
+  "kyc_status": "not_started",
+  // ...
+  "requirements_due": [
+    "external_account" // Customer needs to register their bank account with Bridge
+  ],
+  "created_at": "Thu, 04 May 2023 15:40:40.832827000 UTC +00:00",
+  "updated_at": "Thu, 04 May 2023 15:40:40.832827000 UTC +00:00"
+}
+```
+
+While KYC generally works quickly, there are edge cases that are important to account for. Here are a few examples of how the KYC status of a customer could progress:
+
+- `not_started` -\> `active`
+  - This is our happy path for individual customers. The customer information was submitted, and quickly passed via automated checks within seconds.
+- `not_started` -\> `under_review` -\> `approved/rejected`
+  - All business customers and some individual customers may require the Bridge Compliance team to do due diligence of vetting customers manually before the reach a terminal status.
+- `not_started` -\> `rejected`
