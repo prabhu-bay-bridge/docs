@@ -1,5 +1,94 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Customizing card art"
 ---
 
+# **Overview**
+
+Developers can customize the card art for the virtual in-app card, as well as for mobile wallets (Apple Pay and Google Pay). Card art is subject to bank partner and Visa approval. Please reach out to your Bridge program manager to get the latest version of our guidelines.
+
+## **Mobile Wallet**
+
+Card art must fit within certain specifications and requires approval from Visa, the digital wallet provider (Google Pay and Apple Pay), and the issuing bank.
+
+1. **Mobile Wallet Card Design**
+
+Create two templates for the Mobile Wallet card:
+
+- One blank template (with your logo and card network logo)
+- One template with the last four of the PAN populated
+
+**Requirements:**
+
+- PNG format
+- 1536 x 969 pixels
+- Image must include your logo and card network logo
+  - Please add “DEBIT” above the Visa logo in all CAPS. Use at least 11-point type, maintain a clear space of 3.0mm above the Visa Brand Mark
+- Image _must not_ contain these elements:
+  - Embossed attributes
+  - Transparency overlays
+  - Magstripe
+  - EMV chip faceplate or contacts
+  - Hologram
+  - Rounded corners
+  - Shading or three-dimensional effects
+  - Labels for "Member since," expiry date, or cardholder name
+  - Miniature BIN under the PAN
+  - White or other color background behind the image
+- Specify RGB values (255, 255, 255) for when the image cannot be rendered:
+  - Card background, when the image cannot be rendered
+  - Foreground, for the last four digits of the PAN
+  - Label, for text on the front of the card
+
+2. **Mobile Wallet App Icon**
+
+This is used for push notifications in the wallet to identify your program for transaction data.
+
+- PNG format
+- 100 x 100 pixels
+
+3. **Short description of the program**
+
+This will be your company/product name, which will be displayed in the wallet and used for push notifications.
+
+- 32 characters max
+
+## **Virtual Card - In App and Web**
+
+**Digital card design**
+
+This is the card art that will show up in your app. Unlike a physical card, a digital card has only one side, which displays the cardholder name, PAN, expiry, and CVV or CVC, as well as the chosen artwork. For virtual cards, follow these instructions to create the card template:
+
+1. Create two templates for the digital card:
+   1. One blank template
+   2. One template with all information populated: PAN, expiry, and CVV or CVC
+2. Once you have designed the templates, submit to Bridge for compliance approval
+
+**_Blank card template:_**
+
+![aa4d859c3d2663cc5768a2fcd77d7f0dde5aa2d53c27dd0204749676fd1452ab-Bridge_Card_Art_Default\_.jpg](/images/aa4d859c3d2663cc5768a2fcd77d7f0dde5aa2d53c27dd0204749676fd1452ab-Bridge_Card_Art_Default_.jpg)
+
+**_Card image with full PAN, name, expiry, and CVV:_**
+
+![ad3aab26757db4b504d5b7de8cb7b1fccbfc4d6c1ff220681344ef0778431441-Bridge_Card_Art_Default\_-\_completed\_.jpg](/images/ad3aab26757db4b504d5b7de8cb7b1fccbfc4d6c1ff220681344ef0778431441-Bridge_Card_Art_Default_-_completed_.jpg)
+
+**A digital card template must fulfill these requirements:**
+
+- JPG or PNG file format (PNG is preferred)
+- 500 x 315 pixels
+- A label and space for the expiration date
+- A label and space for the CVV or CVC
+- Horizontal orientation
+
+**Additional card elements that can be configured:**
+
+- Font – Galileo offers a variety of fonts. See [<u>Supported Fonts</u>](https://docs.galileo-ft.com/pro/page/supported-fonts) for the list
+- Font color
+- Font size
+- Lower-case letters and font mixing are not supported
+- X/Y coordinates for data elements
+- Spaces to use in between each card number chunk
+
+**Note:**
+
+- For MVP, we will render the image of the card above in the app
+- As a fast follow in H1 2025, we will enable developers to create more customized ways to reveal sensitive card data (e.g., tap to reveal, copy details, etc)
