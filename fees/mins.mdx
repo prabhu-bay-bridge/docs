@@ -1,5 +1,39 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Transaction Minimums"
 ---
 
+Depending on the currency and rail, we will expect a minimum transaction amount. This is to ensure usability of funds, avoid dust, and cover associated blockchain or liquidity costs.
+
+# **How minimums are calculated**
+
+<Note>
+  **❗️Minimums are enforced after developer fees are deducted**
+
+  For example, a \$1 deposit into a Virtual Account with a 1% developer fee would result in a net amount of \$0.99, which falls below the threshold.
+</Note>
+
+**By default:**
+
+- For fiat, the default minimum is 1 unit (i.e. \$1) unless overridden by the logic below
+- For stablecoins, the minimum is typically 1 unit unless otherwise specified.
+- For non-stablecoins, the default minimum is 2 units unless overridden by the logic below
+
+Note that if more than one condition is met, the finalized minimum will be the max of the applicable adjusted minimum amounts.
+
+| **Condition**                                                                             | **Adjusted Minimum Amount** |
+| :---------------------------------------------------------------------------------------- | :-------------------------- |
+| Source or destination currency is DAI, USDT, BTC, or ETH                                  | 2 units                     |
+| Destination currency is ETH on Ethereum, BTC on Bitcoin, DAI on Ethereum, or UDST on Tron | 20 units                    |
+| Source payment rail is Tron                                                               | 5 units                     |
+| Source currency is MXN                                                                    | 50 MXN                      |
+| Destination currency is MXN                                                               | 2 units                     |
+
+# **Transaction Minimum Calculator**
+
+<iframe width="100%" height="550" src="https://transaction-minimum-calculator-65802bf8a1d8.herokuapp.com/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true" />
+
+# **Handling Dust**
+
+Deposits below the required transaction minimum (commonly referred to as dust) will not be credited or returned. This is standard practice, as the cost of returning such small amounts often exceeds their value.
+
+We recommend always verifying the sending minimums listed in the table above before initiating a deposit, especially for cryptocurrency transactions.
