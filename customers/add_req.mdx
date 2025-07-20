@@ -1,6 +1,5 @@
 ---
 title: "Additional Requirements for Existing Customers"
-description: "Description of your new file."
 ---
 
 There will be situations where Bridge may require additional customer information for a given customer.
@@ -11,21 +10,15 @@ For example, we offer the option to create restricted US customers who do not ne
 
 A KYC Link can be requested for an existing customer to provide additional KYC information required by certain products or services offered by Bridge.
 
-To request a KYC Link, use the following endpoint:
+To request a KYC Link:
 
-Shell
-
-```
+```bash Request
 curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/kyc_link' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>'
 ```
 
-This endpoint will respond with:
-
-JSON
-
-```
+```json Response
 {
   "url": "https://bridge.withpersona.com/verify?inquiry-template-id=itmpl_NtIXpb9AbEYCPxGo5iRbc9d2&reference-id=75d2f259-6810-4cde-a9b9-83eca42b0ebf"
 }
@@ -33,9 +26,7 @@ JSON
 
 To enable an existing customer to use the `SEPA`/`Euro` services, users may be required to provide `proof of address`depending on where their government identification is from . An additional parameter, `endorsement=sepa`, can be included to request a KYC link with this specific step enabled in the flow.
 
-Shell
-
-```
+```bash Request
 curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/kyc_link?endorsement=sepa' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>'
@@ -47,18 +38,12 @@ Please reference our [<u>KYC Link API</u>](https://apidocs.bridge.xyz/reference/
 
 Bridge launched a new version on `4/14/2024`. Its acceptance is required for using the SEPA/Euro services. For an existing customer, a `GET` request can be issued to this endpoint to retrieve a ToS acceptance link to accept the new version.
 
-Shell
-
-```
+```bash Request
 curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/tos_acceptance_link' \
 --header 'Api-Key: <API Key>'
 ```
 
-This endpoint will return a response like the following:
-
-JSON
-
-```
+```json Response
 {
   "url": "https://dashboard.bridge.xyz/accept-terms-of-service?email=sage%40blick-mayer.example&t=74ea7c13-2b52-5073-bd12-6879f92b88dd"
 }
