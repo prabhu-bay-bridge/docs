@@ -3,9 +3,9 @@
     "theme": "mint",
     "name": "Bridge",
     "colors": {
-      "primary": "#16A34A",
-      "light": "#07C983",
-      "dark": "#15803D"
+        "primary": "#16A34A",
+        "light": "#07C983",
+        "dark": "#15803D"
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
@@ -135,11 +135,11 @@
                     {
                         "group": "Overview",
                         "pages": [
-                          "cards/overview/overview",
-                          "cards/overview/concepts",
-                          "cards/overview/guide",
-                          "cards/overview/advanced",
-                          "cards/overview/webhooks"
+                            "cards/overview/overview",
+                            "cards/overview/concepts",
+                            "cards/overview/guide",
+                            "cards/overview/advanced",
+                            "cards/overview/webhooks"
                         ]
                     },
                     {
@@ -164,7 +164,30 @@
             },
             {
                 "tab": "API Concepts",
-                "groups": []
+                "groups": [
+                    {
+                        "group": "API Concepts",
+                        "pages": [
+                            "api-concepts/concepts/precision",
+                            "api-concepts/concepts/receipts"
+                        ]
+                    },
+                    {
+                        "group": "External Accounts",
+                        "pages": [
+                            "api-concepts/external-accounts/linking",
+                            "api-concepts/external-accounts/validations"
+                        ]
+                    },
+                    {
+                        "group": "Webhooks",
+                        "pages": [
+                            "api-concepts/webhooks/overview",
+                            "api-concepts/webhooks/signature",
+                            "api-concepts/webhooks/structure"
+                        ]
+                    }
+                ]
             },
             {
                 "tab": "Compliance",
