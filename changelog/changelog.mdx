@@ -1,0 +1,72 @@
+---
+title: "Changelog"
+---
+
+# Updates
+
+<Update label="07/20/2025" description="">
+  **Handling Proof of Address Requests**
+
+  We will be more consistently requesting <u>proof of address</u> when we detect conflicting location signals in a user's KYC/KYB.
+
+  If using the API, you can tell if a customer needs to submit proof of address by looking at the endorsements section of a customer response, where the requirement will show up as missing
+
+  ```json
+  {
+    "endorsements": [
+      {
+        "name": "base",
+        "status": "incomplete",
+        "requirements": {
+  					...
+            "missing": {
+              "all_of": [  
+                "proof_of_address",  
+                ...  
+              ]
+            },
+            ...
+        },
+      },
+  ```
+
+  To submit a proof of address document via API, include `documents` in your customer put/post request body, with an entry where the purpose is `proof_of_address`
+</Update>
+
+<Update label="07/15/2025">
+  **Use Your Bridge Wallet to Automate Returns**
+
+  You can now use a Bridge Wallet to **seamlessly fund fiat returns.**
+
+  Bridge’s Transfer API already lets you return ACH, Wire, or SEPA deposits in cases of recalls, rejections, or refunds. Now, you can use a Bridge Wallet to **fund those returns directly**—no need to wait for a fresh deposit to initiate a payout.
+
+  - Pre-fund your wallet at any time
+  - Return funds instantly when needed
+  - Simplify your flows
+
+  Learn more [<u>here</u>](/orchestration/transfer/returns)\!
+</Update>
+
+<Update label="07/15/2025">
+  **Additions to LiquidationAddress, VirtualAccount, and StaticMemo Fields**
+
+  We have added the below fields to Bridge endpoints.
+
+  **1. **`customer_id`**added to ** `LiquidationAddress`
+
+  You can now identify which customer owns a liquidation address. Refer API reference at [<u>Get a liquidation address</u>](https://apidocs.bridge.xyz/reference/get-a-liquidation-address).
+
+  **2. **`created_at`**added to VirtualAccount and StaticMemo** 
+
+  Timestamp fields are now included to help with auditing and sorting. Refer API reference at [<u>Get a Virtual Account</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-virtual-accounts-virtualaccountid).
+
+  **3. **`source_deposit_instructions.payment_rails`**added to ** `StaticMemo`
+
+  Includes the source details in the static memo response (supported rails right now are ACH & wire). Refer API reference at [<u>Get a Static Memo</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-static-memos-staticmemoid).
+
+  **4. **`destination_payment_rail`**now included in history records** 
+
+  The `StaticMemo` and `VirtualAccount` objects returned in history endpoints now show the `destination_payment_rail` (e.g. USD.USDC.polygon) once the payment completes successfully.
+
+  Refer API reference at [<u>Virtual Account Activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-virtual-accounts-virtualaccountid-history) and [<u>Static Memo Activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-static-memos-staticmemoid-history)
+</Update>

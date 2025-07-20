@@ -266,6 +266,12 @@
                         }
                     }
                 ]
+            },
+            {
+                "tab": "Changelog",
+                "pages": [
+                    "changelog/changelog"
+                ]
             }
         ]
     },
