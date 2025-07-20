@@ -2,3 +2,64 @@
 title: "Issuance"
 description: "Bridge issued stablecoins"
 ---
+
+Bridge Issuance allows you to access a Bridge stablecoin (“USDB”) or create your own stablecoin (“Custom Stablecoin”). This allows you to earn rewards by simply switching to Bridge Stablecoins using Bridge APIs.
+
+Custom Stablecoins and USDB are issued and managed by Bridge. They are always backed 1:1 by the equivalent value of US dollars. Bridge issued stablecoins can be exchanged to and from most stablecoins or fiat using Bridge Orchestration APIs (transfers, liquidation addresses and virtual accounts).
+
+To learn more see detailed sections:
+
+- [<u>USDB</u>](https://apidocs.bridge.xyz/docs/usdb)
+- [<u>Custom Stablecoin ("XUSD)</u>](https://apidocs.bridge.xyz/docs/custom-stablecoin)
+
+## **Benefits**
+
+There are several benefits to Bridge Stablecoins.
+
+- **Rewards**: Funds held in stablecoins will earn rewards on balances.
+- **Counterparty risk**: When Bridge issues a stablecoin, we can ensure your funds are uniquely managed and protected.
+- **Hidden Fees**: There are no hidden fees such as minting or burning fees.
+- **Fungible Dollar**: You can convert to Bridge Stablecoins using fiat or other stablecoins and transfer out of Bridge Stablecoins to fiat or other stablecoins easily.
+
+## **How it Works**
+
+1. You send us fiat or crypto using Bridge APIs and we send you a Bridge Stablecoin.
+2. We manage the Bridge Stablecoin reserves in a segregated bank account and custody account for treasuries.
+3. We send you a share of the earnings every month.
+
+![5c4805feba5f2a3b0cbd1d7565ec4435dc85a11b87b5fb8b04bef96baaf73682-Issuance__How_it_works.png](/images/5c4805feba5f2a3b0cbd1d7565ec4435dc85a11b87b5fb8b04bef96baaf73682-Issuance__How_it_works.png)
+
+## **Blockchain Support**
+
+Bridge Stablecoins are supported on a wide variety of chains (EVM and Solana) and we are adding additional chains based on demand.
+
+Live: Solana, Base, Ethereum\
+Coming Soon: Polygon, Optimism, Arbitrum
+
+## **Requirements**
+
+- All holders of Bridge Stablecoins must be associated with a KYC’d Bridge customer.
+- You must use Bridge orchestration to onramp and offramp into USDB.
+- Bridge Stablecoins are currently not available to EU residents (end users).
+
+## **Distributing Rewards**
+
+At the end of each month, Bridge will distribute rewards directly to a wallet (defined by you). This is a distribution/marketing fee to you for bringing the purchaser of the stablecoins to Bridge. Rewards will be minted as new tokens and sent to a wallet of your choice, once a month.
+
+## **USDB v.s. Custom Stablecoins**
+
+For most developers, USDB is the best choice because it’s simpler to get started - you don’t have to worry about liquidity management, which is complicated.
+
+There are some cases where a custom stablecoin (“xUSD”) may be more suitable and the table below shows the differences between the options.
+
+AUM thresholds for custom stablecoins are higher – we don’t have a minimum AUM requirement to access USDB.
+
+| **USDB**                            | **Custom Stablecoin**                    |
+| :---------------------------------- | :--------------------------------------- |
+| Pooled funds                        | Segregated funds                         |
+| Pooled smart contract               | Separate smart contract                  |
+| Standard Investment Strategy        | Custom Investment Strategy               |
+| Bridge handles liquidity management | Developer provides liquidity             |
+| Bridge manages reserves allocation  | Developer configures reserves allocation |
+| Bridge token branding               | Customized token branding                |
+| Off chain reserves                  | On and off chain reserves                |
