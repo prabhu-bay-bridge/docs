@@ -1,0 +1,51 @@
+---
+title: "Bridge Wallets"
+description: "Custodial Wallets to hold crypto."
+---
+
+# **Bridge Custodial Wallets API**
+
+Bridge leverages its regulatory licenses and technical infrastructure to offer a simple, secure, and compliant way to custody stablecoins—without requiring any third-party integrations.
+
+Our Custodial Wallets product enables seamless management of digital asset wallets across your users and your own treasury.
+
+## **Key features**
+
+- **Create user wallets** — issue wallets for individual end-users.
+- **Create treasury/company wallets** — manage funds at the business level.
+- **Transfer funds** — send/receive stablecoins to/from Bridge wallets using orchestration APIs.
+- **Wallet-to-wallet transfers** — instantly move funds between Bridge-hosted wallets.
+- **Query balances **— check balances for individual wallets or aggregate across wallets.
+- **Tag wallets & set policies** — assign labels and enforce custom business rules.
+
+# **Example Implementation**
+
+![3fd9322dc48ef84326286d2468f5b0cde70516ee79500407202943b47d30491e-image.png](/images/3fd9322dc48ef84326286d2468f5b0cde70516ee79500407202943b47d30491e-image.png)
+
+# **Requirements & Compliance**
+
+To ensure safe and compliant use of Bridge Custodial Wallets, please keep the following requirements in mind:
+
+- All fund transfers must be performed via Bridge’s Orchestration APIs.\
+  Directly sending funds to or from custodial wallet addresses is not supported and may result in loss of funds.
+- All wallet flows must be approved by Bridge Legal & Compliance\
+  Before accessing custodial wallet functionality in production, your fund flow must be reviewed and approved to ensure regulatory alignment.
+- Geographic availability is limited\
+  Custodial wallets are supported in most eligibl [<u>Geographies</u>](https://apidocs.bridge.xyz/docs/countries), with the following exceptions:
+  - **United States:** Wallets are not currently available in Alaska, New York, or Texas.\
+    Coming soon: Florida and Louisiana
+  - **Other excluded countries:**\
+    Kenya, Australia, Japan, Singapore, Malaysia, Vietnam, Indonesia
+
+# **Supported Chains and Tokens**
+
+| **Blockchain** | **Supported Tokens** |
+| :------------- | :------------------- |
+| Solana         | USDC, USDB, PYUSD    |
+| Base           | USDC, USDB           |
+
+<Tip>
+  **Reach out for more support**
+
+  We prioritize adding tokens based on developer demand. Reach out if you need support for additional assets.
+</Tip>
