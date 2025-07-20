@@ -2,40 +2,55 @@
 title: "Precision and Rounding"
 ---
 
-When interacting with Bridge's APIs, there are a couple of important considerations you must keep in mind regarding precision and rounding.
+When interacting with Bridge’s APIs, it's important to understand how we handle **rounding, fees, and fractional cent precision** to ensure your payments are processed smoothly and your customer receives the expected amount.
 
-Here are some important policies to keep in mind:
+---
 
-- Bridge will round fractional cent values in such a way to ensure that there will always be sufficient balance available to process your transaction.
-- This may result in a slightly lower amount at the end of the process than the amount initially provided.
-- In addition, Bridge will always round in such a way to guarantee at least the minimum amount of fees that are owed to all parties, whether they be our developers or to Bridge.
-- Bridge cannot process any amount that contain fractions of cents, even if the stablecoin has precision beyond that of whole cents. Bridge will only process the portion of any amount that can be expressed in a whole number of cents, and leave the fractional cent component unprocessed.
+# Key Policies
 
-**Example:**
+- **Whole cent enforcement**\
+  Bridge only processes amounts that can be expressed in **whole U.S. cents**.\
+  Even if the stablecoin supports more than two decimal places, Bridge will **truncate** the amount to the nearest cent.
+- **Fractional Cents Are Discarded**\
+  Any fractional cent (e.g., `$100.119999`) will be **ignored**, not processed or refunded.
+- **Rounding Ensures Sufficient Balance**
+  - Bridge will round fractional cent values in such a way to ensure that there will always be sufficient balance available to process your transaction.
+  - Bridge will always round in such a way to guarantee at least the minimum amount of fees that are owed to all parties, whether they be our developers or to Bridge.
 
-Let's say you'd like to offramp \$100,100.119999 worth of USDT. Note that USDT, like many other stablecoins, has 6 digits of precision. However, because Bridge only supports whole cents, we will first truncate this amount down to \$100,100.11.
+## Example Calculation
 
-Let's say you have a developer fee configured to 10 bps. This fee will be equal to \$100,100.11 \* 0.001 = \$100.10011. Since this is a fee, we will round this up to \$100.11.
+Let’s say you want to offramp **\$100,100.119999 USDT** with a **10 bps developer fee (0.1%)**:
 
-Therefore, the amount that the customer will receive is \$100,100.11 - \$100.11 = \$100,000.00.
+1. **Bridge truncates to whole cents**:\
+   Note that USDT, like many other stablecoins, has 6 digits of precision. However, because Bridge only supports whole cents, we will first truncate this amount down to \$100,100.11.\
+   \
+   `$100,100.119999 → rounded down to $100,100.11`
+2. **Bridge calculates developer fee**:\
+   `0.1% of $100,100.11 = $100.10011 → rounded up to $100.11`
+3. **Customer receives**:\
+   `$100,100.11 - $100.11 = $100,000.00`
 
-# **Computing the input amount for a desired output amount**
+Therefore, the amount that Bridge will send to the destination is \$100,000.00.
 
-A lot of our developers wish to send money in such a way that the customer receives a whole number of dollars at the end. If you wish to do this, you can apply the rules above to calculate the amount you want to send to Bridge.
+# Working backwards from desired output
 
-If you have a desired output amount and wish to calculate the input amount needed when exchange fees are in place, divide your desired output amount by 0.999 and round up to the nearest cent.
+If you want your customer to receive a **clean, round-dollar output**, use this formula:
 
-Here is a table of example amounts to send that result in whole number outputs (in the absence of a developer fee) for your reference.
+`Input Amount = Output Amount / 0.999 `
 
-| **Input Amount** | **Output Amount** |
-| :--------------- | :---------------- |
-| \$100.11         | \$100.00          |
-| \$200.21         | \$200.00          |
-| \$500.51         | \$500.00          |
-| \$1001.01        | \$1000.00         |
-| \$100,100.11     | \$100,000.00      |
-| \$500,500.51     | \$500,000.00      |
+Then **round up** to the nearest cent to ensure fees are covered.
 
-# **Questions and Feedback**
+## 📐 Reference Table
 
-Please reach out to the Bridge team with any questions or feedback you have around this. We would be more than happy to chat through it and hear your feedback\!
+<Note>
+  These examples assume **no developer fee** and only standard Bridge exchange fees.
+</Note>
+
+| **Input Amount** | **Customer Output** |
+| :--------------- | :------------------ |
+| \$100.11         | \$100.00            |
+| \$200.21         | \$200.00            |
+| \$500.51         | \$500.00            |
+| \$1,001.01       | \$1,000.00          |
+| \$100,100.11     | \$100,000.00        |
+| \$500,500.51     | \$500,000.00        |
