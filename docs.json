@@ -68,7 +68,7 @@
                 "tab": "Orchestration",
                 "groups": [
                     {
-                        "group": "",
+                        "group": "Overview",
                         "pages": [
                             "orchestration/overview"
                         ]
@@ -131,14 +131,17 @@
             },
             {
                 "tab": "Cards",
-                "pages": [
-                    "cards/overview",
-                    "cards/concepts",
-                    "cards/guide",
-                    "cards/advanced",
-                    "cards/webhooks"
-                ],
                 "groups": [
+                    {
+                        "group": "Overview",
+                        "pages": [
+                          "cards/overview",
+                          "cards/concepts",
+                          "cards/guide",
+                          "cards/advanced",
+                          "cards/webhooks"
+                        ]
+                    },
                     {
                         "group": "Sandbox",
                         "pages": [
