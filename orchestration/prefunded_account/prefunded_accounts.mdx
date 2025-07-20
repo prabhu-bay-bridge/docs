@@ -4,7 +4,7 @@ title: "Prefunded Accounts"
 
 Prefunded Accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Currently, Prefunded Accounts support USD.
 
-## **Funding a Prefunded Account**
+# **Funding a Prefunded Account**
 
 The currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account. In order to add funds to a Prefunded Account, it can be set as the destination of a Transfer.
 
@@ -82,7 +82,6 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
     "to_address": "0x..."
   }
 }'
-
 ```
 
 Shell
@@ -115,5 +114,4 @@ Shell
     "gas_fee": "0.00"
   }
 }
-
 ```
