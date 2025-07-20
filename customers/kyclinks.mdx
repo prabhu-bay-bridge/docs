@@ -4,7 +4,7 @@ title: "KYC Links for New Customers"
 
 An alternative to using the [<u>Customers API</u>](/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
 
-KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the [<u>Customer</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid) is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
+KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the customer is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
 
 There response will contain two different links that will need to be completed:
 
@@ -134,7 +134,8 @@ For help with troubleshooting common issues, please refer to this [<u>article</u
 />
 ```
 
-# \
+# \\
+
 **Turnaround response time**
 
 The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
