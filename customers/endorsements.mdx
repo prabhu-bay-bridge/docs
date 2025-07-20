@@ -18,53 +18,135 @@ The first component is providing Bridge with the necessary KYC information from 
 
 Here is an example for submitting information directly via the Customers API.
 
-US-Based CustomerInternational CustomerEEA Customer
-
-```
-curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <API Key>' \
---header 'Idempotency-Key: <generate a uuid>' \
---data-raw '{
-  "type": "individual",
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "email@example.com",
-  "residential_address": {
-    "street_line_1": "123 Main St",
-    "city": "New York City",
-    "subdivision": "New York",
-    "postal_code": "10001",
-    "country": "USA"
-  },
-  "birth_date": "2007-01-01",
-  "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
-  "identifying_information": [
-    {
-      "type": "ssn",
-      "issuing_country": "usa",
-      "number": "xxx-xx-xxxx"
-    },
-    {
-      "type": "drivers_license",
-      "issuing_country": "usa",
-      "number": "xxxxxxxxxxxxx",
-      "image_front": "data:image/jpg;base64,...",
-      "image_back": "data:image/jpg;base64,..."
+<Tabs>
+  <Tab title="US based customer">
+    ```bash
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "email@example.com",
+      "residential_address": {
+        "street_line_1": "123 Main St",
+        "city": "New York City",
+        "subdivision": "New York",
+        "postal_code": "10001",
+        "country": "USA"
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "identifying_information": [
+        {
+          "type": "ssn",
+          "issuing_country": "usa",
+          "number": "xxx-xx-xxxx"
+        },
+        {
+          "type": "drivers_license",
+          "issuing_country": "usa",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+          "image_back": "data:image/jpg;base64,..."
+        }
+      ]
     }
-  ]
-}
-```
+    ```
+  </Tab>
+  <Tab title="International customer">
+    ```bash
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "johndoe@johndoe.com",
+      "phone": "+12223334444",
+      "residential_address": {
+        "street_line_1": "Juncal 2091",
+        "street_line_2": "B1648",
+        "city": "Tigre",
+        "state": "B", // ISO 3166-2 Subdivision code without the country prefix
+        "postal_code": "B7000",
+        "country": "ARG" // ISO 3166-1 alpha3 Country code
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "employment_status": "employed",
+      "expected_monthly_payments": "5000_9999",
+      "acting_as_intermediary": "no",
+      "most_recent_occupation": "291291",
+      "account_purpose": "purchase_goods_and_services",
+      "account_purpose_other": null,
+      "source_of_funds": "salary",
+      "identifying_information": [
+        {
+          "type": "passport",
+          "issuing_country": "arg",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+          "image_back": "data:image/jpg;base64,..."
+        }
+      ]
+    }
+    
+    ```
+  </Tab>
+  <Tab title="EEA customer">
+    ```bash
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "email@example.com",
+      "residential_address": {
+        "street_line_1": "80 Queens Road",
+        "street_line_2": "Suite 3B",
+        "city": "Manchester",
+        "subdivision": "MAN", // ISO 3166-2 Subdivision code without the country prefix
+        "postal_code": "M1 1AE",
+        "country": "GBR" // ISO 3166-1 alpha3 Country code
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "identifying_information": [
+        {
+          "type": "passport",
+          "issuing_country": "gbr",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+        }
+      ],
+      "documents": [
+        {
+          "purposes": [
+            "proof_of_address"
+          ],
+          "file": "data:image/jpg;base64,..."
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
 
-For more details please see the [<u>Customers API</u>](https://dash.readme.com/project/bridge-docs/v0/docs/customers-api) page.
+For more detail, see the [customers API](/customers/api).
 
 ### **KYC Link**
 
 To create a KYC Link, use the following endpoint:
 
-Shell
-
-```
+```bash
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -77,13 +159,13 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 }'
 ```
 
-For more details please see the [<u>KYC Links</u>](https://dash.readme.com/project/bridge-docs/v0/docs/kyc-links) page for new customers, or the [<u>Additional Requirements</u>](https://dash.readme.com/project/bridge-docs/v0/docs/additional-requirements-for-existing-customers) page for existing customers.
+For more details please see the [<u>KYC Links</u>](/customers/kyclinks) page for new customers, or the [<u>Additional Requirements</u>](/customers/add_req) page for existing customers.
 
 ## **Terms of Service**
 
-The second component is obtaining terms of service acceptance from your customer. This is accomplished by providing your customer with a [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service) Link for them to follow.
+The second component is obtaining terms of service acceptance from your customer. This is accomplished by providing your customer with a [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service)<u> [todo update link]</u> Link for them to follow.
 
-Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](https://apidocs.bridge.xyz/reference/post_customers-tos-links).
+Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](https://apidocs.bridge.xyz/reference/post_customers-tos-links) [todo update link]
 
 # **Endorsement Types**
 
@@ -117,9 +199,7 @@ The **requirements** object will provide a summary of the endorsement’s status
 
 The following is an example of a customer who requested both **Base** and **SEPA**.
 
-json
-
-```
+```json
 {
   "endorsements": [
     {
@@ -175,9 +255,7 @@ json
 
 The following is an example of a customer who has fulfilled the requirements for **Base**, but have outstanding **issues** on their account preventing them from having the endorsement approved.
 
-JSON
-
-```
+```json
 {
   "endorsements": [
     {
