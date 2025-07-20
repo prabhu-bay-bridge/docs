@@ -128,6 +128,13 @@
             },
             {
                 "tab": "Cards",
+                "pages": [
+                    "cards/overview",
+                    "cards/concepts",
+                    "cards/guide",
+                    "cards/advanced",
+                    "cards/webhooks"
+                ],
                 "groups": []
             },
             {
