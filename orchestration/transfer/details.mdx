@@ -2,104 +2,89 @@
 title: "Source and destination updates"
 ---
 
-# **Source & Destination Details**
-
-## **Source**
+# **Source**
 
 The `source` key can return additional information if available. Specifically, if the transfer is an onramp and the funds have already arrived, we will return information about the fiat deposit.
 
-**Wire Deposit Example**
-
-JSON
-
-```
-{
-  "source": {
-    "payment_rail": "wire",
-    "currency": "usd",
-    "external_account_id": null,
-    "bank_beneficiary_name": "name of person sending money",
-    "bank_routing_number": "routing number of the sending bank",
-    "bank_name": "name of the sending bank",
-    "imad": "imad of incoming wire",
-    "omad": "omad of incoming wire (deprecated)"
-  }
-  ...
-}
-```
-
-**ACH Deposit Example**
-
-JSON
-
-```
-{
-  "source": {
-    "payment_rail": "ach_push",
-    "currency": "usd",
-    "external_account_id": null,
-    "description": "ach description"
-  }
-  ...
-}
-```
-
-Note that the source payment rail is `ach_push`, but in the destination it needs to be `ach`. You'll get a 4xx level error when specifying a destination payment rail of `ach_push`. Note that in both cases, this corresponds to an ACH push rail.
-
-**SEPA Deposit Example**
-
-JSON
-
-```
-{
-  "source": {
-    "bic": "REVOESM2XXX",
-    "uetr": "53301970-2771-4449-a6c1-c23eafc34a8b",
-    "reference": "Payment from Joaquin Valente: ",
-    "iban_last_4": "3628",
-    "sender_name": "Joaquin Valente",
-    "payment_rail": "sepa",
-    "payment_scheme": "sepa_instant",
-    "recipient_name": "Bridge Building Sp.z.o.o."
-  },
-  ...
-}
-```
+<Tabs>
+  <Tab title="Wire deposit example">
+    ```json expandable
+    {
+      "source": {
+        "payment_rail": "wire",
+        "currency": "usd",
+        "external_account_id": null,
+        "bank_beneficiary_name": "name of person sending money",
+        "bank_routing_number": "routing number of the sending bank",
+        "bank_name": "name of the sending bank",
+        "imad": "imad of incoming wire",
+        "omad": "omad of incoming wire (deprecated)"
+      }
+      ...
+    }
+    ```
+  </Tab>
+  <Tab title="ACH deposit example">
+    ```json expandable
+    {
+      "source": {
+        "payment_rail": "ach_push",
+        "currency": "usd",
+        "external_account_id": null,
+        "description": "ach description"
+      }
+      ...
+    }
+    ```
+  </Tab>
+  <Tab title="SEPA deposit example">
+    ```json expandable
+    {
+      "source": {
+        "bic": "REVOESM2XXX",
+        "uetr": "53301970-2771-4449-a6c1-c23eafc34a8b",
+        "reference": "Payment from Joaquin Valente: ",
+        "iban_last_4": "3628",
+        "sender_name": "Joaquin Valente",
+        "payment_rail": "sepa",
+        "payment_scheme": "sepa_instant",
+        "recipient_name": "Bridge Building Sp.z.o.o."
+      },
+      ...
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## **Destination**
 
 The `destination` field will also return additional information when available. Specifically, if the transfer is an offramp and the payment has been fully processed, we will return information about the outgoing fiat transaction.
 
-**Wire Destination Example**
-
-JSON
-
-```
-{
-  "destination": {
-    "payment_rail": "wire",
-    "currency": "usd",
-    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
-    "imad": "20240701MMASDFO9000528"
-  }
-  ...
-}
-```
-
-**ACH Destination Example:**
-
-JSON
-
-```
-{
-  "destination": {
-    "payment_rail": "ach",
-    "currency": "usd",
-    "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
-    "trace_number": "718268532664263"
-  }
-  ...
-}
-```
-
-# 
+<Tabs>
+  <Tab title="Wire destination example">
+    ```json expandable
+    {
+      "destination": {
+        "payment_rail": "wire",
+        "currency": "usd",
+        "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+        "imad": "20240701MMASDFO9000528"
+      }
+      ...
+    }
+    ```
+  </Tab>
+  <Tab title="ACH destination example">
+    ```json expandable
+    {
+      "destination": {
+        "payment_rail": "ach",
+        "currency": "usd",
+        "external_account_id": "310f23a7-9d15-4a67-b96f-bfe2acf26b00",
+        "trace_number": "718268532664263"
+      }
+      ...
+    }
+    ```
+  </Tab>
+</Tabs>
