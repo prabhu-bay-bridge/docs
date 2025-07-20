@@ -2,59 +2,188 @@
 title: "Virtual Accounts"
 ---
 
-Virtual accounts provide a unique routing and account number that accepts wire transfers and ACH deposits.
+# Overview
 
-<Info>
-  **Please reach out to get access**
+Bridge **virtual accounts are permanent, reusable fiat deposit addresses** that convert incoming fiat into crypto and deliver it to your specified destination (e.g. a wallet address).
 
-  Virtual Accounts are a separate product with different pricing. Please reach out to us to get access.
-</Info>
+They support multiple currencies and provide customers with local deposit details like account numbers and routing codes. For example, a USD virtual account gives your customer a U.S. account and routing number for ACH or wire transfers.
 
-# **Create a Virtual Account**
+**Supported Payment Rails**
 
-```bash Request
-curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/virtual_accounts' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <Api-Key>' \
---header 'Idempotency-Key: <Unique Idempotency Key>' \
---data-raw '{
-  "source": {
-    "currency": "usd",
-  },
-  "destination": {
-    "payment_rail": "ethereum",
-    "currency": "usdc",
-    "address": "0xDEADBEEF"
-  },
-  "developer_fee_percent": "1.0" // 1%. This is optional and defaults to 0 if not set
-}'
-```
+- **USD Virtual Accounts** - U.S. bank account and routing numbers issued in your customer’s name.
+- **SEPA Virtual IBAN** - Euro-denominated IBANs for accepting SEPA payments.
+- **MXN Virtual Accounts** - CLABE account numbers for receiving SPEI (Mexico) payments.
 
-```json Response
-{
-  "id": "va_c5c032b7",
-  "status": "activated",
-  "customer_id": "cust_alice",
-  "source_deposit_instructions": {
-    "currency": "usd",
-    "bank_beneficiary_name": "Alice Customer",
-    "bank_name": "Lead Bank",
-    "bank_address": "1801 Main St., Kansas City, MO 64108",
-    "bank_routing_number": "101019644",
-    "bank_account_number": "123456789",
-    "payment_rails": ["ach_push", "wire"],
-    "payment_rail": "ach_push", // deprecated, use payment_rails instead
-  },
-  "destination": {
-    "currency": "usdc",
-    "payment_rail": "ethereum",
-    "address": "0xDEADBEEF",
-  },
-  "developer_fee_percent": "1.0"
-}
-```
+Developers use virtual accounts to simplify global payments, custody stablecoins (e.g. USDB), and enable programmable flows. A common pattern: create a virtual account for a customer, route funds into a Bridge wallet, and earn yield.
 
-### **Optional Blockchain memo**
+<Note>
+  **Customers must be onboarded** and KYC/KYB-approved before creating virtual accounts.
+</Note>
+
+---
+
+# Creating virtual accounts
+
+Use the Virtual Accounts API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
+
+Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automatically.
+
+<Tabs>
+  <Tab title="USD Virtual Account">
+    ```bash Request expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <Api-Key>' \
+    --header 'Idempotency-Key: <Unique Idempotency Key>' \
+    --data-raw '{
+      # The source object specifies a USD virtual account.
+      "source": {
+        "currency": "usd",
+      },
+      # The destination object instructs Bridge where to send the USD deposits to.
+      # Bridge will automatically handle converting and sending USD to the crypto destination. 
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+      },
+      # You can specifcy an optional developer fee to monetize on transactions.
+      "developer_fee_percent": "1.0" // 1%.
+    }'
+    ```
+
+    ```json Response expandable
+    {
+        "id": "1a400dae-f7fc-4f75-8105-212a14d4132d",
+        "status": "activated",
+        "developer_fee_percent": "1.0",
+        "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+        "created_at": "2025-07-04T22:10:34.564Z",
+        "source_deposit_instructions": {
+            "currency": "usd",
+            "bank_name": "Lead Bank",
+            "bank_address": "1801 Main St., Kansas City, MO 64108",
+            "bank_routing_number": "101019644",
+            "bank_account_number": "215268120000",
+            "bank_beneficiary_name": "Ada Lovelace",
+            "bank_beneficiary_address": "923 Folsom Street, 302, San Francisco, California 941070000, US",
+            "payment_rail": "ach_push",
+            "payment_rails": [
+                "ach_push",
+                "wire"
+            ]
+        },
+        "destination": {
+            "currency": "usdc",
+            "payment_rail": "ethereum",
+            "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="SEPA Virtual IBAN">
+    ```bash Request expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <Api-Key>' \
+    --header 'Idempotency-Key: <Unique Idempotency Key>' \
+    --data-raw '{
+      # The source object specifies a SEPA virtual IBAN.
+      "source": {
+        "currency": "eur",
+      },
+      # The destination object instructs Bridge where to send the EURO deposits to.
+      # Bridge will automatically handle converting and sending EURO to the crypto destination. 
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+      },
+      # You can specifcy an optional developer fee to monetize on transactions.
+      "developer_fee_percent": "1.0" // 1%.
+    }'
+    ```
+
+    ```json Response expandable
+    {
+        "id": "393c6358-4c19-4cb7-bbfa-d4a56be58309",
+        "status": "activated",
+        "developer_fee_percent": "1.0",
+        "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+        "created_at": "2025-07-04T22:07:18.701Z",
+        "source_deposit_instructions": {
+            "currency": "eur",
+            "iban": "IE90MODR14035307970528",
+            "bic": "MODRIE00XXX",
+            "account_holder_name": "Bridge Building Sp.z.o.o.",
+            "bank_name": "Modulr Finance, Ireland Branch",
+            "bank_address": "Floor 6, 2 Grand Canal Square, Dublin, Ireland",
+            "payment_rail": "sepa",
+            "payment_rails": [
+                "sepa"
+            ]
+        },
+        "destination": {
+            "currency": "usdc",
+            "payment_rail": "ethereum",
+            "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+        }
+    } 
+    ```
+  </Tab>
+  <Tab title="MXN Virtual Account">
+    ```bash Request expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <Api-Key>' \
+    --header 'Idempotency-Key: <Unique Idempotency Key>' \
+    --data-raw '{
+      # The source object specifies a MXN virtual account.
+      "source": {
+        "currency": "mxn",
+      },
+      # The destination object instructs Bridge where to send the MXN deposits to.
+      # Bridge will automatically handle converting and sending MXN to the crypto destination. 
+      "destination": {
+        "payment_rail": "ethereum",
+        "currency": "usdc",
+        "address": "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE"
+      },
+      # You can specifcy an optional developer fee to monetize on transactions.
+      "developer_fee_percent": "1.0" // 1%.
+    }'
+    ```
+
+    ```json Response expandable
+    {
+        "id": "35334433-dcee-48e8-bdc8-90171234ad00",
+        "status": "activated",
+        "developer_fee_percent": "1.0",
+        "customer_id": "23c2d200-4c00-4c5a-b31a-00d035d7e0ae",
+        "created_at": "2025-07-04T22:13:29.481Z",
+        "source_deposit_instructions": {
+            "currency": "mxn",
+            "clabe": "568980546701071234",
+            "account_holder_name": "Ada Lovelace",
+            "payment_rails": [
+                "spei"
+            ]
+        },
+        "destination": {
+            "currency": "usdc",
+            "payment_rail": "ethereum",
+            "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be"
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Sharing Deposit Instructions
+
+Once a Virtual Account is created, use the `source_deposit_instructions` object in the response to share the fiat deposit details with your customer. Funds sent to those details will be automatically converted and delivered to the crypto destination you specified.
+
+## **Optional Blockchain memo**
 
 For memo-based blockchains such as Stellar, you may include an optional `blockchain_memo` in the destination. Bridge will attach the memo to payments sent to the destination address.
 
@@ -85,7 +214,7 @@ Refer [<u>here</u>](https://apidocs.bridge.xyz/docs/transaction-costs) on minimu
 
 ## **Developer Fees**
 
-Refer [<u>Developer Fees</u>](https://apidocs.bridge.xyz/docs/developer-fees)
+Refer [<u>Developer Fees</u>](https://apidocs.bridge.xyz/docs/developer-fees)<u> [todo update link]</u>
 
 ## **Other Fees**
 

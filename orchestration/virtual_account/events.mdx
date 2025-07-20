@@ -47,47 +47,56 @@ Please note that a transaction will always progress from `funds_received` → `p
 
 # **Event Breakdown**
 
-## **Funds Received Events**
+<AccordionGroup>
+  <Accordion title="Funds received events" icon="sparkles">
+    ## **Funds Received Events**
 
-Information about a fiat deposit received. The `funds_received` event amount always matches the full amount that the customer sent before any fees are deducted. We also provide any source information we have about the sender of a deposit.
+    Information about a fiat deposit received. The `funds_received` event amount always matches the full amount that the customer sent before any fees are deducted. We also provide any source information we have about the sender of a deposit.
 
-- `payment_rail`- `ach_push` or `wire`. The payment rail on which the deposit was received. Different information is available for each of these payment rail types.
-- For ACH deposits, funding events have these details:
-  - `description`- This field contains the sender-related information set by the sending bank according to the NACHA ACH file specifications;
-  - `sender_routing_number`- The routing number of the entity that initiated this ACH transaction
-  - `sender_name`- The name of the business or individual who initiated the ACH as provided through the ACH system
-  - `trace_number`- The unique, a 15-digit number associated with each ACH transaction that is used for tracking and reconciling transactions
-- For wire deposits, funding events have these details:
-  - `bank_routing_number` - The routing number of the bank which sent this wire
-  - `bank_name` - The name of the bank which sent this wire
-  - `bank_beneficiary_name` - The name the sender used for the beneficiary name of the wire
-  - `originator_name`- The name of the sender
-  - `originator_address` - The address of the sender
-  - `imad` - A unique number given to each FedWire payment when using the Federal Reserve Bank Service which can be used to investigate and track wire transfers.
+    - `payment_rail`- `ach_push` or `wire`. The payment rail on which the deposit was received. Different information is available for each of these payment rail types.
+    - For ACH deposits, funding events have these details:
+      - `description`- This field contains the sender-related information set by the sending bank according to the NACHA ACH file specifications;
+      - `sender_routing_number`- The routing number of the entity that initiated this ACH transaction
+      - `sender_name`- The name of the business or individual who initiated the ACH as provided through the ACH system
+      - `trace_number`- The unique, a 15-digit number associated with each ACH transaction that is used for tracking and reconciling transactions
+    - For wire deposits, funding events have these details:
+      - `bank_routing_number` - The routing number of the bank which sent this wire
+      - `bank_name` - The name of the bank which sent this wire
+      - `bank_beneficiary_name` - The name the sender used for the beneficiary name of the wire
+      - `originator_name`- The name of the sender
+      - `originator_address` - The address of the sender
+      - `imad` - A unique number given to each FedWire payment when using the Federal Reserve Bank Service which can be used to investigate and track wire transfers.
 
-```json
-{
-  "id": "va_event_457",
-  "customer_id": "cust_alice",
-  "virtual_account_id": "va_123",
-  "type": "funds_received",
-  "amount": "120.0",
-  "currency": "usd",
-  "developer_fee_amount": "1.25",
-  "exchange_fee_amount": "2.2",
-  "subtotal_amount": "120.0",
-  "gas_fee": "0.0",
-  "created_at": "2020-01-01T00:00:00.000Z",
-  "deposit_id": "deposit_123",
-  "source": {
-    "payment_rail": "ach_push",
-    "description": "ACH description",
-    "sender_name": "The name of the business or individual who sent the ACH",
-    "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
-    "trace_number": "111222333444555"
-  }
-}
-```
+    ```json
+    {
+      "id": "va_event_457",
+      "customer_id": "cust_alice",
+      "virtual_account_id": "va_123",
+      "type": "funds_received",
+      "amount": "120.0",
+      "currency": "usd",
+      "developer_fee_amount": "1.25",
+      "exchange_fee_amount": "2.2",
+      "subtotal_amount": "120.0",
+      "gas_fee": "0.0",
+      "created_at": "2020-01-01T00:00:00.000Z",
+      "deposit_id": "deposit_123",
+      "source": {
+        "payment_rail": "ach_push",
+        "description": "ACH description",
+        "sender_name": "The name of the business or individual who sent the ACH",
+        "sender_bank_routing_number": "The routing number of the entity who sent this ACH transaction",
+        "trace_number": "111222333444555"
+      }
+    }
+    ```
+
+    ## 
+  </Accordion>
+  <Accordion title="Payment submitted events">
+    
+  </Accordion>
+</AccordionGroup>
 
 ## **Payment Submitted Events**
 
