@@ -228,21 +228,17 @@ Below are the different types of virtual account events you may receive. You can
 | `reactivation`   | Virtual Account was reactivated.                              |
 | `microdeposit`   | Microdeposit verification detected. Funds are never onramped. |
 
-> All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
-
-To see the full breakdown of VirtualAccountEvents and their payloads, refer [Virtual Accounts](doc:virtual-accounts).
+<Info>
+  All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
+</Info>
 
 ## Fetching virtual account activity
-
-**API Request**
 
 ```curl Request
 curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts/<virtual_account_id>/history' \
 --header 'Accept: application/json' \
 --header 'Api-Key: <api-key>'
 ```
-
-**API Response**
 
 ```json Response
 {
@@ -309,4 +305,4 @@ curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accou
 
 # Learn More
 
-Refer [Virtual Accounts](doc:virtual-accounts) for more detailed documentation.
+Refer [Virtual Accounts](/orchestration/virtual_account/virtual_account) for more detailed documentation.
