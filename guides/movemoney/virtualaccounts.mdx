@@ -208,8 +208,6 @@ Each `VirtualAccountEvent` includes detailed information about the deposit, sour
 
 Below are the different types of virtual account events you may receive. You can identify the type of each event by checking the `type` field in the virtual account event object.
 
-### Payment Lifecycle
-
 | Type                | Description                                                           |
 | ------------------- | --------------------------------------------------------------------- |
 | `funds_received`    | Bridge received funds via ACH or wire.                                |
@@ -218,15 +216,10 @@ Below are the different types of virtual account events you may receive. You can
 | `funds_scheduled`   | (ACH only) Incoming funds are in transit with estimated arrival date. |
 | `in_review`         | Transaction is under manual review.                                   |
 | `refunded`          | Funds could not be delivered and were refunded to the sender.         |
-
-### Other
-
-| Type             | Description                                                   |
-| ---------------- | ------------------------------------------------------------- |
-| `account_update` | Virtual Account was updated (e.g. new destination address).   |
-| `deactivation`   | Virtual Account was deactivated.                              |
-| `reactivation`   | Virtual Account was reactivated.                              |
-| `microdeposit`   | Microdeposit verification detected. Funds are never onramped. |
+| `account_update`    | Virtual Account was updated (e.g. new destination address).           |
+| `deactivation`      | Virtual Account was deactivated.                                      |
+| `reactivation`      | Virtual Account was reactivated.                                      |
+| `microdeposit`      | Microdeposit verification detected. Funds are never onramped.         |
 
 <Info>
   All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.

@@ -14,65 +14,66 @@ Before you start, make sure you have
 
 ---
 
-# Step 1: Create a transfer from a Bridge wallet to an external bank account
+<Steps>
+  <Step title="Step 1: Create a transfer from a Bridge wallet to an external bank account" titleSize="h2">
+    Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
 
-Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
+    ```bash Request expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <Unique Key>' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+      "amount": "100.00",
+      "on_behalf_of": "cust_12345", // id of the customer who owns the wallet and ext. account
+      "source": {
+        "payment_rail": "bridge_wallet",
+        "currency": "usdb",
+        "bridge_wallet_id": "wallet_abc123" // id of the bridge wallet with funds
+      },
+      "destination": {
+        "payment_rail": "ach",
+        "currency": "usd",
+        "external_account_id": "ext_account_xyz789" // id of the customer bank account
+      }
+    }'
+    ```
+  </Step>
+  <Step title="Step 2: Monitor transfer status" titleSize="h2">
+    You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
 
-```bash Request expandable
-curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
---header 'Api-Key: <API Key>' \
---header 'Idempotency-Key: <Unique Key>' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "amount": "100.00",
-  "on_behalf_of": "cust_12345", // id of the customer who owns the wallet and ext. account
-  "source": {
-    "payment_rail": "bridge_wallet",
-    "currency": "usdb",
-    "bridge_wallet_id": "wallet_abc123" // id of the bridge wallet with funds
-  },
-  "destination": {
-    "payment_rail": "ach",
-    "currency": "usd",
-    "external_account_id": "ext_account_xyz789" // id of the customer bank account
-  }
-}'
-```
+    ```bash Request expandable
+    curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
+    --header 'Api-Key: <API Key>' \
+    --header 'accept: application/json'
+    ```
 
-# Step 2: Monitor transfer status
+    ```json Response expandable
+    {
+      "id": "transfer_xyz",
+      "state": "payment_processed",
+      "amount": "100.00",
+      "source": { ... },
+      "destination": {
+        "payment_rail": "ach",
+        "currency": "usd",
+        "external_account_id": "ext_account_xyz789"
+      },
+      ...
+    }
+    ```
 
-You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
+    Common states:
 
-```bash Request expandable
-curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
---header 'Api-Key: <API Key>' \
---header 'accept: application/json'
-```
-
-```json Response expandable
-{
-  "id": "transfer_xyz",
-  "state": "payment_processed",
-  "amount": "100.00",
-  "source": { ... },
-  "destination": {
-    "payment_rail": "ach",
-    "currency": "usd",
-    "external_account_id": "ext_account_xyz789"
-  },
-  ...
-}
-```
-
-Common states:
-
-- `awaiting_funds`: waiting for source balance
-- `payment_submitted`: funds handed off to banking partner
-- `payment_processed`: funds delivered to external account
+    - `awaiting_funds`: waiting for source balance
+    - `payment_submitted`: funds handed off to banking partner
+    - `payment_processed`: funds delivered to external account
+  </Step>
+</Steps>
 
 # Related Docs
 
 - [Transfers](/orchestration/transfer/transfer)
-- [External Accounts](doc:external-accounts) [todo update link]
-- [Wallets](doc:custodial-wallets) [todo update link]
+- [External Accounts](/api-concepts/external-accounts/bridge)
+- [Wallets](/wallets/overview)
 - [Setting up webhooks](/guides/getstarted/setupwebhooks)
