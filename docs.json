@@ -70,6 +70,7 @@
                     "customers/kyclinks",
                     "customers/add_req",
                     "customers/endorsements",
+                    "customers/tos",
                     "customers/rejection_reasons"
                 ]
             },
