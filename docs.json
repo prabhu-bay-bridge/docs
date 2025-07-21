@@ -212,14 +212,7 @@
                             "logistics/support",
                             "logistics/holidays",
                             "logistics/faq",
-                            "logistics/trackers"
-                        ]
-                    },
-                    {
-                        "group": "Fees",
-                        "pages": [
-                            "fees/devfees",
-                            "fees/mins",
+                            "logistics/trackers",
                             "fees/pricing"
                         ]
                     }
@@ -244,6 +237,13 @@
                             "api-concepts/webhooks/overview",
                             "api-concepts/webhooks/signature",
                             "api-concepts/webhooks/structure"
+                        ]
+                    },
+                    {
+                        "group": "Fees & Minimums",
+                        "pages": [
+                            "fees/devfees",
+                            "fees/mins"
                         ]
                     },
                     {
