@@ -6,7 +6,7 @@ title: "Static template (saved payment routes)"
 
 The **static template feature** allows the creation of a Transfer template through the API. The response includes standing deposit instructions that can be used multiple times to send funds to the configured destination. This is useful for making recurring transfers payments.
 
-\*\*How it works: \*\*the source deposit instructions will be preserved indefinitely so your customers can continue to use the same deposit message (i.e. memo, reference, etc.) to make payments.
+**How it works:** the source deposit instructions will be preserved indefinitely so your customers can continue to use the same deposit message (i.e. memo, reference, etc.) to make payments.
 
 **Every time that funds match the template**, Bridge will create a new Transfer record in the API. The id of the template will never change. Transfer instances created from that template will each have unique ids.
 
