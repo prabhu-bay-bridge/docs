@@ -132,3 +132,39 @@ Each event can have the following mutation types:
     ```
   </Tab>
 </Tabs>
+
+```json
+{
+  "api_version": "v0",
+  "event_id": "wh_t8trBtrPEqeFYLrQD9Zjog4",
+  "event_category": "virtual_account.activity",
+  "event_type": "virtual_account.activity.updated",
+  "event_object_id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+  "event_object_status": null,
+  "event_object": {
+    "id": "fecffc8b-ed5e-48ae-bd24-b36268330b32",
+    "type": "payment_submitted",
+    "amount": "1970.0",
+    "source": {
+      "description": "EXAMPLE TRANSACTION Brown-Beer Arnoldo Schimmel MD 01202024",
+      "sender_name": "Brown-Beer",
+      "payment_rail": "ach_push",
+      "sender_bank_routing_number": "023883013"
+    },
+    "gas_fee": "0.0",
+    "currency": "usdc",
+    "created_at": "2024-02-01T04:31:43.342Z",
+    "deposit_id": "c7fab38f-7b65-42d3-bc8d-a694cd1901c1",
+    "customer_id": "6ed47d9c-03be-420c-8699-369707ca02e9",
+    "subtotal_amount": "1970.0",
+    "virtual_account_id": "22033ca5-a991-476c-ade9-911d10f0ece6",
+    "destination_tx_hash": "0xa7de792daa970f89cdb36dbce93026d10942ea24",
+    "exchange_fee_amount": "10.0",
+    "developer_fee_amount": "20.0"
+  },
+  "event_object_changes": {
+    "destination_tx_hash": [ null, "0xa7de792daa970f89cdb36dbce93026d10942ea24" ]
+  },
+  "event_created_at": "2024-02-01T04:34:13.763Z"
+}
+```
