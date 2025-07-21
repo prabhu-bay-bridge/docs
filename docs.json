@@ -233,10 +233,7 @@
                         "group": "Foundations",
                         "pages": [
                             "api-concepts/concepts/precision",
-                            "api-concepts/concepts/receipts",
-                            "api-concepts/webhooks/overview",
-                            "api-concepts/webhooks/signature",
-                            "api-concepts/webhooks/structure"
+                            "api-concepts/concepts/receipts"
                         ]
                     },
                     {
