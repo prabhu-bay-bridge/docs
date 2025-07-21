@@ -1,5 +1,6 @@
 ---
 title: "Create and test your first card"
+mode: "wide"
 ---
 
 Creating a card and running your first transaction is the best way to get a feel for the Bridge Cards API. To create your first card you will need to both create a customer and then create a card for them to use.
@@ -26,7 +27,6 @@ curl -X POST 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts' \
 		  "address": "7bHbB8RwQgyNgxXZx8Q2kNzjEkmyv9Kb1DKZa63K3CtB"
     }
  }'
-
 ```
 
 # **Step 3: View card details**
@@ -89,7 +89,6 @@ Track real-time authorizations using the `card_transaction.created` webhook. Thi
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 
 ```
 

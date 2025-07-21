@@ -1,12 +1,13 @@
 ---
 title: "Prefunded Accounts"
+mode: "wide"
 ---
 
 Prefunded accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Prefunded accounts currently only support USD.
 
 # **Funding a Prefunded Account**
 
-The destination currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account. 
+The destination currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account.
 
 ## Funding via Transfer API
 
@@ -53,7 +54,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID
 
 # **Using Prefunded Accounts for Instant Onramps**
 
-Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD. 
+Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD.
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \

@@ -1,6 +1,7 @@
 ---
 title: "Webhooks"
 description: "Description of your new file."
+mode: "wide"
 ---
 
 # **Overview**
@@ -54,7 +55,6 @@ In a normal, successful transaction, an `approved` event will be published at th
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 When the transaction is officially confirmed, a `settled` event will be published for the full amount of the transaction.
@@ -135,7 +135,6 @@ In the case of a card transaction decline, a single event will be published with
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
 
-
 ```
 
 ## **Scenario 3: Authorization Reversal**
@@ -172,7 +171,6 @@ A transaction may also be reversed before it gets settled. The original authoriz
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 When the card transaction gets reversed, the transaction will move into a state of `reversed`, and the amount will change to reflect that no funds have been settled. The original authorization amount will still be available on the `original_amount` field.
@@ -247,7 +245,6 @@ If a card transaction gets refunded after settlement, our system will see an aut
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 Subsequently, a `settled` event will be published when the refund transaction is settled.
@@ -287,7 +284,6 @@ Subsequently, a `settled` event will be published when the refund transaction is
   },
   "event_created_at": "2025-02-06T03:01:30.000Z",
 }
-
 ```
 
 ## **Scenario 5: Incremental Authorization**
@@ -324,7 +320,6 @@ In many situations, the amount of a transaction will change after it has been au
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 
 ```
 
@@ -365,7 +360,6 @@ Subsequently, when an additional amount gets on authorized the same transaction,
   "event_created_at": "2025-02-04T06:30:20.000Z",
 }
 
-
 ```
 
 Alternatively, an incremental authorization may also be denied:
@@ -405,7 +399,6 @@ Alternatively, an incremental authorization may also be denied:
   },
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 
 ```
 
@@ -485,7 +478,6 @@ Authorizations are not indefinite, and can expire. This is rare but not impossib
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
 
-
 ```
 
 When the authorization expires, an `expired` event will be published, with the amount changed.
@@ -525,7 +517,6 @@ When the authorization expires, an `expired` event will be published, with the a
   },
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 
 ```
 
@@ -567,7 +558,6 @@ Note that card transactions may still be settled after the authorization expires
   },
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 # **Card Transaction Status Reasons**

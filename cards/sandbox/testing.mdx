@@ -1,6 +1,7 @@
 ---
 title: "Testing webhooks in sandbox"
 description: "Description of your new file."
+mode: "wide"
 ---
 
 # **Overview**
@@ -41,7 +42,7 @@ In a successful response, you should receive a payload like the following:
 
 To activate the webhook endpoint, you can send a `PUT` request to `v0/webhooks/{webhook\_id}` just as you would in production. The `webhook_id` is the same `id` returned from the response of the `POST` request from the previous step.
 
- To activate the endpoint, you set the status with a payload like so:
+To activate the endpoint, you set the status with a payload like so:
 
 ```bash
 ...
