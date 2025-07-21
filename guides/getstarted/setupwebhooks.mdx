@@ -11,6 +11,8 @@ Bridge webhooks allow you to receive real-time notifications when events occur i
 - HTTPS endpoint with valid X.509 certificate
 - Development environment with your preferred language (Ruby, Node.js, Python, or Go)
 
+---
+
 # Step 1: Create a New Webhook
 
 First, create a webhook endpoint using the Bridge API. The webhook will be created in `disabled` state initially.
@@ -39,7 +41,7 @@ Save the `webhook_id` from the response - you'll need it for testing and enablin
 
 # Step 2: Implement the Webhook Handler
 
-Create an endpoint that can receive and process Bridge webhook events with proper timestamp validation, refer [Webhook Event Signature Verification](doc:webhook-event-signature-verification).
+Create an endpoint that can receive and process Bridge webhook events with proper timestamp validation, refer [Webhook Event Signature Verification](/api-concepts/webhooks/signature).
 
 Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0=<base64-encoded-signature>`
 
@@ -775,7 +777,7 @@ Your webhook is now active and will receive live events from Bridge\!
 
 # Next Steps
 
-- Review the [Webhooks](doc:cards-webhooks) for more event types
+- Review the [Webhooks](/cards/overview/webhooks) documentation for more details
 - Implement proper error handling and retry logic
 - Set up monitoring and alerting for webhook failures
 - Consider implementing webhook replay functionality for critical events

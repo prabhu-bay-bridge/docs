@@ -2,7 +2,7 @@
 title: "Create your first payment"
 ---
 
-This guide will walk you through sending a one-time payment using Bridge's Transfer API. For this example, we'll be creating a one time payment from USD to USDC. With the Transfer API, you convert from any supported fiat currency to and from any supported crypto chain/currency. You can also use the Transfer API to take recurring payments.
+This guide will walk you through sending a one-time payment using Bridge's Transfer API. For this example, we'll be creating a one time payment from USD to USDC. With the Transfer API, you convert from any supported fiat currency to and from any supported crypto chain and currency. You can also use the Transfer API to take recurring payments.
 
 # Prerequisites
 
@@ -33,7 +33,7 @@ Here are the key concepts to a transfer:
 
 ![](https://files.readme.io/ab382eeec27e9c69149e4fbb3e16d0e0a1f60ba6deb472e2171e9b6f39bc1ad3-image.png)
 
-For detailed information, see [Transfers](doc:transfers-2).
+For detailed information, see [Transfers](/orchestration/transfer/transfer).
 
 ---
 
@@ -106,7 +106,7 @@ Once Bridge receives these funds, we'll look for the deposit message to find the
 
 ## Transfer states
 
-When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. From there, you can monitor the state until it's finally delivered. The transfer status when it's delivered is `payment_processed`. You can view the full breakdown of transfer states at [Transfers](ref:transfers).
+When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. From there, you can monitor the state until it's finally delivered. The transfer status when it's delivered is `payment_processed`. You can view the full breakdown of transfer states [here](/orchestration/transfer/states).
 
 ## Fetching Transfers status via API
 
@@ -162,7 +162,7 @@ curl --request GET \
     ```
   </Tab>
   <Tab title="Payments processed example">
-    ```json Response
+    ```json Response expandable
     {
       "count": 2,
       "data": [
@@ -266,7 +266,7 @@ You can set up webhooks to receive real-time notifications about transfer status
 
 # Next Steps
 
-After successfully creating your first static template:
+After successfully creating your first transfer:
 
 1. **Implement Webhook Processing**: Set up comprehensive webhook handling for all transfer events
 2. **Customer Communication**: Build flows to notify customers of transfer status changes
