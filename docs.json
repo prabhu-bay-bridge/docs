@@ -26,6 +26,15 @@
                         ]
                     },
                     {
+                        "group": "What we support",
+                        "pages": [
+                            "whatwesupport/chains",
+                            "whatwesupport/fiats",
+                            "whatwesupport/geographies",
+                            "whatwesupport/1pp"
+                        ]
+                    },
+                    {
                         "group": "Move money with Bridge",
                         "pages": [
                             "guides/movemoney/overview",
@@ -51,15 +60,6 @@
                             "guides/cards/spend"
                         ]
                     }
-                ]
-            },
-            {
-                "tab": "What we support",
-                "pages": [
-                    "whatwesupport/chains",
-                    "whatwesupport/fiats",
-                    "whatwesupport/geographies",
-                    "whatwesupport/1pp"
                 ]
             },
             {
