@@ -17,8 +17,5 @@ The transfer status refers to the current state of a transfer. There are several
 | `canceled`          | The transfer was canceled. This can only happen from the `awaiting_funds` state via the DELETE `/v0/transfers/{transferID}` endpoint.                             |
 | `error`             | A problem occurred that blocked processing. This typically requires manual review or developer action.                                                            |
 
-Please note that a transfer will always progress from `awaiting_funds` → `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
-
-`canceled` can only be progressed to from `awaiting_funds`, and is done by hitting our [<u>DELETE </u>](https://apidocs.bridge.xyz/reference/delete_transfers-transferid)`/v0/transfers/{transferID}` endpoint.
-
-Other states like `returned`, `refunded`, `undeliverable`, or `error` indicate exception paths.
+- Please note that a transfer will always progress from `awaiting_funds` → `funds_received` → `payment_submitted` → `payment_processed`. It can never go backwards.
+- States including `returned`, `refunded`, `undeliverable`, or `error` indicate exception paths.

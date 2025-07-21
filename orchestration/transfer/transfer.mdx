@@ -2,7 +2,7 @@
 title: "Transfer"
 ---
 
-# **Introduction**
+# **Overview**
 
 The Transfer API enables seamless conversion **to and from fiat and crypto across various supported currencies and rails.** At its core, the API is designed to abstract away the complexity of cross-rail and cross-currency money movement, supporting:
 
@@ -14,8 +14,8 @@ Transfers include both a source and a destination, each of which can represent f
 
 Refer to supported currencies and rails below:
 
-- [<u>Stablecoins and Blockchains</u>](https://apidocs.bridge.xyz/docs/blockchains)<u> [todo update link]</u>
-- [<u>Fiat Payment Methods</u>](https://apidocs.bridge.xyz/docs/payment-methods)<u> [todo update link]</u>
+- [<u>Stablecoins and Blockchains</u>](/whatwesupport/chains)
+- [<u>Fiat Payment Methods</u>](/whatwesupport/fiats)
 
 ## **How transfers work**
 
@@ -28,8 +28,10 @@ If the funds reside outside of Bridge, you will receive a `source_deposit_instru
 - `source`: Where the funds come from. This can be a Bridge-controlled wallet, a customer’s crypto wallet, or a fiat source like a bank account.
 - `destination`: Where the funds go. This can be any supported rail or chain.
 - `on_behalf_of`: Customer identifier. Required when sending/receiving on behalf of a user.
-- `developer_fee` or `developer_fee_percent`: Monetize transfers via fixed or percentage fees. Refer the [<u>Developer Fees</u>](https://apidocs.bridge.xyz/v1/docs/developer-fees) section on how to set fees.
+- `developer_fee` or `developer_fee_percent`: Monetize transfers via fixed or percentage fees. Refer the [<u>Developer Fees</u>](/fees/devfees) section on how to set fees.
 - `features`: Optional settings to add flexibility (e.g. allow_any_from_address, flexible_amount).
+
+---
 
 # **High Level Flow**
 
@@ -137,7 +139,7 @@ Direct your customer to send funds to Bridge's bank account, with the required a
 
 ### **Crypto Deposits**
 
-If you receive crypto deposits, remember to configure a crypto return policy\! Refer [<u>Crypto Return Policies</u>](https://apidocs.bridge.xyz/reference/crypto-return-policies) [todo update link]
+If you receive crypto deposits, remember to configure a crypto return policy\! Refer [<u>Crypto Return Policies</u>](/orchestration/transfer/returns)
 
 ```json expandable
 {

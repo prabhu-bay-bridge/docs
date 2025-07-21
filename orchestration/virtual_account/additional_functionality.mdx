@@ -94,14 +94,14 @@ This endpoints provide a history of activity for a Virtual Account such incoming
 
 Example request to fetch the history of a Virtual Account:
 
-```bash
+```bash Request
 curl --request GET \
      --url 'https://api.bridge.xyz/v0/customers/cust_123/virtual_accounts/virtual_acct_alice_123/history' \
      --header 'Api-Key: <Api-Key>' \
      --header 'accept: application/json'
 ```
 
-```json
+```json Response
 [{
   "id": "event_4",
   "customer_id": "cust_alice",

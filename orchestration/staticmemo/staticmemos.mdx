@@ -14,7 +14,7 @@ Static Memos are long-lived deposit instructions that accept fiat funds through 
 
 # Create a Static Memo
 
-```bash Request
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/static_memos' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <Api-Key>' \
@@ -35,7 +35,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/s
 
 The response will contain deposit instructions for your customer to send funds to Bridge.
 
-```json Response
+```json Response expandable
 {
   "id": "static_memo_alice_123",
   "status": "activated",

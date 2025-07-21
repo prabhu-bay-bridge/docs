@@ -98,11 +98,13 @@ You can configure one of two return strategies:
 - `refund_to_sender` — risky, not recommended.
 - `static_address` — a known, developer-controlled wallet.
 
-> ❗**Returning funds to the sender is not safe and not the default behavior.**
->
-> Bridge will not do this unless explicitly configured. Most exchanges use omnibus wallets that serve many users. Returning funds to an exchange wallet often leads to fund loss or lengthy recovery procedures. Stellar and Tron require memos to attribute funds to users — and without a correct memo, funds may be permanently untraceable.
+<Danger>
+  **Returning funds to the sender is not safe and not the default behavior.**
 
-## **✅ Recommended: Use a Static Return Address**
+  Bridge will not do this unless explicitly configured. Most exchanges use omnibus wallets that serve many users. Returning funds to an exchange wallet often leads to fund loss or lengthy recovery procedures. Stellar and Tron require memos to attribute funds to users — and without a correct memo, funds may be permanently untraceable.
+</Danger>
+
+## **Recommend using a static return address**
 
 We strongly recommend configuring a Bridge wallet or a developer-controlled wallet as the designated return address.
 
@@ -133,7 +135,9 @@ When using the static_address strategy, you can define only **one return address
 
 So if you’ve only set a return address for **USDC × Ethereum**, then **USDC × Base** deposits will also be returned to the **Ethereum address.**
 
-> ⚠️ This fallback behavior is best-effort and may not work in all cases — especially if the recipient wallet isn’t cross-chain compatible. When in doubt, explicitly define return addresses for each chain-currency pair you intend to support.
+<Warning>
+  This fallback behavior is best-effort and may not work in all cases — especially if the recipient wallet isn’t cross-chain compatible. When in doubt, explicitly define return addresses for each chain-currency pair you intend to support.
+</Warning>
 
 ### **Unsupported Chains for Returns**
 
