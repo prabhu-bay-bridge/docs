@@ -206,7 +206,7 @@
                 "tab": "Logistics",
                 "groups": [
                     {
-                        "group": "Operational",
+                        "group": "Logistics",
                         "pages": [
                             "logistics/cutoffs",
                             "logistics/support",
