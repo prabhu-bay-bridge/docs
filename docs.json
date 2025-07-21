@@ -75,7 +75,7 @@
                 ]
             },
             {
-                "tab": "Orchestration",
+                "tab": "Payments Orchestration",
                 "groups": [
                     {
                         "group": "Overview",
@@ -203,21 +203,26 @@
                 ]
             },
             {
-                "tab": "Fees",
-                "pages": [
-                    "fees/devfees",
-                    "fees/mins",
-                    "fees/pricing"
-                ]
-            },
-            {
                 "tab": "Logistics",
-                "pages": [
-                    "logistics/cutoffs",
-                    "logistics/support",
-                    "logistics/holidays",
-                    "logistics/faq",
-                    "logistics/trackers"
+                "groups": [
+                    {
+                        "group": "Operational",
+                        "pages": [
+                            "logistics/cutoffs",
+                            "logistics/support",
+                            "logistics/holidays",
+                            "logistics/faq",
+                            "logistics/trackers"
+                        ]
+                    },
+                    {
+                        "group": "Fees",
+                        "pages": [
+                            "fees/devfees",
+                            "fees/mins",
+                            "fees/pricing"
+                        ]
+                    }
                 ]
             },
             {
@@ -232,22 +237,22 @@
                         ]
                     },
                     {
-                      "group": "Foundations",
-                      "pages": [
-                        "api-concepts/concepts/precision",
-                        "api-concepts/concepts/receipts",
-                        "api-concepts/webhooks/overview",
-                        "api-concepts/webhooks/signature",
-                        "api-concepts/webhooks/structure"
-                      ]
+                        "group": "Foundations",
+                        "pages": [
+                            "api-concepts/concepts/precision",
+                            "api-concepts/concepts/receipts",
+                            "api-concepts/webhooks/overview",
+                            "api-concepts/webhooks/signature",
+                            "api-concepts/webhooks/structure"
+                        ]
                     },
                     {
-                      "group": "External Accounts",
-                      "pages": [
-                        "api-concepts/external-accounts/bridge",
-                        "api-concepts/external-accounts/plaid",
-                        "api-concepts/external-accounts/validations"
-                      ]
+                        "group": "External Accounts",
+                        "pages": [
+                            "api-concepts/external-accounts/bridge",
+                            "api-concepts/external-accounts/plaid",
+                            "api-concepts/external-accounts/validations"
+                        ]
                     },
                     {
                         "group": "Webhooks",
