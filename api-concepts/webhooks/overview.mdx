@@ -1,5 +1,6 @@
 ---
 title: "Webhooks"
+mode: "wide"
 ---
 
 Bridge's [<u>Webhooks API</u>](https://apidocs.bridge.xyz/reference/get_webhooks) lets developers manage webhook endpoints that are subscribed to webhook events for real-time updates instead of relying on API polling for a faster, more efficient, and better overall experience. Webhook endpoints require you to provide a `url` with the https scheme and a valid X.509 certificate. When your endpoint is created, a `PKI public key` in `PEM` format will be assigned to it and shared with you. Refer to [<u>Webhook Event Signature Verification</u>](/api-concepts/webhooks/signature) for details on how to verify the authenticity of incoming events.
