@@ -15,7 +15,7 @@ There response will contain two different links that will need to be completed:
 
 To create a KYC Link, use the following endpoint:
 
-```bash Request
+```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -27,7 +27,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 }'
 ```
 
-```json Response
+```json Response expandable
 {
   "id": "kyc_link_uuid",
   "email": "johndoe@johndoe.com",
@@ -42,7 +42,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 
 To create a KYC Link with `Proof-of-Address` step enabled for non-EEA customers, an `endorsements` array field including an element with the value `sepa`can be specified in the request:
 
-```bash
+```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -57,7 +57,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 
 You can check the status of your customers kyc_link by using the `GET /v0/kyc_links/:kyc_links_id` endpoint
 
-```bash
+```bash expandable
 curl --location --request GET 'https://api.bridge.xyz/v0/kyc_links/:kyc_link_id' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -65,7 +65,7 @@ curl --location --request GET 'https://api.bridge.xyz/v0/kyc_links/:kyc_link_id'
 
 This responds with a `kyc_link` object.
 
-```json
+```json expandable
 {
   "id": "kyc_link_uuid",
   "email": "johndoe@johndoe.com",
@@ -83,7 +83,7 @@ When creating a KYC Link, you can optionally provide a `redirect_uri` in the req
 
 To embed a `redirect_uri`in KYC Link, pass in the optional `redirect_uri` in the POST request:
 
-```bash
+```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -98,7 +98,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 
 This endpoint will respond with:
 
-```json
+```json expandable
 {
   "id": "kyc_link_uuid",
   "email": "johndoe@johndoe.com",
@@ -134,9 +134,7 @@ For help with troubleshooting common issues, please refer to this [<u>article</u
 />
 ```
 
-# \\
-
-**Turnaround response time**
+# **Turnaround response time**
 
 The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
 
@@ -152,7 +150,7 @@ KYB flows are similar to individual customers, with the additional step of colle
 
 ![7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png](/images/7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png)
 
-### **Sad Paths**
+# **Sad Paths**
 
 While KYC/KYB generally works quickly, there are edge cases that are important to account for. Here are a few examples of how the KYC/KYB statuses of a customer could progress:
 
@@ -164,7 +162,7 @@ While KYC/KYB generally works quickly, there are edge cases that are important t
 `not_started` -\> `under_review` -\> `rejected`\
 `not_started` -\> `rejected`
 
-#### **Under Review**
+## **Under Review**
 
 In this scenario, the customer starts off `not_started`, but after verifying the initial set of data (name, address, TIN, birth date) there was something off about the customer information. In this scenario, fetching the customer via `GET /customers/:id` would result in something like this:
 
@@ -188,7 +186,7 @@ After submitting your customer for id verification (government photo id like a d
 - Bridge will approve your customer, and the KYC status on the customer will move to `active`
 - Bridge will reject your customer, and the KYC status on the customer will move to `rejected`.
 
-#### **Immediate Rejection**
+## **Immediate Rejection**
 
 Sometimes, your customer could immediately move from `not_started` to `rejected` and skip `under_review` entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have sent up for your customer (birth date, address, name).
 
