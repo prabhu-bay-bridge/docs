@@ -34,49 +34,50 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
 
 ![](https://files.readme.io/44bcd17e95746a1ad3e6079f783410f2eed51a01318df77aa0c1bb130a00101a-image.png)
 
-## Step 1: Create a KYC Link
+<Steps>
+  <Step title="Step 1: Create a KYC Link">
+    Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
 
-Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
+    ```bash Request
+    curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "full_name": "John Doe",
+      "email": "johndoe@example.com",
+      "type": "individual"
+    }'
+    ```
 
-```bash Request
-curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <API Key>' \
---header 'Idempotency-Key: <generate a uuid>' \
---data-raw '{
-  "full_name": "John Doe",
-  "email": "johndoe@example.com",
-  "type": "individual"
-}'
-```
+    ```json Response expandable
+    {
+      "id": "uuid",
+      "full_name": "John Doe",
+      "email": "johndoe@example.com",
+      "type": "individual", // or "business"
+      "kyc_link": "https://bridge.withpersona.com/verify?",
+      "tos_link": "https://dashboard.bridge.xyz/accept-terms-of-service?",
+      "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
+      "rejection_reasons": [],
+      "tos_status": "pending", // or "approved"
+      "created_at": "2025-07-16T18:28:25.970Z",
+      "customer_id": "customer_id",
+      "persona_inquiry_type": "gov_id_db"
+    }
+    ```
+  </Step>
+  <Step title="Step 2: Share the Links with Your Customer">
+    Guide the user through:
 
-```json Response expandable
-{
-  "id": "uuid",
-  "full_name": "John Doe",
-  "email": "johndoe@example.com",
-  "type": "individual", // or "business"
-  "kyc_link": "https://bridge.withpersona.com/verify?",
-  "tos_link": "https://dashboard.bridge.xyz/accept-terms-of-service?",
-  "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
-  "rejection_reasons": [],
-  "tos_status": "pending", // or "approved"
-  "created_at": "2025-07-16T18:28:25.970Z",
-  "customer_id": "customer_id",
-  "persona_inquiry_type": "gov_id_db"
-}
-```
+    1. Visiting the `tos_link` and accepting terms of service
+    2. Completing identity verification via the `kyc_link`
 
-## Step 2: Share the Links with Your Customer
+    This process typically takes less than a minute and updates automatically once complete.
 
-Guide the user through:
-
-1. Visiting the `tos_link` and accepting terms of service
-2. Completing identity verification via the `kyc_link`
-
-This process typically takes less than a minute and updates automatically once complete.
-
-More about KYC Links here: [KYC Links for New Customers](/customers/kyclinks)
+    More about KYC Links here: [KYC Links for New Customers](/customers/kyclinks)
+  </Step>
+</Steps>
 
 # Method 2: Direct API Integration (More Control)
 
@@ -84,53 +85,54 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
 
 ![](https://files.readme.io/32e86521c9fbdfa9557c8688268f60ea354a3c0de96a5808ecef5fedca5325b3-image.png)
 
-## Step 1: Create an Individual Customer Using API
+<Steps>
+  <Step title="Step 1: Create an Individual Customer Using API">
+    Create U.S. based customer:
 
-Create U.S. based customer:
-
-```bash Request expandable
-curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <API Key>' \
---header 'Idempotency-Key: <generate a uuid>' \
---data-raw '{
-  "type": "individual",
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "email@example.com",
-  "residential_address": {
-    "street_line_1": "123 Main St",
-    "city": "New York City",
-    "subdivision": "New York",
-    "postal_code": "10001",
-    "country": "USA"
-  },
-  "birth_date": "2007-01-01",
-  "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
-  "identifying_information": [
-    {
-      "type": "ssn",
-      "issuing_country": "usa",
-      "number": "xxx-xx-xxxx"
-    },
-    {
-      "type": "drivers_license",
-      "issuing_country": "usa",
-      "number": "xxxxxxxxxxxxx",
-      "image_front": "data:image/jpg;base64,...",
-      "image_back": "data:image/jpg;base64,..."
+    ```bash Request expandable
+    curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
+    --header 'Content-Type: application/json' \
+    --header 'Api-Key: <API Key>' \
+    --header 'Idempotency-Key: <generate a uuid>' \
+    --data-raw '{
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "email@example.com",
+      "residential_address": {
+        "street_line_1": "123 Main St",
+        "city": "New York City",
+        "subdivision": "New York",
+        "postal_code": "10001",
+        "country": "USA"
+      },
+      "birth_date": "2007-01-01",
+      "signed_agreement_id": "d536a227-06d3-4de1-acd3-8b5131730480",
+      "identifying_information": [
+        {
+          "type": "ssn",
+          "issuing_country": "usa",
+          "number": "xxx-xx-xxxx"
+        },
+        {
+          "type": "drivers_license",
+          "issuing_country": "usa",
+          "number": "xxxxxxxxxxxxx",
+          "image_front": "data:image/jpg;base64,...",
+          "image_back": "data:image/jpg;base64,..."
+        }
+      ]
     }
-  ]
-}
-```
+    ```
 
-For business customers or international onboarding, see the [Customers](/customers/overview) documentation.
+    For business customers or international onboarding, see the [Customers](/customers/overview) documentation.
+  </Step>
+  <Step title="Step 2: Customer Endorsements: Enabling Transacting">
+    A customer endorsement activates a customer to use a specific payment rail. Most flows automatically request a "base" endorsement when creating a customer.
 
-## Step 2: Customer Endorsements: Enabling Transacting
-
-A customer endorsement activates a customer to use a specific payment rail. Most flows automatically request a "base" endorsement when creating a customer.
-
-Endorsements represent an approval of a customer to onboard and transact with Bridge. To onboard a customer and enable them to take actions on Bridge, the customer must provide their KYC information and accept the terms of service for the required endorsement type.
+    Endorsements represent an approval of a customer to onboard and transact with Bridge. To onboard a customer and enable them to take actions on Bridge, the customer must provide their KYC information and accept the terms of service for the required endorsement type.
+  </Step>
+</Steps>
 
 ## Checking Customer Endorsement Status
 
@@ -147,15 +149,15 @@ curl --request GET \
 ```json Response expandable
 
 {
- 	id: '1',
+ 	"id": '1',
   ...
-  endorsements: [
+  "endorsements": [
     {
-      name: 'base',
-      status: 'approved',
-      additionalRequirements: [],
-      requirements: {
-        complete: [
+      "name": "base",
+      "status": "approved",
+      "additionalRequirements": [],
+      "requirements": {
+        "complete": [
             "first_name",
             "last_name",
             "tax_identification_number",
@@ -165,9 +167,9 @@ curl --request GET \
           	"address_of_residence",
 						"terms_of_service_v1"
 				],
-        pending: [],
-        missing: null,
-        issues: [],
+        "pending": [],
+        "missing": null,
+        "issues": [],
       },
     },
   ],
@@ -218,8 +220,8 @@ After creating your first customer:
 
 1. **Test the complete flow** in your development environment
 2. **Handle edge cases** like rejections and additional requirements
-   1. For detailed rejection reasons, see the [Rejection Reasons](doc:rejection-reasons)
-   2. To increase customer limits, see the [Additional Requirements for Existing Customers](doc:additional-requirements-for-existing-customers)
+   1. For detailed rejection reasons, see the [Rejection Reasons](/customers/rejection_reasons)
+   2. To increase customer limits, see the [Additional Requirements for Existing Customers](/customers/add_req)
 3. **Set up webhooks** to receive real-time status updates for customers
-   1. See [Setting up webhooks](doc:setting-up-webhooks) for setting up your first webhook
+   1. See [Setting up webhooks](/guides/getstarted/setupwebhooks) for setting up your first webhook
 4. **Review security practices** to protect customer data
