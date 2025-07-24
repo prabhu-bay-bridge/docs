@@ -5,7 +5,7 @@ mode: "wide"
 
 This guide walks you through onboarding your first customer using Bridge's API. Whether you want a fast start with a hosted KYC flow or prefer full control via API integration, this guide covers both options.
 
-# Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have:
 
@@ -14,7 +14,7 @@ Before you begin, ensure you have:
 - A working development environment
 - Basic familiarity with REST APIs and JSON
 
-# What Is a Bridge Customer?
+## What Is a Bridge Customer?
 
 Bridge customers represent users of your business who can send and receive money. There are two types:
 
@@ -29,14 +29,14 @@ Bridge customers represent users of your business who can send and receive money
 
 Learn more about the customers api at [Customers](/customers/overview).
 
-# Method 1: Using KYC Links (Quick Start - Recommended)
+## Method 1: Using KYC Links (Quick Start - Recommended)
 
 Bridge provides a **hosted onboarding flows** so you don’t have to build your own KYC UI. This is the fastest way to onboard customers.
 
 ![](https://files.readme.io/44bcd17e95746a1ad3e6079f783410f2eed51a01318df77aa0c1bb130a00101a-image.png)
 
 <Steps>
-  <Step title="Step 1: Create a KYC Link" titleSize="h2">
+  <Step title="Step 1: Create a KYC Link" titleSize="h3">
     Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
 
     ```bash Request
@@ -68,7 +68,7 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
     }
     ```
   </Step>
-  <Step title="Step 2: Share the Links with Your Customer" titleSize="h2">
+  <Step title="Step 2: Share the Links with Your Customer" titleSize="h3">
     Guide the user through:
 
     1. Visiting the `tos_link` and accepting terms of service
@@ -80,14 +80,14 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
   </Step>
 </Steps>
 
-# Method 2: Direct API Integration (More Control)
+## Method 2: Direct API Integration (More Control)
 
 Prefer to control the onboarding UI? You can collect and submit customer data directly to Bridge.
 
 ![](https://files.readme.io/32e86521c9fbdfa9557c8688268f60ea354a3c0de96a5808ecef5fedca5325b3-image.png)
 
 <Steps>
-  <Step title="Step 1: Create an Individual Customer Using API" titleSize="h2">
+  <Step title="Step 1: Create an Individual Customer Using API" titleSize="h3">
     Create U.S. based customer:
 
     ```bash Request expandable
@@ -128,7 +128,7 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
 
     For business customers or international onboarding, see the [Customers](/customers/overview) documentation.
   </Step>
-  <Step title="Step 2: Customer Endorsements: Enabling Transacting" titleSize="h2">
+  <Step title="Step 2: Customer Endorsements: Enabling Transacting" titleSize="h3">
     A customer endorsement activates a customer to use a specific payment rail. Most flows automatically request a "base" endorsement when creating a customer.
 
     Endorsements represent an approval of a customer to onboard and transact with Bridge. To onboard a customer and enable them to take actions on Bridge, the customer must provide their KYC information and accept the terms of service for the required endorsement type.
@@ -215,7 +215,7 @@ curl --request GET \
 
 Learn more about endorsements here: [Endorsements](/customers/endorsements)
 
-# What's next?
+## What's next?
 
 After creating your first customer:
 

@@ -5,7 +5,7 @@ mode: "wide"
 
 This guide will walk you through sending a one-time payment using Bridge's Transfer API. For this example, we'll be creating a one time payment from USD to USDC. With the Transfer API, you convert from any supported fiat currency to and from any supported crypto chain and currency. You can also use the Transfer API to take recurring payments.
 
-# Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have:
 
@@ -15,7 +15,7 @@ Before you begin, ensure you have:
 - Basic understanding of REST APIs
 - Development environment set up
 
-# Understanding Bridge Transfers
+## Understanding Bridge Transfers
 
 Bridge transfers enable conversion between fiat and crypto across supported currencies and rails. There are three primary transfer types:
 
@@ -38,7 +38,7 @@ For detailed information, see [Transfers](/orchestration/transfer/transfer).
 
 ---
 
-# Step 1: Create a transfer
+## Step 1: Create a transfer
 
 Let's create a transfer for an onramp from a USD ACH deposit to a USDC Ethereum address.
 
@@ -103,13 +103,13 @@ You can share the source deposit instructions with your customer. Your customer 
 
 Once Bridge receives these funds, we'll look for the deposit message to find the payment.
 
-# Step 2: Monitor Transfer Status
+## Step 2: Monitor Transfer Status
 
-## Transfer states
+### Transfer states
 
 When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. From there, you can monitor the state until it's finally delivered. The transfer status when it's delivered is `payment_processed`. You can view the full breakdown of transfer states [here](/orchestration/transfer/states).
 
-## Fetching Transfers status via API
+### Fetching Transfers status via API
 
 You can use the [Get a transfer](ref:get_transfers-transferid) endpoint to fetch the latest Transfer status.
 
@@ -206,7 +206,7 @@ curl --request GET \
   </Tab>
 </Tabs>
 
-## Advanced: Monitoring using webhooks
+### Advanced: Monitoring using webhooks
 
 You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](https://apidocs.bridge.xyz/docs/setting-up-webhooks) for more details on setting up webhooks.
 
@@ -259,13 +259,13 @@ You can set up webhooks to receive real-time notifications about transfer status
 
 ---
 
-# Best Practices
+## Best Practices
 
 1. **Clear Instructions**: Provide customers with clear, step-by-step deposit instructions, including deposit messages
 2. **Error Handling**: Plan for various failure scenarios and customer communication
 3. **Testing**: Always test with small amounts before processing larger transfers
 
-# Next Steps
+## Next Steps
 
 After successfully creating your first transfer:
 
@@ -273,7 +273,7 @@ After successfully creating your first transfer:
 2. **Customer Communication**: Build flows to notify customers of transfer status changes
 3. **Error Recovery**: Implement processes to handle failed transfers
 
-### Additional Resources
+## Additional Resources
 
 - [Transfers](/orchestration/transfer/transfer)
 - [Make recurring payments using saved payment routes](/guides/movemoney/recurring)

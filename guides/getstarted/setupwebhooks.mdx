@@ -5,7 +5,7 @@ mode: "wide"
 
 Bridge webhooks allow you to receive real-time notifications when events occur in your Bridge account. This guide covers creating, implementing, testing, and enabling webhooks using Bridge's REST API.
 
-# Prerequisites
+## Prerequisites
 
 - A Bridge account with API access
 - Bridge API credentials (API key)
@@ -14,7 +14,7 @@ Bridge webhooks allow you to receive real-time notifications when events occur i
 
 ---
 
-# Step 1: Create a New Webhook
+## Step 1: Create a New Webhook
 
 First, create a webhook endpoint using the Bridge API. The webhook will be created in `disabled` state initially.
 
@@ -40,7 +40,7 @@ curl -X POST "https://api.bridge.xyz/webhooks" \
 
 Save the `webhook_id` from the response - you'll need it for testing and enabling the webhook.
 
-# Step 2: Implement the Webhook Handler
+## Step 2: Implement the Webhook Handler
 
 Create an endpoint that can receive and process Bridge webhook events with proper timestamp validation, refer [Webhook Event Signature Verification](/api-concepts/webhooks/signature).
 
@@ -690,11 +690,11 @@ Bridge webhook signatures use the format: `X-Webhook-Signature: t=<timestamp>,v0
   </Tab>
 </Tabs>
 
-# Step 3: Test the Webhook
+## Step 3: Test the Webhook
 
 Before enabling your webhook, test it to ensure it's working correctly.
 
-## Send a Test Event
+### Send a Test Event
 
 ```bash expandable
 # Send a test event to your webhook
@@ -710,7 +710,7 @@ curl -X POST "https://api.bridge.xyz/webhooks/{webhook_id}/send" \
   }'
 ```
 
-## Check Webhook Logs
+### Check Webhook Logs
 
 ```bash expandable
 # View webhook delivery logs
@@ -718,7 +718,7 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/logs" \
   -H "Authorization: Bearer your_bridge_api_key"
 ```
 
-## Get Webhook Events
+### Get Webhook Events
 
 ```bash expandable
 # Retrieve upcoming events for the webhook
@@ -726,7 +726,7 @@ curl -X GET "https://api.bridge.xyz/webhooks/{webhook_id}/events" \
   -H "Authorization: Bearer your_bridge_api_key"
 ```
 
-# Step 4: Enable the Webhook
+## Step 4: Enable the Webhook
 
 Once you've tested your webhook and confirmed it's working, enable it to start receiving live events.
 
@@ -750,7 +750,7 @@ curl -X PATCH "https://api.bridge.xyz/webhooks/{webhook_id}" \
 
 Your webhook is now active and will receive live events from Bridge\!
 
-# Security Best Practices
+## Security Best Practices
 
 1. **Always verify webhook signatures** to ensure events are from Bridge
 2. **Use HTTPS endpoints** with valid certificates
@@ -759,7 +759,7 @@ Your webhook is now active and will receive live events from Bridge\!
 5. **Implement idempotency** to handle duplicate events
 6. **Log webhook events** for debugging and monitoring
 
-# Common Event Types
+## Common Event Types
 
 - `customer.created` - New customer registration
 - `customer.updated` - Customer information changes
@@ -768,7 +768,7 @@ Your webhook is now active and will receive live events from Bridge\!
 - `subscription.created` - New subscription
 - `subscription.cancelled` - Subscription cancellation
 
-# Troubleshooting
+## Troubleshooting
 
 - **Check webhook logs** for delivery status and error messages
 - **Verify your endpoint URL** is accessible and returns 200
@@ -776,7 +776,7 @@ Your webhook is now active and will receive live events from Bridge\!
 - **Check for certificate issues** on your HTTPS endpoint
 - **Monitor response times** to avoid timeout issues
 
-# Next Steps
+## Next Steps
 
 - Review the [Webhooks](/cards/overview/webhooks) documentation for more details
 - Implement proper error handling and retry logic
