@@ -250,9 +250,14 @@
                 ]
             },
             {
+                "tab": "Changelog",
+                "pages": [
+                    "changelog/changelog"
+                ]
+            },
+            {
                 "tab": "More information",
                 "pages": [
-                    "changelog/changelog",
                     "logistics/faq",
                     "fees/pricing"
                 ]
