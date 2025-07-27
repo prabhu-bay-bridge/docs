@@ -17,11 +17,6 @@
                         "group": "Introduction",
                         "pages": [
                             "getting-started",
-                            "get-set-up-with-bridge",
-                            "create-your-first-customer",
-                            "create-a-one-time-payment",
-                            "setting-up-webhooks",
-                            "setting-up-sandbox",
                             {
                                 "group": "What we support",
                                 "pages": [
@@ -31,6 +26,16 @@
                                     "whatwesupport/1pp"
                                 ]
                             }
+                        ]
+                    },
+                    {
+                        "group": "Quick Start",
+                        "pages": [
+                            "get-set-up-with-bridge",
+                            "create-your-first-customer",
+                            "create-a-one-time-payment",
+                            "setting-up-webhooks",
+                            "setting-up-sandbox"
                         ]
                     },
                     {
