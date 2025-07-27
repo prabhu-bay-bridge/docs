@@ -10,6 +10,23 @@
     "favicon": "/logo/favicon.ico",
     "navigation": {
         "pages": ["index"],
+          "anchors": [
+      {
+        "anchor": "Get started",
+        "icon": "play",
+        "groups": [/* your get started content */]
+      },
+      {
+        "anchor": "Developer Platform", 
+        "icon": "code",
+        "pages": [/* your developer platform pages */]
+      },
+      {
+        "anchor": "API Reference",
+        "icon": "square-terminal", 
+        "pages": [/* your API reference pages */]
+      }
+    ],
         "tabs": [
             {
                 "tab": "Get started",
