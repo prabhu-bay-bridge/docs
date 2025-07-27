@@ -20,6 +20,7 @@
             },
             {
                 "tab": "Get started",
+                "icon": "play",
                 "groups": [
                     {
                         "group": "Introduction",
@@ -81,6 +82,7 @@
             },
             {
                 "tab": "Developer Platform",
+                "icon": "code",
                 "pages": [
                     {
                         "group": "Customers",
@@ -246,6 +248,7 @@
             },
             {
                 "tab": "API Reference",
+                "icon": "book-open",
                 "pages": [
                     "api-reference/introduction/authentication",
                     "api-reference/introduction/idempotence",
@@ -261,6 +264,7 @@
             },
             {
                 "tab": "Changelog",
+                "icon": "history",
                 "pages": [
                     "changelog/changelog"
                 ]
