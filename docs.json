@@ -67,7 +67,7 @@
                 ]
             },
             {
-                "tab": "Customers",
+                "tab": "Platform",
                 "groups": [
                     {
                         "group": "Customers",
@@ -78,37 +78,57 @@
                             "customers/add_req",
                             "customers/endorsements",
                             "customers/tos",
-                            "customers/rejection_reasons"
-                        ]
-                    },
-                    {
-                        "group": "Compliance",
-                        "pages": [
-                            {
-                                "group": "Individuals",
-                                "pages": [
-                                    "compliance/individuals/individuals"
-                                ]
-                            },
-                            {
-                                "group": "Businesses",
-                                "pages": [
-                                    "compliance/businesses/overview",
-                                    "compliance/businesses/entity",
-                                    "compliance/businesses/ownership",
-                                    "compliance/businesses/formation",
-                                    "compliance/businesses/identification",
-                                    "compliance/businesses/highrisk"
-                                ]
-                            },
+                            "customers/rejection_reasons",
                             {
                                 "group": "Compliance",
                                 "pages": [
-                                    "compliance/compliance/dao",
-                                    "compliance/compliance/docs",
-                                    "compliance/compliance/poa"
+                                    {
+                                        "group": "Individuals",
+                                        "pages": [
+                                            "compliance/individuals/individuals"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Businesses",
+                                        "pages": [
+                                            "compliance/businesses/overview",
+                                            "compliance/businesses/entity",
+                                            "compliance/businesses/ownership",
+                                            "compliance/businesses/formation",
+                                            "compliance/businesses/identification",
+                                            "compliance/businesses/highrisk"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Compliance",
+                                        "pages": [
+                                            "compliance/compliance/dao",
+                                            "compliance/compliance/docs",
+                                            "compliance/compliance/poa"
+                                        ]
+                                    }
                                 ]
                             }
+                        ]
+                    },
+                    {
+                        "group": "Orchestration",
+                        "pages": [
+                        ]
+                    },
+                    {
+                        "group": "Wallets",
+                        "pages": [
+                        ]
+                    },
+                    {
+                        "group": "Issuance",
+                        "pages": [
+                        ]
+                    },
+                    {
+                        "group": "Cards",
+                        "pages": [
                         ]
                     }
                 ]
