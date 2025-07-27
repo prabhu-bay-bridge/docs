@@ -149,6 +149,13 @@
                         ]
                     },
                     {
+                        "group": "Fees & Minimums",
+                        "pages": [
+                            "fees/devfees",
+                            "fees/mins"
+                        ]
+                    },
+                    {
                         "group": "Additional Information",
                         "pages": [
                             "logistics/cutoffs",
@@ -230,13 +237,6 @@
                         "pages": [
                             "api-concepts/concepts/precision",
                             "api-concepts/concepts/receipts"
-                        ]
-                    },
-                    {
-                        "group": "Fees & Minimums",
-                        "pages": [
-                            "fees/devfees",
-                            "fees/mins"
                         ]
                     },
                     {
