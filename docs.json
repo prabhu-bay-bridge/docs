@@ -12,6 +12,13 @@
         "pages": ["index"],
         "tabs": [
             {
+              "tab": "Home",
+              "icon": "home",
+              "pages": [
+                "index"
+              ]
+            },
+            {
                 "tab": "Get started",
                 "groups": [
                     {
