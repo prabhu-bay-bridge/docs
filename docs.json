@@ -60,7 +60,7 @@
             {
                 "tab": "Developer Platform",
                 "pages": [
-                      {
+                                  {
                         "group": "What we support",
                         "pages": [
                             "whatwesupport/chains",
@@ -68,9 +68,7 @@
                             "whatwesupport/geographies",
                             "whatwesupport/1pp"
                         ]
-                      }
-                ],
-                "groups": [
+                      },
                     {
                         "group": "Customers",
                         "pages": [
