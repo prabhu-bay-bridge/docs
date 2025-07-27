@@ -13,15 +13,20 @@
         "tabs": [
             {
                 "tab": "Guides",
-                "pages": [
-                    "getting-started",
+                "groups": [
                     {
-                        "group": "What we support",
+                        "group": "Introduction",
                         "pages": [
-                            "whatwesupport/chains",
-                            "whatwesupport/fiats",
-                            "whatwesupport/geographies",
-                            "whatwesupport/1pp"
+                          "getting-started",
+                          {
+                              "group": "What we support",
+                              "pages": [
+                                  "whatwesupport/chains",
+                                  "whatwesupport/fiats",
+                                  "whatwesupport/geographies",
+                                  "whatwesupport/1pp"
+                              ]
+                          }
                         ]
                     },
                     {
