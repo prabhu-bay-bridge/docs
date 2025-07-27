@@ -1,0 +1,113 @@
+---
+title: "Bridge Developer Docs"
+mode: "custom"
+---
+
+<div className="bg-gradient-to-b from-[#d4f2ef] via-[#f7fafc] to-white text-center text-gray-900">
+  <div className="max-w-4xl mx-auto px-6 pt-6 pb-4">
+    <img
+      src="/logo/bridge_logo.png"
+      alt="Bridge Logo"
+      className="h-10 mb-6 select-none pointer-events-none mx-auto"
+      draggable="false"
+    />
+
+    <h1 className="text-4xl md:text-5xl font-light mb-4">Build with Bridge.</h1>
+
+    <p className="text-base md:text-lg text-gray-600 tracking-wide mb-8">
+      Bridge provides modern payments infrastructure to move money with stablecoins and fiat rails, custody funds via wallets, issue your own stablecoin, and spend via card — at the speed and scale of the internet.
+    </p>
+
+    <a
+      href="/guides/getstarted/overview"
+      className="inline-block px-6 py-3 bg-[#15803D] text-white rounded-lg font-medium hover:bg-[#166534] transition"
+    >
+      Get started →
+    </a>
+  </div>
+</div>
+
+<div className="bg-white pt-8 pb-12">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-2xl font-semibold text-left mb-8">Quickstart guides</h2>
+    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/movemoney/virtualaccounts"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-lg font-semibold mb-2 text-gray-900">Accept fiat payments</h3>
+        <p className="text-sm text-gray-600">
+          Use our virtual accounts to collect USD using an account & routing number.
+        </p>
+      </a>
+
+      <a
+        href="https://bridge-727305d3.mintlify.app/create-a-one-time-payment"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-lg font-semibold mb-2 text-gray-900">Convert between fiat & stablecoins</h3>
+        <p className="text-sm text-gray-600">
+          Walk through setting up and sending a one-time payment using the API.
+        </p>
+      </a>
+
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/cards/overview"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-lg font-semibold mb-2 text-gray-900">Issue cards</h3>
+        <p className="text-sm text-gray-600">
+          Create and spend from cards connected to custodial balances in a few API calls.
+        </p>
+      </a>
+
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/wallets/c2c"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-lg font-semibold mb-2 text-gray-900">Create a Bridge wallet</h3>
+        <p className="text-sm text-gray-600">
+          Custody funds for your users in wallets and make payments.
+        </p>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<div className="max-w-4xl mx-auto">
+  <Columns cols={4}>
+    <Card
+      title="Accept fiat payments"
+      icon="dollar-sign"
+      href="/guides/movemoney/virtualaccounts"
+    >
+      Use our virtual accounts to collect USD using account & routing numbers.
+    </Card>
+
+    <Card
+      title="Convert currencies"
+      icon="exchange"
+      href="/guides/movemoney/virtualaccounts"
+    >
+      Walk through setting up and sending payments using the API.
+    </Card>
+
+    <Card
+      title="Issue cards"
+      icon="credit-card"
+      href="/guides/cards/overview"
+    >
+      Create and spend from cards connected to custodial balances.
+    </Card>
+
+    <Card
+      title="Create wallets"
+      icon="wallet"
+      href="/guides/wallets/c2c"
+    >
+      Custody funds and orchestrate wallet-based money movement.
+    </Card>
+  </Columns>
+</div>
