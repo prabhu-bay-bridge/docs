@@ -3,9 +3,9 @@
     "theme": "palm",
     "name": "Bridge",
     "colors": {
-      "primary": "#4A6B2F",
-      "light": "#F7F1E3",
-      "dark": "#2E451A"
+        "primary": "#4A6B2F",
+        "light": "#F7F1E3",
+        "dark": "#2E451A"
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
@@ -16,21 +16,21 @@
                     {
                         "group": "Introduction",
                         "pages": [
-                          "getting-started",
-                          {
-                              "group": "What we support",
-                              "pages": [
-                                  "whatwesupport/chains",
-                                  "whatwesupport/fiats",
-                                  "whatwesupport/geographies",
-                                  "whatwesupport/1pp"
-                              ]
-                          },
-                          "get-set-up-with-bridge",
-                          "create-your-first-customer",
-                          "create-a-one-time-payment",
-                          "setting-up-webhooks",
-                          "setting-up-sandbox"
+                            "getting-started",
+                            {
+                                "group": "What we support",
+                                "pages": [
+                                    "whatwesupport/chains",
+                                    "whatwesupport/fiats",
+                                    "whatwesupport/geographies",
+                                    "whatwesupport/1pp"
+                                ]
+                            },
+                            "get-set-up-with-bridge",
+                            "create-your-first-customer",
+                            "create-a-one-time-payment",
+                            "setting-up-webhooks",
+                            "setting-up-sandbox"
                         ]
                     },
                     {
@@ -76,23 +76,18 @@
                             {
                                 "group": "Customers",
                                 "pages": [
-                                  "customers/api",
-                                  "customers/kyclinks",
-                                  "customers/add_req",
-                                  "customers/endorsements",
-                                  "customers/tos",
-                                  "customers/rejection_reasons"
+                                    "customers/api",
+                                    "customers/kyclinks",
+                                    "customers/add_req",
+                                    "customers/endorsements",
+                                    "customers/tos",
+                                    "customers/rejection_reasons"
                                 ]
                             },
                             {
                                 "group": "Compliance",
                                 "pages": [
-                                    {
-                                        "group": "Individuals",
-                                        "pages": [
-                                            "compliance/individuals/individuals"
-                                        ]
-                                    },
+                                    "compliance/individuals/individuals",
                                     {
                                         "group": "Businesses",
                                         "pages": [
