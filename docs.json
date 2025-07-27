@@ -78,24 +78,15 @@
                 "tab": "Customers",
                 "groups": [
                     {
-                        "group": "Overview",
+                        "group": "Customers",
                         "pages": [
-                            "orchestration/overview"
-                        ]
-                    },
-                    {
-                        "group": "Virtual Accounts",
-                        "groups": [
-                            {
-                                "group": "Overview",
-                                "pages": [
-                                    "cards/overview/overview",
-                                    "cards/overview/concepts",
-                                    "cards/overview/guide",
-                                    "cards/overview/advanced",
-                                    "cards/overview/webhooks"
-                                ]
-                            }
+                            "customers/overview",
+                            "customers/api",
+                            "customers/kyclinks",
+                            "customers/add_req",
+                            "customers/endorsements",
+                            "customers/tos",
+                            "customers/rejection_reasons"
                         ]
                     }
                 ]
