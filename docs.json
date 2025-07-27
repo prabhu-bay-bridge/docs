@@ -74,11 +74,16 @@
                         "pages": [
                             "customers/overview",
                             "customers/api",
-                            "customers/kyclinks",
-                            "customers/add_req",
-                            "customers/endorsements",
-                            "customers/tos",
-                            "customers/rejection_reasons",
+                            {
+                                "group": "Customers",
+                                "pages": [
+                                  "customers/kyclinks",
+                                  "customers/add_req",
+                                  "customers/endorsements",
+                                  "customers/tos",
+                                  "customers/rejection_reasons"
+                                ]
+                            },
                             {
                                 "group": "Compliance",
                                 "pages": [
