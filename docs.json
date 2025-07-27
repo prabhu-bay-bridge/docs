@@ -11,7 +11,7 @@
     "navigation": {
         "tabs": [
             {
-                "tab": "Guides",
+                "tab": "Get started",
                 "groups": [
                     {
                         "group": "Introduction",
@@ -25,43 +25,43 @@
                                   "whatwesupport/geographies",
                                   "whatwesupport/1pp"
                               ]
-                          }
+                          },
+                          "get-set-up-with-bridge",
+                          "create-your-first-customer",
+                          "create-a-one-time-payment",
+                          "setting-up-webhooks",
+                          "setting-up-sandbox"
                         ]
                     },
                     {
-                        "group": "Getting started",
+                        "group": "Guides",
                         "pages": [
-                            "get-set-up-with-bridge",
-                            "create-your-first-customer",
-                            "create-a-one-time-payment",
-                            "setting-up-webhooks",
-                            "setting-up-sandbox"
-                        ]
-                    },
-                    {
-                        "group": "Move money with Bridge",
-                        "pages": [
-                            "guides/movemoney/overview",
-                            "guides/movemoney/virtualaccounts",
-                            "guides/movemoney/recurring",
-                            "guides/movemoney/offramp_liquidation",
-                            "guides/movemoney/fiat_to_fiat"
-                        ]
-                    },
-                    {
-                        "group": "Integrate custodial wallets",
-                        "pages": [
-                            "guides/wallets/overview",
-                            "guides/wallets/onramp",
-                            "guides/wallets/c2c",
-                            "guides/wallets/offramp"
-                        ]
-                    },
-                    {
-                        "group": "Provision and make card payments",
-                        "pages": [
-                            "guides/cards/overview",
-                            "guides/cards/spend"
+                            {
+                                "group": "Move money with Bridge",
+                                "pages": [
+                                    "guides/movemoney/overview",
+                                    "guides/movemoney/virtualaccounts",
+                                    "guides/movemoney/recurring",
+                                    "guides/movemoney/offramp_liquidation",
+                                    "guides/movemoney/fiat_to_fiat"
+                                ]
+                            },
+                            {
+                                "group": "Integrate custodial wallets",
+                                "pages": [
+                                    "guides/wallets/overview",
+                                    "guides/wallets/onramp",
+                                    "guides/wallets/c2c",
+                                    "guides/wallets/offramp"
+                                ]
+                            },
+                            {
+                                "group": "Provision and make card payments",
+                                "pages": [
+                                    "guides/cards/overview",
+                                    "guides/cards/spend"
+                                ]
+                            }
                         ]
                     }
                 ]
