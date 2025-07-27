@@ -142,6 +142,14 @@
                                 ]
                             },
                             {
+                                "group": "External Accounts",
+                                "pages": [
+                                    "api-concepts/external-accounts/bridge",
+                                    "api-concepts/external-accounts/plaid",
+                                    "api-concepts/external-accounts/validations"
+                                ]
+                            },
+                            {
                                 "group": "Fees & Minimums",
                                 "pages": [
                                     "fees/devfees",
@@ -203,6 +211,21 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "group": "Foundations",
+                        "pages": [
+                            "api-concepts/concepts/precision",
+                            "api-concepts/concepts/receipts",
+                            {
+                                "group": "Webhooks",
+                                "pages": [
+                                    "api-concepts/webhooks/overview",
+                                    "api-concepts/webhooks/signature",
+                                    "api-concepts/webhooks/structure"
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -212,29 +235,6 @@
                     "api-reference/introduction/authentication",
                     "api-reference/introduction/idempotence",
                     "api-reference/introduction/postman",
-                    {
-                        "group": "Foundations",
-                        "pages": [
-                            "api-concepts/concepts/precision",
-                            "api-concepts/concepts/receipts"
-                        ]
-                    },
-                    {
-                        "group": "External Accounts",
-                        "pages": [
-                            "api-concepts/external-accounts/bridge",
-                            "api-concepts/external-accounts/plaid",
-                            "api-concepts/external-accounts/validations"
-                        ]
-                    },
-                    {
-                        "group": "Webhooks",
-                        "pages": [
-                            "api-concepts/webhooks/overview",
-                            "api-concepts/webhooks/signature",
-                            "api-concepts/webhooks/structure"
-                        ]
-                    },
                     {
                         "group": "Endpoints",
                         "openapi": {
