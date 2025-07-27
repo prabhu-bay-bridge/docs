@@ -157,7 +157,7 @@
                                 ]
                             },
                             {
-                                "group": "Additional Information",
+                                "group": "More",
                                 "pages": [
                                     "logistics/cutoffs",
                                     "logistics/holidays",
@@ -200,7 +200,7 @@
                                 ]
                             },
                             {
-                                "group": "Additional functionality",
+                                "group": "More",
                                 "pages": [
                                     "cards/additional/freezing",
                                     "cards/additional/statements",
