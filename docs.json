@@ -218,7 +218,7 @@
                         ]
                     },
                     {
-                        "group": "Foundations",
+                        "group": "Additional information",
                         "pages": [
                             "api-concepts/concepts/precision",
                             "api-concepts/concepts/receipts",
@@ -229,7 +229,9 @@
                                     "api-concepts/webhooks/signature",
                                     "api-concepts/webhooks/structure"
                                 ]
-                            }
+                            },
+                            "logistics/faq",
+                            "fees/pricing"
                         ]
                     }
                 ]
@@ -253,13 +255,6 @@
                 "tab": "Changelog",
                 "pages": [
                     "changelog/changelog"
-                ]
-            },
-            {
-                "tab": "More Information",
-                "pages": [
-                    "logistics/faq",
-                    "fees/pricing"
                 ]
             }
         ]
