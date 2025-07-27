@@ -76,10 +76,39 @@
                             "customers/tos",
                             "customers/rejection_reasons"
                         ]
+                    },
+                    {
+                        "group": "Compliance",
+                        "groups": [
+                            {
+                                "group": "Individuals",
+                                "pages": [
+                                    "compliance/individuals/individuals"
+                                ]
+                            },
+                            {
+                                "group": "Businesses",
+                                "pages": [
+                                    "compliance/businesses/overview",
+                                    "compliance/businesses/entity",
+                                    "compliance/businesses/ownership",
+                                    "compliance/businesses/formation",
+                                    "compliance/businesses/identification",
+                                    "compliance/businesses/highrisk"
+                                ]
+                            },
+                            {
+                                "group": "Compliance",
+                                "pages": [
+                                    "compliance/compliance/dao",
+                                    "compliance/compliance/docs",
+                                    "compliance/compliance/poa"
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
-
             {
                 "tab": "Payments Orchestration",
                 "groups": [
@@ -174,36 +203,6 @@
                             "cards/additional/customizing",
                             "cards/additional/marketing",
                             "cards/additional/details"
-                        ]
-                    }
-                ]
-            },
-            {
-                "tab": "Compliance",
-                "groups": [
-                    {
-                        "group": "Individuals",
-                        "pages": [
-                            "compliance/individuals/individuals"
-                        ]
-                    },
-                    {
-                        "group": "Businesses",
-                        "pages": [
-                            "compliance/businesses/overview",
-                            "compliance/businesses/entity",
-                            "compliance/businesses/ownership",
-                            "compliance/businesses/formation",
-                            "compliance/businesses/identification",
-                            "compliance/businesses/highrisk"
-                        ]
-                    },
-                    {
-                        "group": "Compliance",
-                        "pages": [
-                            "compliance/compliance/dao",
-                            "compliance/compliance/docs",
-                            "compliance/compliance/poa"
                         ]
                     }
                 ]
