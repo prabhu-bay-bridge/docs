@@ -63,7 +63,7 @@
                 ]
             },
             {
-                "tab": "Customers",
+                "tab": "Customers-old",
                 "pages": [
                     "customers/overview",
                     "customers/api",
@@ -74,6 +74,35 @@
                     "customers/rejection_reasons"
                 ]
             },
+            {
+                "tab": "Customers",
+                {
+                "groups": [
+                    {
+                        "group": "Overview",
+                        "pages": [
+                            "orchestration/overview"
+                        ]
+                    },
+                    {
+                        "group": "Virtual Accounts",
+                        "groups": [
+                            {
+                                "group": "Overview",
+                                "pages": [
+                                    "cards/overview/overview",
+                                    "cards/overview/concepts",
+                                    "cards/overview/guide",
+                                    "cards/overview/advanced",
+                                    "cards/overview/webhooks"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+                },
+            },
+
             {
                 "tab": "Payments Orchestration",
                 "groups": [
