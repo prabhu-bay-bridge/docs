@@ -212,7 +212,7 @@
                 ]
             },
             {
-                "tab": "API reference",
+                "tab": "API Reference",
                 "pages": [
                     "api-reference/introduction/authentication",
                     "api-reference/introduction/idempotence",
@@ -256,7 +256,7 @@
                 ]
             },
             {
-                "tab": "More information",
+                "tab": "More Information",
                 "pages": [
                     "logistics/faq",
                     "fees/pricing"
