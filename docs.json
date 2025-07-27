@@ -162,12 +162,7 @@
                             "logistics/holidays",
                             "logistics/trackers",
                             "orchestration/transfer/returns",
-                            {
-                                "group": "Static Memo",
-                                "pages": [
-                                    "orchestration/staticmemo/staticmemos"
-                                ]
-                            }
+                            "orchestration/staticmemo/staticmemos"
                         ]
                     }
                 ]
