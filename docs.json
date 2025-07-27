@@ -215,19 +215,6 @@
                 ]
             },
             {
-                "tab": "Logistics",
-                "groups": [
-                    {
-                        "group": "Logistics",
-                        "pages": [
-                            "logistics/support",
-                            "logistics/faq",
-                            "fees/pricing"
-                        ]
-                    }
-                ]
-            },
-            {
                 "tab": "API reference",
                 "groups": [
                     {
@@ -278,9 +265,11 @@
                 ]
             },
             {
-                "tab": "Changelog",
+                "tab": "More information",
                 "pages": [
-                    "changelog/changelog"
+                    "changelog/changelog",
+                    "logistics/faq",
+                    "fees/pricing"
                 ]
             }
         ]
