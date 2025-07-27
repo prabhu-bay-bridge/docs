@@ -111,13 +111,8 @@
             },
             {
                 "tab": "Orchestration",
-                "groups": [
-                    {
-                        "group": "Overview",
-                        "pages": [
-                            "orchestration/overview"
-                        ]
-                    },
+                "pages": [
+                    "orchestration/overview",
                     {
                         "group": "Virtual Accounts",
                         "pages": [
@@ -133,7 +128,8 @@
                             "orchestration/transfer/statictemplates",
                             "orchestration/transfer/states",
                             "orchestration/transfer/advanced",
-                            "orchestration/transfer/details"                         ]
+                            "orchestration/transfer/details"                         
+                        ]
                     },
                     {
                         "group": "Liquidation Address",
@@ -185,17 +181,12 @@
             },
             {
                 "tab": "Cards",
-                "groups": [
-                    {
-                        "group": "Overview",
-                        "pages": [
-                            "cards/overview/overview",
-                            "cards/overview/concepts",
-                            "cards/overview/guide",
-                            "cards/overview/advanced",
-                            "cards/overview/webhooks"
-                        ]
-                    },
+                "pages": [
+                    "cards/overview/overview",
+                    "cards/overview/concepts",
+                    "cards/overview/guide",
+                    "cards/overview/advanced",
+                    "cards/overview/webhooks",
                     {
                         "group": "Sandbox",
                         "pages": [
@@ -218,15 +209,10 @@
             },
             {
                 "tab": "API reference",
-                "groups": [
-                    {
-                        "group": "Introduction",
-                        "pages": [
-                            "api-reference/introduction/authentication",
-                            "api-reference/introduction/idempotence",
-                            "api-reference/introduction/postman"
-                        ]
-                    },
+                "pages": [
+                    "api-reference/introduction/authentication",
+                    "api-reference/introduction/idempotence",
+                    "api-reference/introduction/postman",
                     {
                         "group": "Foundations",
                         "pages": [
