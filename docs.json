@@ -63,18 +63,6 @@
                 ]
             },
             {
-                "tab": "Customers-old",
-                "pages": [
-                    "customers/overview",
-                    "customers/api",
-                    "customers/kyclinks",
-                    "customers/add_req",
-                    "customers/endorsements",
-                    "customers/tos",
-                    "customers/rejection_reasons"
-                ]
-            },
-            {
                 "tab": "Customers",
                 "groups": [
                     {
