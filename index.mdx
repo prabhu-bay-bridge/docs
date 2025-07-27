@@ -53,7 +53,9 @@ mode: "custom"
 
 <div className="max-w-4xl mx-auto">
   <Columns cols={3}>
-    <Card title="Accept fiat payments" icon="dollar-sign">
+    <Card title="Accept fiat payments" icon="dollar-sign"
+      href="/create-a-one-time-payment"
+      >
       Use our virtual accounts to collect USD using account & routing numbers.
     </Card>
     
@@ -62,6 +64,10 @@ mode: "custom"
     </Card>
     
     <Card title="Issue cards" icon="credit-card">
+      Create and spend from cards connected to custodial balances.
+    </Card>
+
+    <Card title="Issue cards" icon="wallet">
       Create and spend from cards connected to custodial balances.
     </Card>
   </Columns>
