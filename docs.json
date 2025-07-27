@@ -23,9 +23,7 @@
                             "whatwesupport/geographies",
                             "whatwesupport/1pp"
                         ]
-                    }
-                ],
-                "groups": [
+                    },
                     {
                         "group": "Getting started",
                         "pages": [
