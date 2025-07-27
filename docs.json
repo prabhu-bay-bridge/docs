@@ -281,5 +281,14 @@
             "x": "https://x.com/stablecoin",
             "linkedin": "https://linkedin.com/company/bridge-apis"
         }
-    }
+    },
+   "contextual": {
+   "options": [
+     "copy",
+     "view",
+     "chatgpt",
+     "claude",
+     "perplexity"
+   ]
+ }
 }
