@@ -13,7 +13,7 @@
         "tabs": [
             {
               "tab": "Home",
-              "icon": "home",
+              "icon": "house",
               "pages": [
                 "index"
               ]
