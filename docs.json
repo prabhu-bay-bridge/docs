@@ -264,7 +264,7 @@
             },
             {
                 "tab": "Changelog",
-                "icon": "history",
+                "icon": "calendar",
                 "pages": [
                     "changelog/changelog"
                 ]
