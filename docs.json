@@ -99,14 +99,9 @@
                                             "compliance/businesses/highrisk"
                                         ]
                                     },
-                                    {
-                                        "group": "Compliance",
-                                        "pages": [
-                                            "compliance/compliance/dao",
-                                            "compliance/compliance/docs",
-                                            "compliance/compliance/poa"
-                                        ]
-                                    }
+                                    "compliance/compliance/dao",
+                                    "compliance/compliance/docs",
+                                    "compliance/compliance/poa"
                                 ]
                             }
                         ]
