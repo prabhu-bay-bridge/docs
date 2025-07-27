@@ -76,7 +76,6 @@
             },
             {
                 "tab": "Customers",
-                {
                 "groups": [
                     {
                         "group": "Overview",
@@ -100,7 +99,6 @@
                         ]
                     }
                 ]
-                },
             },
 
             {
