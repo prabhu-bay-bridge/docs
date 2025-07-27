@@ -27,40 +27,83 @@ mode: "custom"
   </div>
 </div>
 
-<div className="max-w-4xl mx-auto">
-  <h1 className="text-4xl md:text-5xl font-light mb-4">Quickstart guides.</h1>
+<div className="bg-white pt-8 pb-12">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-xl font-medium text-left mb-6">Quickstart guides</h2>
 
-  <Columns cols={4}>
-    <Card
-      title="Accept fiat payments"
-      icon="dollar-sign"
-      href="/guides/movemoney/virtualaccounts"
-    >
-      Use our virtual accounts to collect USD using account & routing numbers.
-    </Card>
+    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-12">
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/movemoney/virtualaccounts"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Accept fiat payments</h3>
+        <p className="text-sm text-gray-600">
+          Use our virtual accounts to collect USD using account & routing numbers.
+        </p>
+      </a>
 
-    <Card
-      title="Convert currencies"
-      icon="exchange"
-      href="/guides/movemoney/virtualaccounts"
-    >
-      Walk through setting up and sending payments using the API.
-    </Card>
+      <a
+        href="https://bridge-727305d3.mintlify.app/create-a-one-time-payment"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Convert currencies</h3>
+        <p className="text-sm text-gray-600">
+          Walk through setting up and sending payments using the API.
+        </p>
+      </a>
 
-    <Card
-      title="Issue cards"
-      icon="credit-card"
-      href="/guides/cards/overview"
-    >
-      Create and spend from cards connected to custodial balances.
-    </Card>
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/cards/overview"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Issue cards</h3>
+        <p className="text-sm text-gray-600">
+          Create and spend from cards connected to custodial balances.
+        </p>
+      </a>
 
-    <Card
-      title="Create wallets"
-      icon="wallet"
-      href="/guides/wallets/c2c"
-    >
-      Custody funds and orchestrate wallet-based money movement.
-    </Card>
-  </Columns>
+      <a
+        href="https://bridge-727305d3.mintlify.app/guides/wallets/c2c"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Create wallets</h3>
+        <p className="text-sm text-gray-600">
+          Custody funds and orchestrate wallet-based money movement.
+        </p>
+      </a>
+    </div>
+
+    <h2 className="text-xl font-medium text-left mb-6">Resources</h2>
+    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+      <a
+        href="https://support.bridge.xyz"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Contact support</h3>
+        <p className="text-sm text-gray-600">
+          Reach out to our team for help with integration or technical issues.
+        </p>
+      </a>
+
+      <a
+        href="mailto:sales@bridge.xyz"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Contact sales</h3>
+        <p className="text-sm text-gray-600">
+          Connect with our team to explore how Bridge can work for your use case.
+        </p>
+      </a>
+
+      <a
+        href="https://bridge.coastdemo.com/share/67f14d352788b1841300b826?mode=link"
+        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
+      >
+        <h3 className="text-base font-semibold mb-2 text-gray-900">Demo</h3>
+        <p className="text-sm text-gray-600">
+          Watch our interactive demo to see Bridge in action.
+        </p>
+      </a>
+    </div>
+  </div>
 </div>
