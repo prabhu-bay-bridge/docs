@@ -18,7 +18,7 @@
                         "group": "Getting started",
                         "pages": [
                             "getting-started",
-                            "get-set-up-with-bridge",
+                            "get-setup-with-bridge",
                             "create-your-first-customer",
                             "create-a-one-time-payment",
                             "setting-up-webhooks",
