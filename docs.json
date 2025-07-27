@@ -14,17 +14,17 @@
       {
         "anchor": "Get started",
         "icon": "play",
-        "groups": [/* your get started content */]
+        "groups": "get-set-up-with-bridge"
       },
       {
         "anchor": "Developer Platform", 
         "icon": "code",
-        "pages": [/* your developer platform pages */]
+        "pages": "get-set-up-with-bridge"
       },
       {
         "anchor": "API Reference",
         "icon": "square-terminal", 
-        "pages": [/* your API reference pages */]
+        "pages": "get-set-up-with-bridge"
       }
     ],
         "tabs": [
