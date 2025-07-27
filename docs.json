@@ -17,12 +17,12 @@
                     {
                         "group": "Getting started",
                         "pages": [
-                            "overview",
-                            "setup",
-                            "createcustomer",
-                            "createpayment",
-                            "setupwebhooks",
-                            "setupsandbox"
+                            "getting-started",
+                            "get-setup-with-bridge",
+                            "create-your-first-customer",
+                            "create-a-one-time-payment",
+                            "setting-up-webhooks",
+                            "setting-up-sandbox"
                         ]
                     },
                     {
