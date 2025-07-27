@@ -9,7 +9,7 @@
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
-        "structure": "tabs",
+        "pages": ["index"], 
         "tabs": [
             {
                 "tab": "Guides",
