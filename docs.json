@@ -9,24 +9,254 @@
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
-        "pages": [
-            "index"
-        ],
-        "anchors": [
+        "pages": ["index"],
+        "tabs": [
             {
-                "anchor": "Get started",
-                "icon": "play",
-                "groups": "get-set-up-with-bridge"
+                "tab": "Get started",
+                "groups": [
+                    {
+                        "group": "Introduction",
+                        "pages": [
+                            "getting-started",
+                            {
+                                "group": "What we support",
+                                "pages": [
+                                    "whatwesupport/chains",
+                                    "whatwesupport/fiats",
+                                    "whatwesupport/geographies",
+                                    "whatwesupport/1pp"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Quick Start",
+                        "pages": [
+                            "get-set-up-with-bridge",
+                            "create-your-first-customer",
+                            "create-a-one-time-payment",
+                            "setting-up-webhooks",
+                            "setting-up-sandbox"
+                        ]
+                    },
+                    {
+                        "group": "Guides",
+                        "pages": [
+                            {
+                                "group": "Move money with Bridge",
+                                "pages": [
+                                    "guides/movemoney/overview",
+                                    "guides/movemoney/virtualaccounts",
+                                    "guides/movemoney/recurring",
+                                    "guides/movemoney/offramp_liquidation",
+                                    "guides/movemoney/fiat_to_fiat"
+                                ]
+                            },
+                            {
+                                "group": "Integrate custodial wallets",
+                                "pages": [
+                                    "guides/wallets/overview",
+                                    "guides/wallets/onramp",
+                                    "guides/wallets/c2c",
+                                    "guides/wallets/offramp"
+                                ]
+                            },
+                            {
+                                "group": "Provision and make card payments",
+                                "pages": [
+                                    "guides/cards/overview",
+                                    "guides/cards/spend"
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             {
-                "anchor": "Developer Platform",
-                "icon": "code",
-                "pages": "get-set-up-with-bridge"
+                "tab": "Developer Platform",
+                "pages": [
+                    {
+                        "group": "Customers",
+                        "pages": [
+                            "customers/overview",
+                            {
+                                "group": "Customers",
+                                "pages": [
+                                    "customers/api",
+                                    "customers/kyclinks",
+                                    "customers/add_req",
+                                    "customers/endorsements",
+                                    "customers/tos",
+                                    "customers/rejection_reasons"
+                                ]
+                            },
+                            {
+                                "group": "Compliance",
+                                "pages": [
+                                    "compliance/individuals/individuals",
+                                    {
+                                        "group": "Businesses",
+                                        "pages": [
+                                            "compliance/businesses/overview",
+                                            "compliance/businesses/entity",
+                                            "compliance/businesses/ownership",
+                                            "compliance/businesses/formation",
+                                            "compliance/businesses/identification",
+                                            "compliance/businesses/highrisk"
+                                        ]
+                                    },
+                                    "compliance/compliance/dao",
+                                    "compliance/compliance/docs",
+                                    "compliance/compliance/poa"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Orchestration",
+                        "pages": [
+                            "orchestration/overview",
+                            {
+                                "group": "Virtual Accounts",
+                                "pages": [
+                                    "orchestration/virtual_account/virtual_account",
+                                    "orchestration/virtual_account/events",
+                                    "orchestration/virtual_account/additional_functionality"
+                                ]
+                            },
+                            {
+                                "group": "Transfers",
+                                "pages": [
+                                    "orchestration/transfer/transfer",
+                                    "orchestration/transfer/statictemplates",
+                                    "orchestration/transfer/states",
+                                    "orchestration/transfer/advanced",
+                                    "orchestration/transfer/details"
+                                ]
+                            },
+                            {
+                                "group": "Liquidation Address",
+                                "pages": [
+                                    "orchestration/liquidation_address/liquidation_address",
+                                    "orchestration/liquidation_address/drains"
+                                ]
+                            },
+                            {
+                                "group": "Prefunded Account",
+                                "pages": [
+                                    "orchestration/prefunded_account/prefunded_accounts"
+                                ]
+                            },
+                            {
+                                "group": "External Accounts",
+                                "pages": [
+                                    "api-concepts/external-accounts/bridge",
+                                    "api-concepts/external-accounts/plaid",
+                                    "api-concepts/external-accounts/validations"
+                                ]
+                            },
+                            {
+                                "group": "Fees & Minimums",
+                                "pages": [
+                                    "fees/devfees",
+                                    "fees/mins"
+                                ]
+                            },
+                            {
+                                "group": "More",
+                                "pages": [
+                                    "logistics/cutoffs",
+                                    "logistics/holidays",
+                                    "logistics/trackers",
+                                    "orchestration/transfer/returns",
+                                    "orchestration/staticmemo/staticmemos"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Wallets",
+                        "pages": [
+                            "wallets/overview",
+                            "wallets/move"
+                        ]
+                    },
+                    {
+                        "group": "Issuance",
+                        "pages": [
+                            "issuance/overview",
+                            "issuance/usdb",
+                            "issuance/custom",
+                            "issuance/faq"
+                        ]
+                    },
+                    {
+                        "group": "Cards",
+                        "pages": [
+                            "cards/overview/overview",
+                            "cards/overview/concepts",
+                            "cards/overview/guide",
+                            "cards/overview/advanced",
+                            "cards/overview/webhooks",
+                            {
+                                "group": "Sandbox",
+                                "pages": [
+                                    "cards/sandbox/sandbox",
+                                    "cards/sandbox/testing"
+                                ]
+                            },
+                            {
+                                "group": "More",
+                                "pages": [
+                                    "cards/additional/freezing",
+                                    "cards/additional/statements",
+                                    "cards/additional/pins",
+                                    "cards/additional/customizing",
+                                    "cards/additional/marketing",
+                                    "cards/additional/details"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Additional information",
+                        "pages": [
+                            "api-concepts/concepts/precision",
+                            "api-concepts/concepts/receipts",
+                            {
+                                "group": "Webhooks",
+                                "pages": [
+                                    "api-concepts/webhooks/overview",
+                                    "api-concepts/webhooks/signature",
+                                    "api-concepts/webhooks/structure"
+                                ]
+                            },
+                            "logistics/faq",
+                            "fees/pricing"
+                        ]
+                    }
+                ]
             },
             {
-                "anchor": "API Reference",
-                "icon": "square-terminal",
-                "pages": "get-set-up-with-bridge"
+                "tab": "API Reference",
+                "pages": [
+                    "api-reference/introduction/authentication",
+                    "api-reference/introduction/idempotence",
+                    "api-reference/introduction/postman",
+                    {
+                        "group": "Endpoints",
+                        "openapi": {
+                            "source": "https://apidocs.bridge.xyz/openapi/65cfb83f5b8a790047b6a7ec",
+                            "directory": "api-reference"
+                        }
+                    }
+                ]
+            },
+            {
+                "tab": "Changelog",
+                "pages": [
+                    "changelog/changelog"
+                ]
             }
         ]
     },
