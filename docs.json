@@ -114,6 +114,55 @@
                     {
                         "group": "Orchestration",
                         "pages": [
+                            "orchestration/overview",
+                            {
+                                "group": "Virtual Accounts",
+                                "pages": [
+                                    "orchestration/virtual_account/virtual_account",
+                                    "orchestration/virtual_account/events",
+                                    "orchestration/virtual_account/additional_functionality"
+                                ]
+                            },
+                            {
+                                "group": "Transfers",
+                                "pages": [
+                                    "orchestration/transfer/transfer",
+                                    "orchestration/transfer/statictemplates",
+                                    "orchestration/transfer/states",
+                                    "orchestration/transfer/advanced",
+                                    "orchestration/transfer/details"
+                                ]
+                            },
+                            {
+                                "group": "Liquidation Address",
+                                "pages": [
+                                    "orchestration/liquidation_address/liquidation_address",
+                                    "orchestration/liquidation_address/drains"
+                                ]
+                            },
+                            {
+                                "group": "Prefunded Account",
+                                "pages": [
+                                    "orchestration/prefunded_account/prefunded_accounts"
+                                ]
+                            },
+                            {
+                                "group": "Fees & Minimums",
+                                "pages": [
+                                    "fees/devfees",
+                                    "fees/mins"
+                                ]
+                            },
+                            {
+                                "group": "Additional Information",
+                                "pages": [
+                                    "logistics/cutoffs",
+                                    "logistics/holidays",
+                                    "logistics/trackers",
+                                    "orchestration/transfer/returns",
+                                    "orchestration/staticmemo/staticmemos"
+                                ]
+                            }
                         ]
                     },
                     {
