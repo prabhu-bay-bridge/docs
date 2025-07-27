@@ -18,20 +18,20 @@
                         "group": "Getting started",
                         "pages": [
                             "getting-started",
+                            {
+                                "group": "What we support",
+                                "pages": [
+                                    "whatwesupport/chains",
+                                    "whatwesupport/fiats",
+                                    "whatwesupport/geographies",
+                                    "whatwesupport/1pp"
+                                ]
+                            },
                             "get-setup-with-bridge",
                             "create-your-first-customer",
                             "create-a-one-time-payment",
                             "setting-up-webhooks",
                             "setting-up-sandbox"
-                        ]
-                    },
-                    {
-                        "group": "What we support",
-                        "pages": [
-                            "whatwesupport/chains",
-                            "whatwesupport/fiats",
-                            "whatwesupport/geographies",
-                            "whatwesupport/1pp"
                         ]
                     },
                     {
