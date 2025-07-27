@@ -3,9 +3,9 @@
     "theme": "palm",
     "name": "Bridge",
     "colors": {
-      "primary": "#16A34A",       
-      "light": "#EDE6D6",        
-      "dark": "#15803D"    
+        "primary": "#16A34A",
+        "light": "#EDE6D6",
+        "dark": "#15803D"
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
@@ -110,7 +110,7 @@
                 ]
             },
             {
-                "tab": "Payments Orchestration",
+                "tab": "Orchestration",
                 "groups": [
                     {
                         "group": "Overview",
@@ -151,9 +151,17 @@
                         ]
                     },
                     {
-                        "group": "Static Memo",
+                        "group": "Additional Information",
                         "pages": [
-                            "orchestration/staticmemo/staticmemos"
+                            "logistics/cutoffs",
+                            "logistics/holidays",
+                            "logistics/trackers",
+                            {
+                                "group": "Static Memo",
+                                "pages": [
+                                    "orchestration/staticmemo/staticmemos"
+                                ]
+                            }
                         ]
                     }
                 ]
@@ -213,11 +221,8 @@
                     {
                         "group": "Logistics",
                         "pages": [
-                            "logistics/cutoffs",
                             "logistics/support",
-                            "logistics/holidays",
                             "logistics/faq",
-                            "logistics/trackers",
                             "fees/pricing"
                         ]
                     }
