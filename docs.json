@@ -10,10 +10,9 @@
     "favicon": "/logo/favicon.ico",
     "navigation": {
         "pages": ["index"],
-        "anchors": [
+        "tabs": [
             {
-                "anchor": "Get started",
-                "icon": "play",
+                "tab": "Get started",
                 "groups": [
                     {
                         "group": "Introduction",
@@ -74,8 +73,7 @@
                 ]
             },
             {
-                "anchor": "Developer Platform",
-                "icon": "code",
+                "tab": "Developer Platform",
                 "pages": [
                     {
                         "group": "Customers",
@@ -240,8 +238,7 @@
                 ]
             },
             {
-                "anchor": "API Reference",
-                "icon": "square-terminal",
+                "tab": "API Reference",
                 "pages": [
                     "api-reference/introduction/authentication",
                     "api-reference/introduction/idempotence",
@@ -256,8 +253,7 @@
                 ]
             },
             {
-                "anchor": "Changelog",
-                "icon": "clock",
+                "tab": "Changelog",
                 "pages": [
                     "changelog/changelog"
                 ]
