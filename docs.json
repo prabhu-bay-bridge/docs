@@ -17,12 +17,12 @@
                     {
                         "group": "Getting started",
                         "pages": [
-                            "guides/getstarted/overview",
-                            "guides/getstarted/setup",
-                            "guides/getstarted/createcustomer",
-                            "guides/getstarted/createpayment",
-                            "guides/getstarted/setupwebhooks",
-                            "guides/getstarted/setupsandbox"
+                            "overview",
+                            "setup",
+                            "createcustomer",
+                            "createpayment",
+                            "setupwebhooks",
+                            "setupsandbox"
                         ]
                     },
                     {
