@@ -9,6 +9,7 @@
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
+        "pages": ["index"],
         "tabs": [
             {
                 "tab": "Get started",
