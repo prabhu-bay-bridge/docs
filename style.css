@@ -1,43 +1,59 @@
-/* Light bluish-gray for main content area */
+/* Content area: soft neutral with subtle green-blue hint */
 #content-area {
-  background-color: #f0fdf9;  /* light green-blue tint */
+  background-color: #f7fdfc;  /* soft, cleaner mint tint */
+  color: #1e293b; /* Slate-800 for strong readability */
 }
 
-/* Soft white base with clean text color */
+/* Base body background */
 body {
   background-color: #ffffff;
-  color: #1e293b; /* Slate-800 */
+  color: #1e293b;
+  font-family: 'Inter', sans-serif; /* Optional: improve modern look */
 }
 
-/* Sidebar with a blue-tinted background */
+/* Sidebar: cooler and more subtle, better contrast */
 #sidebar {
-  background-color: #e0f2fe;  /* Tailwind sky-100 */
-  border-right: 1px solid #bae6fd;  /* Tailwind sky-200 */
+  background-color: #e3f2fd;  /* soft sky-blue */
+  border-right: 1px solid #cbd5e1;  /* slate-200 for cleaner separation */
 }
 
-/* Navbar with soft green bottom border */
+/* Navbar: subtle green divider, white background */
 #navbar {
   background-color: #ffffff;
-  border-bottom: 1px solid #bbf7d0;  /* Tailwind green-200 */
+  border-bottom: 1px solid #a7f3d0; /* green-200 */
 }
 
-/* Primary buttons and links */
+/* Primary links and CTA buttons */
 a,
 .button-primary {
-  color: #0ea5e9; /* Tailwind sky-500 */
+  color: #0ea5e9; /* sky-500 */
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 a:hover,
 .button-primary:hover {
-  color: #0284c7; /* Tailwind sky-600 */
+  color: #0369a1; /* sky-700 for more contrast on hover */
 }
 
-/* Secondary buttons or accents */
+/* Secondary buttons */
 .button-secondary {
-  background-color: #4ade80; /* Tailwind green-400 */
+  background-color: #34d399; /* green-400 */
   color: #ffffff;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .button-secondary:hover {
-  background-color: #22c55e; /* Tailwind green-500 */
+  background-color: #10b981; /* green-500 */
+}
+
+/* Optional: Add soft shadows to cards for depth */
+.card,
+.api-doc-box,
+.sidebar-section {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
 }
