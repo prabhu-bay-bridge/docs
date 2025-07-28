@@ -27,84 +27,75 @@ mode: "custom"
   </div>
 </div>
 
-
 <div className="bg-white pt-12 pb-16">
   <div className="max-w-6xl mx-auto px-6">
 
-    <!-- Quickstart Guides -->
-    <div className="mb-12">
-      <h2 className="text-xl font-light text-gray-800 text-center mb-6">Quickstart guides</h2>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center text-center">
-        <Columns cols={4}>
-          <Card
-            title="Accept fiat payments"
-            icon="dollar-sign"
-            href="/get-started/movemoney/virtualaccounts"
-          >
-            Use our virtual accounts to collect USD using account & routing numbers.
-          </Card>
-      
-          <Card
-            title="Convert currencies"
-            icon="exchange"
-            href="/create-a-one-time-payment"
-          >
-            Walk through setting up and sending payments using the API.
-          </Card>
-      
-          <Card
-            title="Issue cards"
-            icon="credit-card"
-            href="/get-started/cards/overview"
-          >
-            Create and spend from cards connected to custodial balances.
-          </Card>
-      
-          <Card
-            title="Create wallets"
-            icon="wallet"
-            href="/get-started/wallets/crypto-to-crypto"
-          >
-            Custody funds and orchestrate wallet-based money movement.
-          </Card>
-        </Columns>
-      </div>
+    {/* Quickstart Guides */}
+    <div className="mb-12 text-center">
+      <h2 className="text-xl font-light text-gray-800 mb-6">Quickstart guides</h2>
+      <Columns cols={4}>
+        <Card
+          title="Accept fiat payments"
+          icon="dollar-sign"
+          href="/get-started/movemoney/virtualaccounts"
+        >
+          Use our virtual accounts to collect USD using account & routing numbers.
+        </Card>
+
+        <Card
+          title="Convert currencies"
+          icon="exchange"
+          href="/create-a-one-time-payment"
+        >
+          Walk through setting up and sending payments using the API.
+        </Card>
+
+        <Card
+          title="Issue cards"
+          icon="credit-card"
+          href="/get-started/cards/overview"
+        >
+          Create and spend from cards connected to custodial balances.
+        </Card>
+
+        <Card
+          title="Create wallets"
+          icon="wallet"
+          href="/get-started/wallets/crypto-to-crypto"
+        >
+          Custody funds and orchestrate wallet-based money movement.
+        </Card>
+      </Columns>
     </div>
 
-<!-- Resources -->
-<div className="mb-12">
-  <h2 className="text-xl font-light text-gray-800 text-center mb-6">Resources</h2>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center text-center">
-        <a
+    {/* Resources */}
+    <div className="mb-12 text-center">
+      <h2 className="text-xl font-light text-gray-800 mb-6">Resources</h2>
+      <Columns cols={3}>
+        <Card
+          title="Contact support"
+          icon="life-buoy"
           href="https://support.bridge.xyz"
-          className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
         >
-          <h3 className="text-base font-semibold mb-2 text-gray-900">Contact support</h3>
-          <p className="text-sm text-slate-600">
-            Reach out to our team for help with integration or technical issues.
-          </p>
-        </a>
+          Reach out to our team for help with integration or technical issues.
+        </Card>
 
-        <a
+        <Card
+          title="Request a demo"
+          icon="calendar"
           href="https://www.bridge.xyz/requestfreedemo"
-          className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
         >
-          <h3 className="text-base font-semibold mb-2 text-gray-900">Request a demo</h3>
-          <p className="text-sm text-slate-600">
-            Click here to request a demo or reach out at sales@bridge.xyz.
-          </p>
-        </a>
+          Click here to request a demo or reach out at sales@bridge.xyz.
+        </Card>
 
-        <a
+        <Card
+          title="Demo"
+          icon="play-circle"
           href="https://bridge.coastdemo.com/share/67f14d352788b1841300b826?mode=link"
-          className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition block no-underline"
         >
-          <h3 className="text-base font-semibold mb-2 text-gray-900">Demo</h3>
-          <p className="text-sm text-slate-600">
-            Watch our interactive demo to see Bridge in action.
-          </p>
-        </a>
-      </div>
+          Watch our interactive demo to see Bridge in action.
+        </Card>
+      </Columns>
     </div>
 
   </div>
