@@ -5,9 +5,9 @@ mode: "wide"
 
 Bridge APIs are lego blocks that let you build delightful payment experiences for your customers. The guides in this section will walk you through the following APIs.
 
-| **API**                                                                           | **Description**                                                                                                       |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| [**Virtual Accounts**](/orchestration/virtual_account/virtual_account)            | **Unique fiat deposit addresses** issued to your customers so they can receive fiat deposits (ACH, Wire, SEPA, SPEI). |
-| [**Transfers**](/orchestration/transfer/transfer)                                 | One-time **fiat or stablecoin** transfers. Supports onramps, offramps, and crypto-to-crypto flows.                    |
-| [**Static Template Transfers**](/orchestration/transfer/statictemplates)          | Take **recurring transfers** with reusable transfer instructions.                                                     |
-| [**Liquidation Address**](/orchestration/liquidation_address/liquidation_address) | **Permanent on-chain address** that auto-forwards incoming crypto to a fiat or crypto destination.                    |
+| **API**                       | **Description**                                                                                                       | **When to Use**                                                                                          |
+| :---------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
+| **Virtual Accounts**          | **Unique fiat deposit addresses** issued to your customers so they can receive fiat deposits (ACH, Wire, SEPA, SPEI). | When you want to collect fiat payments for your customers via bank transfers, especially for repeat use. |
+| **Transfers**                 | **One-time fiat or stablecoin transfers**. Supports onramps, offramps, and crypto-to-crypto flows.                    | When you need to send or receive money programmatically—either fiat or crypto.                           |
+| **Static Template Transfers** | **Reusable transfer instructions** for **recurring**, template-based transfers.                                       | When your customer want to accept recurring payments.                                                    |
+| **Liquidation Address**       | Permanent on-chain address that **auto-forwards incoming crypto to a fia**t or crypto destination.                    | When you need a **fixed blockchain address** and want funds automatically converted or routed.           |
