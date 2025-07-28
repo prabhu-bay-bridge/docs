@@ -1,22 +1,43 @@
-/* Light gray for overall content area */
+/* Light bluish-gray for main content area */
 #content-area {
-  background-color: #f9fafb;  /* Very light gray, consistent with Bridge UI cards */
+  background-color: #f0fdf9;  /* light green-blue tint */
 }
 
-/* Pure white page background */
+/* Soft white base with clean text color */
 body {
   background-color: #ffffff;
-  color: #1e293b; /* Slate-800: deep gray-blue text for clean legibility */
+  color: #1e293b; /* Slate-800 */
 }
 
-/* Sidebar background: subtle slate-gray */
+/* Sidebar with a blue-tinted background */
 #sidebar {
-  background-color: #f1f5f9;  /* Tailwind slate-100 */
-  border-right: 1px solid #e2e8f0;  /* light border */
+  background-color: #e0f2fe;  /* Tailwind sky-100 */
+  border-right: 1px solid #bae6fd;  /* Tailwind sky-200 */
 }
 
-/* Top nav bar: minimal with subtle shadow divider */
+/* Navbar with soft green bottom border */
 #navbar {
   background-color: #ffffff;
-  border-bottom: 1px solid #e2e8f0;  /* Tailwind slate-200 */
+  border-bottom: 1px solid #bbf7d0;  /* Tailwind green-200 */
+}
+
+/* Primary buttons and links */
+a,
+.button-primary {
+  color: #0ea5e9; /* Tailwind sky-500 */
+}
+
+a:hover,
+.button-primary:hover {
+  color: #0284c7; /* Tailwind sky-600 */
+}
+
+/* Secondary buttons or accents */
+.button-secondary {
+  background-color: #4ade80; /* Tailwind green-400 */
+  color: #ffffff;
+}
+
+.button-secondary:hover {
+  background-color: #22c55e; /* Tailwind green-500 */
 }
