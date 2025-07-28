@@ -29,10 +29,10 @@
                             {
                                 "group": "What we support",
                                 "pages": [
-                                    "whatwesupport/chains",
-                                    "whatwesupport/fiats",
-                                    "whatwesupport/geographies",
-                                    "whatwesupport/1pp"
+                                    "get-started/functionality/blockchains",
+                                    "get-started/functionality/fiats",
+                                    "get-started/functionality/geographies",
+                                    "get-started/functionality/1st-and-3rd-party-payments"
                                 ]
                             }
                         ]
@@ -53,27 +53,27 @@
                             {
                                 "group": "Move money with Bridge",
                                 "pages": [
-                                    "guides/movemoney/overview",
-                                    "guides/movemoney/virtualaccounts",
-                                    "guides/movemoney/recurring",
-                                    "guides/movemoney/offramp_liquidation",
-                                    "guides/movemoney/fiat_to_fiat"
+                                    "get-started/movemoney/overview",
+                                    "get-started/movemoney/virtualaccounts",
+                                    "get-started/movemoney/recurring",
+                                    "get-started/movemoney/offramp_liquidation",
+                                    "get-started/movemoney/fiat_to_fiat"
                                 ]
                             },
                             {
                                 "group": "Integrate custodial wallets",
                                 "pages": [
-                                    "guides/wallets/overview",
-                                    "guides/wallets/onramp",
-                                    "guides/wallets/c2c",
-                                    "guides/wallets/offramp"
+                                    "get-started/wallets/overview",
+                                    "get-started/wallets/onramp",
+                                    "get-started/wallets/c2c",
+                                    "get-started/wallets/offramp"
                                 ]
                             },
                             {
                                 "group": "Provision and make card payments",
                                 "pages": [
-                                    "guides/cards/overview",
-                                    "guides/cards/spend"
+                                    "get-started/cards/overview",
+                                    "get-started/cards/spend"
                                 ]
                             }
                         ]
