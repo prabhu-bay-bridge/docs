@@ -2,9 +2,9 @@
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
     "colors": {
-      "primary": "#4A6B2F",
-      "light": "#2E451A",       
-      "dark": "#2E451A"
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
     },
     "name": "Bridge",
     "favicon": "/logo/favicon.ico",
