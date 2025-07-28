@@ -30,8 +30,8 @@
                                 "group": "What we support",
                                 "pages": [
                                     "get-started/functionality/blockchains",
-                                    "get-started/functionality/fiats",
-                                    "get-started/functionality/geographies",
+                                    "get-started/functionality/fias",
+                                    "get-started/functionality/geo",
                                     "get-started/functionality/1st-and-3rd-party-payments"
                                 ]
                             }
