@@ -82,7 +82,7 @@
             },
             {
                 "tab": "Developer Platform",
-                "icon": "code",
+                "icon": "layer-group",
                 "pages": [
                     {
                         "group": "Customers",
