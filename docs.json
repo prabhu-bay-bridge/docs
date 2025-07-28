@@ -34,17 +34,17 @@
                                     "get-started/functionality/geo",
                                     "get-started/functionality/1st-and-3rd-party-payments"
                                 ]
+                            },
+                            {
+                                "group": "Quick Start",
+                                "pages": [
+                                    "get-set-up-with-bridge",
+                                    "create-your-first-customer",
+                                    "create-a-one-time-payment",
+                                    "setting-up-webhooks",
+                                    "setting-up-sandbox"
+                                ]
                             }
-                        ]
-                    },
-                    {
-                        "group": "Quick Start",
-                        "pages": [
-                            "get-set-up-with-bridge",
-                            "create-your-first-customer",
-                            "create-a-one-time-payment",
-                            "setting-up-webhooks",
-                            "setting-up-sandbox"
                         ]
                     },
                     {
