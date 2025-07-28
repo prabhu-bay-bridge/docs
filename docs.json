@@ -3,9 +3,9 @@
     "theme": "palm",
     "name": "Bridge",
     "colors": {
-        "primary": "#4A6B2F",
-        "light": "#F7F1E3",
-        "dark": "#2E451A"
+      "primary": "#4A6B2F",
+      "light": "#ECF8FB",      
+      "dark": "#2E451A"
     },
     "favicon": "/logo/favicon.ico",
     "navigation": {
