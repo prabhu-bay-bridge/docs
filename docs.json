@@ -248,7 +248,7 @@
             },
             {
                 "tab": "API Reference",
-                "icon": "book-open",
+                "icon": "brackets-curly",
                 "pages": [
                     "api-reference/introduction/authentication",
                     "api-reference/introduction/idempotence",
