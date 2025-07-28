@@ -1,12 +1,12 @@
 {
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
-    "name": "Bridge",
     "colors": {
       "primary": "#4A6B2F",
-      "light": "#ECF8FB",      
+      "light": "#2E451A",       
       "dark": "#2E451A"
     },
+    "name": "Bridge",
     "favicon": "/logo/favicon.ico",
     "navigation": {
         "pages": ["index"],
