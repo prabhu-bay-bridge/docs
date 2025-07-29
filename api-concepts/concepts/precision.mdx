@@ -7,7 +7,7 @@ When interacting with Bridge’s APIs, it's important to understand how we handl
 
 ---
 
-# Key Policies
+## Key Policies
 
 - **Whole cent enforcement**\
   Bridge only processes amounts that can be expressed in **whole U.S. cents**.\
@@ -18,7 +18,7 @@ When interacting with Bridge’s APIs, it's important to understand how we handl
   - Bridge will round fractional cent values in such a way to ensure that there will always be sufficient balance available to process your transaction.
   - Bridge will always round in such a way to guarantee at least the minimum amount of fees that are owed to all parties, whether they be our developers or to Bridge.
 
-## Example Calculation
+### Example Calculation
 
 Let’s say you want to offramp **\$100,100.119999 USDT** with a **10 bps developer fee (0.1%)**:
 
@@ -32,7 +32,7 @@ Let’s say you want to offramp **\$100,100.119999 USDT** with a **10 bps develo
 
 Therefore, the amount that Bridge will send to the destination is \$100,000.00.
 
-# Working backwards from desired output
+## Working backwards from desired output
 
 If you want your customer to receive a **clean, round-dollar output**, use this formula:
 
@@ -40,7 +40,7 @@ If you want your customer to receive a **clean, round-dollar output**, use this 
 
 Then **round up** to the nearest cent to ensure fees are covered.
 
-## 📐 Reference Table
+### 📐 Reference Table
 
 <Note>
   These examples assume **no developer fee** and only standard Bridge exchange fees.
