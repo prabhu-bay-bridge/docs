@@ -3,18 +3,18 @@ title: "Virtual account events"
 mode: "wide"
 ---
 
-# **What is a virtual account event?**
+## **What is a virtual account event?**
 
 Whenever a deposit is received, Bridge generates a `VirtualAccountEvent` with a unique `id`. You can:
 
-- Fetch historical events using the **Virtual Account Activity** API.
+- Fetch historical events using the [Virtual Account Activity API](/api-reference/virtual-accounts/virtual-account-activity).
 - Receive **real-time webhook notifications** when:
   - A new deposit is received.
   - The status of an event changes (e.g. funds delivered, refund issued).
 
 Each `VirtualAccountEvent` includes detailed information about the deposit, source, status, and destination.
 
-# **Event Types**
+## **Event Types**
 
 Below are the different types of virtual account events you may receive. You can identify the type of each event by checking the `type` field in the virtual account event object.
 
@@ -37,10 +37,10 @@ Below are the different types of virtual account events you may receive. You can
   All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
 </Tip>
 
-# **Event Breakdown**
+## **Event Breakdown**
 
 <AccordionGroup>
-  <Accordion title="Funds received">
+  <Accordion title="Funds received" description="Bridge received funds via ACH or wire.">
     Information about a fiat deposit received. The `funds_received` event amount always matches the full amount that the customer sent before any fees are deducted. We also provide any source information we have about the sender of a deposit.
 
     - `payment_rail`- `ach_push` or `wire`. The payment rail on which the deposit was received. Different information is available for each of these payment rail types.

@@ -3,7 +3,7 @@ title: "Virtual Accounts"
 mode: "wide"
 ---
 
-# Overview
+## Overview
 
 Bridge **virtual accounts are permanent, reusable fiat deposit addresses** that convert incoming fiat into crypto and deliver it to your specified destination (e.g. a wallet address).
 
@@ -25,7 +25,7 @@ Developers use virtual accounts to simplify global payments, custody stablecoins
 
 ---
 
-# Creating virtual accounts
+## Creating virtual accounts
 
 Use the Virtual Accounts API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
 
@@ -208,7 +208,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/v
 }'
 ```
 
-# **Amounts**
+## **Amounts**
 
 - `amount`- For transaction-related events in the destination currency (`payment_processed`, `payment_submitted`), this amount is the final total amount of funds sent to the destination. For all other events, which use the source currency, this is the initial amount received from the source.
 - `subtotal_amount`- The amount of funds received from the source minus any fiat fees: developer fee and exchange fee. This is always in the source currency.
