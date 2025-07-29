@@ -13,9 +13,10 @@ Bridge now supports webhook events for the following categories:
 - `virtual_account.activity`
 
 Additional event categories will be added soon.\
+\
 **💬 Feedback welcome** — Let us know which event types you'd like to see prioritized next.
 
-# Supported Event Types
+## Supported Event Types
 
 | **Category**                | **Supported Event Types**                                      |
 | :-------------------------- | :------------------------------------------------------------- |
@@ -26,7 +27,7 @@ Additional event categories will be added soon.\
 | `transfer`                  | `created`, `updated`, `updated.status_transitioned`            |
 | `virtual_account.activity`  | `created`, `updated`                                           |
 
-# Event Object Schema
+## Event Object Schema
 
 Each webhook payload includes:
 
@@ -42,7 +43,7 @@ Each webhook payload includes:
 | `event_object_changes` | Diffs from the previous event (only present on updates).                                             |
 | `event_created_at`     | Timestamp of the event in ISO 8601 format.                                                           |
 
-# Supported Mutation Types
+## Supported Mutation Types
 
 Each event can have the following mutation types:
 
@@ -51,7 +52,7 @@ Each event can have the following mutation types:
 - `updated.status_transitioned` _(for state transitions like KYC or Transfer status)_
 - `deleted` _(if applicable)_
 
-# **Examples**
+## **Examples**
 
 <Tabs>
   <Tab title="virtual_account.activity.created">
