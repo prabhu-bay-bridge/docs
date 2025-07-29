@@ -3,9 +3,9 @@ title: "External Account Validations"
 mode: "wide"
 ---
 
-# 🇺🇸 **US External Bank Accounts**
+## 🇺🇸 **US External Bank Accounts**
 
-## Beneficiary Address Requirements
+### Beneficiary Address Requirements
 
 To ensure addresses meet banking requirements and avoid transaction issues, Bridge applies the following validation rules:
 
@@ -29,7 +29,7 @@ To ensure addresses meet banking requirements and avoid transaction issues, Brid
 
 If **Line 3 exceeds 35 characters**, Bridge automatically shifts words from Line 3 upward into Line 2 (if space allows). If the **country name doesn't fit**, it's abbreviated using a 3-letter ISO-like code (e.g., `"Korea"` → `"Kor"`).
 
-## Examples of Automatic Adjustments
+### Examples of Automatic Adjustments
 
 **❌ Before (Line 3 too long):**
 
@@ -67,7 +67,7 @@ Line 2: "my_city_name_is_2_long_2_be_valid"
 Line 3: "CA 94105"
 ```
 
-# 🇲🇽 **MXN External CLABE Accounts**
+## 🇲🇽 **MXN External CLABE Accounts**
 
 To create a CLABE-based external account in Mexico:
 

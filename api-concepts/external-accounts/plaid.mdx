@@ -3,11 +3,9 @@ title: "Link a bank account with Plaid Link"
 mode: "wide"
 ---
 
-# **Plaid Link**
+Integrating with [Plaid Link ](https://plaid.com/docs/link/)allows your users to connect their financial accounts via Bridge. This flow enables ACH and wire money movement through linked bank accounts.
 
-Integrating with [**Plaid Link **](https://plaid.com/docs/link/)allows your users to connect their financial accounts via Bridge. This flow enables ACH and wire money movement through linked bank accounts.
-
-# Overview of the Flow
+## Overview of the Flow
 
 1. **Request a Plaid Link Token** from Bridge
 2. **Initialize the Plaid Link SDK** in your frontend using the `link_token`
@@ -15,7 +13,7 @@ Integrating with [**Plaid Link **](https://plaid.com/docs/link/)allows your user
 4. Bridge **fetches and creates External Accounts** for linked bank accounts
 5. **Retrieve External Accounts** to initiate Transfers, Liquidation Addresses, etc.
 
-# Step-by-Step Integration
+## Step-by-Step Integration
 
 <Steps>
   <Step title="First request a link_token">
@@ -66,7 +64,7 @@ Integrating with [**Plaid Link **](https://plaid.com/docs/link/)allows your user
   </Step>
 </Steps>
 
-# WebView & Bank Limitations
+## WebView & Bank Limitations
 
 - **WebView support is deprecated** for certain banks. See [Plaid's WebView recommendations](https://plaid.docsend.com/view/h3qdupjusiwyjvv5?utm_source=product&utm_medium=p2&utm_campaign=2023_04_product_all_p2_chase_inprocess_deprecation_1&utm_term=us_can_eu_uk&utm_content=api_docs&mkt_tok=NDk1LVdSRS01NjEAAAGLLs_Qn6Y7E3wrrQO1CqOlBpruQWox_UmouirHPa3MltCum43qNbR9nS7gWSa6kM63HnuhssBFTYHJhzRP2pFl6G979XUn33pK_QGfgGxNKcoieg).
 - **Wire support is limited**:
