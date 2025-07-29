@@ -25,7 +25,7 @@ Developers use virtual accounts to simplify global payments, custody stablecoins
 
 ---
 
-# Step 1: Create a virtual account
+## Step 1: Create a virtual account
 
 Use the [Virtual Accounts](ref:virtual-accounts-1) API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
 
@@ -182,19 +182,19 @@ Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automa
   </Tab>
 </Tabs>
 
-## Sharing Deposit Instructions
+### Sharing Deposit Instructions
 
 Once a Virtual Account is created, use the `source_deposit_instructions` object in the response to share the fiat deposit details with your customer. Funds sent to those details will be automatically converted and delivered to the crypto destination you specified.
 
 ---
 
-# Step 2: Monitoring virtual account events
+## Step 2: Monitoring virtual account events
 
 Once a Virtual Account is created, your customer can start receiving fiat payments using the provided deposit instructions.
 
 Bridge automatically tracks the full lifecycle of each deposit—from the moment funds are received to the point they are delivered on-chain. Each event in this lifecycle is represented by a `VirtualAccountEvent`.
 
-## Event Creation and Tracking
+### Event Creation and Tracking
 
 Whenever a deposit is received, Bridge generates a `VirtualAccountEvent` with a unique `id`. You can:
 
@@ -205,7 +205,7 @@ Whenever a deposit is received, Bridge generates a `VirtualAccountEvent` with a 
 
 Each `VirtualAccountEvent` includes detailed information about the deposit, source, status, and destination.
 
-## Virtual account event types
+### Virtual account event types
 
 Below are the different types of virtual account events you may receive. You can identify the type of each event by checking the `type` field in the virtual account event object.
 
@@ -226,7 +226,7 @@ Below are the different types of virtual account events you may receive. You can
   All transaction-triggered events include a `deposit_id` field. This id is unique for each transaction that Bridge receives through this Virtual Account and can be used to link separate events to the same source transaction.
 </Info>
 
-## Fetching virtual account activity
+### Fetching virtual account activity
 
 ```bash Request expandable
 curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts/<virtual_account_id>/history' \
@@ -297,6 +297,6 @@ curl --location 'https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accou
 }
 ```
 
-# Learn More
+## Learn More
 
 Refer [Virtual Accounts](/orchestration/virtual_account/virtual_account) for more detailed documentation.
