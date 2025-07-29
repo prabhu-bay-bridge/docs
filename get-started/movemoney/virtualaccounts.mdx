@@ -27,7 +27,7 @@ Developers use virtual accounts to simplify global payments, custody stablecoins
 
 ## Step 1: Create a virtual account
 
-Use the [Virtual Accounts](ref:virtual-accounts-1) API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
+Use the [Virtual Accounts](/api-reference/virtual-accounts/create-a-virtual-account) API to provision permanent fiat deposit addresses for your customers. You define the `source` currency for the account and configure the `destination` to specify where Bridge should deliver the converted funds.
 
 Bridge handles the fiat-to-crypto conversion and sends the funds on-chain automatically.
 
@@ -198,7 +198,7 @@ Bridge automatically tracks the full lifecycle of each deposit—from the moment
 
 Whenever a deposit is received, Bridge generates a `VirtualAccountEvent` with a unique `id`. You can:
 
-- Fetch historical events using the [Virtual Account Activity](ref:get_customers-customerid-virtual-accounts-virtualaccountid-history) API.
+- Fetch historical events using the [Virtual Account Activity](/api-reference/virtual-accounts/virtual-account-activityy) API.
 - Receive **real-time webhook notifications** when:
   - A new deposit is received.
   - The status of an event changes (e.g. funds delivered, refund issued).
