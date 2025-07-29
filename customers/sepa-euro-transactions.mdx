@@ -1,0 +1,78 @@
+---
+title: "SEPA/Euro Transactions"
+---
+
+Single Euro Payments Area (SEPA) is an initiative designed to facilitate efficient and uniform processing of bank transfers in euros across countries in the SEPA zone. The SEPA/Euro service offered by Bridge provides the ability to onramp euros to a crypto destination or offramp cryptos to an external SEPA-enabled bank account, leveraging the efficient and cost-effective SEPA payment rail.
+
+## **Requirements**
+
+Customers are required to accept [<u>ToS Version 2</u>](https://bridge.xyz/legal), which was launched on April 14, 2024. Customers with conflicting address information must also provide `Proof of Address` KYC information to use the SEPA/Euro services:
+
+- Individuals / UBOs who provide ID documents from a controlled or prohibited region
+- Businesses claiming an operating address in a low risk region whose control person's address or business incorporation address is in a high risk region
+
+For new customers from the European Economic Area (EEA), including associated principalities and territories (see full list below), the two requirements mentioned above are typically met automatically as part of the onboarding process.
+
+For other customers intending to use these services, please refer to [<u>ToS Acceptance of a New Version</u>](/customers/tos) and [<u>KYC Link for Existing Customers</u>](/customers/kyclinks) for details on how to obtain links to complete the `ToS V2 Acceptance` and, if necessary, `KYC Proof-of-Address` processes. Utility bills and bank statements are recommended for proof of address.
+
+Please check the `endorsements` section of the `Customer` object returned from the customer API endpoints to determine the approval status for using SEPA and to identify any remaining requirements that need to be completed.
+
+For example:
+
+JSON
+
+```
+"endorsements": [
+  {
+    "name": "sepa",
+    "status": "incomplete",
+    "additional_requirements": [
+      "kyc_with_proof_of_address",
+      "tos_v2_acceptance"
+    ]
+  }
+]
+```
+
+## **Bridge EEA\+ Countries**
+
+Åland Islands (ALA)\
+Andorra (AND)\
+Austria (AUT)\
+Belgium (BEL)\
+Bulgaria (BGR)\
+Croatia (HRV)\
+Cyprus (CYP)\
+Czechia (CZE)\
+Denmark (DNK)\
+Estonia (EST)\
+Finland (FIN)\
+France (FRA)\
+French Guiana (GUF)\
+Germany (DEU)\
+Greece (GRC)\
+Guadeloupe (GLP)\
+Hungary (HUN)\
+Iceland (ISL)\
+Ireland (IRL)\
+Italy (ITA)\
+Latvia (LVA)\
+Liechtenstein (LIE)\
+Lithuania (LTU)\
+Luxembourg (LUX)\
+Malta (MLT)\
+Martinique (MTQ)\
+Mayotte (MYT)\
+Netherlands (NLD)\
+Norway (NOR)\
+Poland (POL)\
+Portugal (PRT)\
+Réunion (REU)\
+Romania (ROU)\
+Saint Martin (French part) (MAF)\
+Slovakia (SVK)\
+Slovenia (SVN)\
+Spain (ESP)\
+Sweden (SWE)\
+Switzerland (CHE)\
+United Kingdom of Great Britain and Northern Ireland (GBR)

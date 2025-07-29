@@ -5,13 +5,13 @@ mode: "wide"
 
 The Customers API enables you to directly pass the KYC information to Bridge. This endpoint enables you to control the UI independently and handle all of the back and forth with customers, regardless of whether they are individuals or businesses.
 
-To determine whether a customer is able to use the platform, Bridge monitors the customer's `kyc_status` and the `status` of each requested [<u>endorsement</u>](/customers/endorsements), e.g.`base` endorsement for access to US rails.
+To determine whether a customer is able to use the platform, Bridge monitors the customer's `kyc_status` and the `status` of each requested [endorsement](/customers/endorsements), e.g.`base` endorsement for access to US rails.
 
 If Bridge is able to validate the information, the customer will receive KYC approval and be granted the requested endorsement(s) to use Bridge's platform.
 
 If certain information was invalid or missing, the customer object will return the appropriate KYC status, endorsement status, and endorsement requirements.
 
-After obtaining a `signed_agreement_id` (details here: [<u>Terms of Service</u>](/customers/tos)), you can now use the [<u>Customers API</u>](https://apidocs.bridge.xyz/docs/customers-1) to create customers as follows.
+After obtaining a `signed_agreement_id` (details here: [Terms of Service](/customers/tos)), you can now use the [Customers API](/api-reference/customers/create-a-customer) to create customers as follows.
 
 # **Individual customer creation**
 
@@ -139,7 +139,7 @@ You can use the following endpoint.
   </Tab>
 </Tabs>
 
-Note: `proof_of_address_document` may be required for individual customers from `European Economic Area (EEA)`, or customers who wish to use SEPA/Euro services offered by Bridge, if conflicting location signals are detected. Please refer to [<u>SEPA/Euro Transactions</u>](https://apidocs.bridge.xyz/docs/sepa-euro-transactions) page for details.
+Note: `proof_of_address_document` may be required for individual customers from `European Economic Area (EEA)`, or customers who wish to use SEPA/Euro services offered by Bridge, if conflicting location signals are detected. Please refer to [<u>SEPA/Euro Transactions</u>](/customers/sepa-euro-transactions) page for details.
 
 For international customers, submit an [<u>ISO 3166-1 alpha-3</u>](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) country code and an [<u>ISO 3166-2 subdivision code</u>](https://en.wikipedia.org/wiki/ISO_3166-2:AR) (minus the country prefix) for the state. So for the above example, `GB-MAN` is the code, but just `MAN` is submitted.
 
@@ -292,7 +292,7 @@ While KYC generally works quickly, there are edge cases that are important to ac
 
 Sometimes, your customer could immediately move from not_started to rejected and skip under_review entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have submitted for your customer (birth date, address, name, or business details).
 
-In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer via `[GET /customers/:id](https://apidocs.bridge.xyz/reference/get_customers-customerid)` would result in something like this:
+In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer via [Get Customer](/api-reference/customers/get-a-single-customer-object) would result in something like this:
 
 ```json expandable
 {
