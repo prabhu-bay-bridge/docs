@@ -55,3 +55,8 @@ a:hover,
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border-radius: 0.5rem;
 }
+
+.hero h1 {
+  font-size: 52px;
+  font-weight: 100;
+}
