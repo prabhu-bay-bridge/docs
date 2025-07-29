@@ -3,7 +3,7 @@ title: "Additional functionality"
 mode: "wide"
 ---
 
-# **Listing Virtual Accounts for a Customer**
+## **Listing Virtual Accounts for a Customer**
 
 ```bash Request
 curl --request GET \
@@ -61,7 +61,7 @@ curl --request GET \
 }
 ```
 
-# **Update a Virtual Account**
+## **Update a Virtual Account**
 
 Update the destination details for an existing Virtual Account. Future transactions will use the updated destination details. All fields in this request are optional. Updating a Virtual Account will also create an `account_update` event in the history for that account.
 
@@ -79,19 +79,19 @@ curl --location --request PUT 'https://api.bridge.xyz/v0/customers/cust_alice/vi
   }'
 ```
 
-# **Deactivate a Virtual Account**
+## **Deactivate a Virtual Account**
 
 The deactivate endpoint provides the ability to deactivate a Virtual Account. A deactivated Virtual Account cannot receive new transactions and all incoming funds will be returned to the sender. In progress transactions received before the Virtual Account was deactivated will process as normal.
 
-# **Reactivate a Virtual Account**
+## **Reactivate a Virtual Account**
 
 Reactivate a previously deactivated Virtual Account. New incoming transactions will process as normal. Any transactions returned while the Virtual Account was deactivated will need to be reinitiated.
 
-# **History of Virtual Account Activity**
+## **History of Virtual Account Activity**
 
 This endpoints provide a history of activity for a Virtual Account such incoming funds received and outgoing payments submitted.
 
-## **Listing history of Activity for a Virtual Account**
+### **Listing history of Activity for a Virtual Account**
 
 Example request to fetch the history of a Virtual Account:
 

@@ -3,7 +3,7 @@ title: "Transfer"
 mode: "wide"
 ---
 
-# **Overview**
+## **Overview**
 
 The Transfer API enables seamless conversion **to and from fiat and crypto across various supported currencies and rails.** At its core, the API is designed to abstract away the complexity of cross-rail and cross-currency money movement, supporting:
 
@@ -18,13 +18,13 @@ Refer to supported currencies and rails below:
 - [<u>Stablecoins and Blockchains</u>](/whatwesupport/chains)
 - [<u>Fiat Payment Methods</u>](/whatwesupport/fiats)
 
-## **How transfers work**
+### **How transfers work**
 
 Depending on the source, Bridge either pulls funds (e.g. Bridge wallet, prefunded account) or generates deposit instructions when a third-party source (e.g. bank, external wallet) is specified.
 
 If the funds reside outside of Bridge, you will receive a `source_deposit_instructions` object in the response payload containing deposit bank details or blockchain addresses. Once your customer completes the deposit, Bridge will automatically detect and process the payment to the destination.
 
-## **Key Concepts**
+### **Key Concepts**
 
 - `source`: Where the funds come from. This can be a Bridge-controlled wallet, a customer’s crypto wallet, or a fiat source like a bank account.
 - `destination`: Where the funds go. This can be any supported rail or chain.
@@ -34,7 +34,7 @@ If the funds reside outside of Bridge, you will receive a `source_deposit_instru
 
 ---
 
-# **High Level Flow**
+## **High Level Flow**
 
 For one time transfers, the high level flow is:
 
@@ -46,7 +46,7 @@ For one time transfers, the high level flow is:
 5. Bridge will **_match_** your customer's deposit to the transfer you created.
 6. Bridge sends money to the `destination`.
 
-## **Create Transfer**
+### **Create Transfer**
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
@@ -110,9 +110,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-## **Deposit Instructions**
+### **Deposit Instructions**
 
-### **Fiat Deposits**
+**Fiat Deposits**
 
 ```json expandable
 {
@@ -138,7 +138,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 Direct your customer to send funds to Bridge's bank account, with the required amount and currency, and to include the deposit message (starting with BRG). Your customer can include the unique deposit message as the wire memo/message, ACH push description, SEPA reference, or SPEI memo. The deposit message is unique per transfer and including it with your transaction is required for Bridge to process.
 
-### **Crypto Deposits**
+**Crypto Deposits**
 
 If you receive crypto deposits, remember to configure a crypto return policy\! Refer [<u>Crypto Return Policies</u>](/orchestration/transfer/returns)
 
@@ -160,7 +160,7 @@ In this instance, we need to request your customer to deposit funds to Bridge fr
 
 You can guide your user to use Metamask or an equivalent wallet to create a blockchain transfer to move funds from their wallet to our deposit address.
 
-#### **Memo Based Blockchains**
+**Memo Based Blockchains**
 
 ```json expandable
 {
