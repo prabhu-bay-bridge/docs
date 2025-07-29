@@ -5,9 +5,9 @@ mode: "wide"
 
 A liquidation address automatically drains any funds sent to it and distributes those funds as the liquidation address is configured. Each time the address is drained, this creates a drain record.
 
-# Fetching drain history
+## Fetching drain history
 
-Example request to fetch the drain history of your liquidation address:
+Example request to fetch the drain history of your liquidation address. Check out the [API reference](/api-reference/liquidation-addresses/get-drain-history-of-a-liquidation-address).
 
 ```bash Request
 curl --request GET \
@@ -47,9 +47,9 @@ curl --request GET \
 }]
 ```
 
-# **Additional Fields**
+## **Additional Fields**
 
-## **Destination**
+### **Destination**
 
 The `destination` field will also return additional information when available. This information will be available when the transaction has been fully processed. The information available depends on the destination configuration of the Liquidation Address.
 
@@ -79,7 +79,7 @@ For ACH:
 }
 ```
 
-# **Drain States**
+## **Drain States**
 
 The drain state refers to the current state of a drain.
 

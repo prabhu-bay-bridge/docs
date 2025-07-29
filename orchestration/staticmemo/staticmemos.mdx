@@ -13,7 +13,7 @@ Static Memos are long-lived deposit instructions that accept fiat funds through 
 
 ---
 
-# Create a Static Memo
+## Create a Static Memo
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/static_memos' \
@@ -59,7 +59,7 @@ The response will contain deposit instructions for your customer to send funds t
 }
 ```
 
-## **Optional Blockchain memo**
+### **Optional Blockchain memo**
 
 For memo-based blockchains such as Stellar, you may include an optional `blockchain_memo` in the destination field. Bridge will forward the memo when sending crypto funds.
 
@@ -82,7 +82,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/s
 }'
 ```
 
-# **Listing Static Memos for a Customer**
+## **Listing Static Memos for a Customer**
 
 Example request to retrieve the Static Memos that exist for a customer:
 
@@ -142,7 +142,7 @@ curl --request GET \
 }
 ```
 
-# **Update a Static Memo**
+## **Update a Static Memo**
 
 Update the destination details for an existing Static Memo. Future transactions will use the updated destination details. All fields in this request are optional. Updating a Static Memo will also create an `account_update` event in the history for that account.
 
@@ -160,11 +160,11 @@ curl --location --request PUT 'https://api.bridge.xyz/v0/customers/cust_alice/st
   }'
 ```
 
-# **History of Static Memo Activity**
+## **History of Static Memo Activity**
 
 This endpoint provide a history of activity for Static Memos such incoming fiat funds received and outgoing payments on chain. See [<u>List History of Static Memo activity</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-static-memos-staticmemoid-history) [todo update link] for more information about the types of events returned from these endpoints.
 
-## **Listing history of Activity for a Static Memo**
+### **Listing history of Activity for a Static Memo**
 
 ```bash Request
 curl --request GET \
@@ -221,7 +221,7 @@ The response will contain transactions sent to the static memo and the lifecycle
 }]
 ```
 
-## **Listing history of Activity for all Static Memos**
+### **Listing history of Activity for all Static Memos**
 
 Event history is also available for all Static Memos across all customers.
 
@@ -232,9 +232,9 @@ curl --request GET \
      --header 'accept: application/json'
 ```
 
-# **Static Memo Events**
+## **Static Memo Events**
 
-## **Event types**
+### **Event types**
 
 | **Event**           | **Description**                                                                                  |
 | :------------------ | :----------------------------------------------------------------------------------------------- |
@@ -253,7 +253,7 @@ All transaction-triggered events include a `deposit_id` field. This id is unique
   Static memos do not support microdeposit or challenge deposit verifications.
 </Warning>
 
-## **Event breakdown**
+### **Event breakdown**
 
 <AccordionGroup>
   <Accordion title="Funds received">

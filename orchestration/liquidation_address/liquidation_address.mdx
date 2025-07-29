@@ -3,11 +3,9 @@ title: "Liquidation Address"
 mode: "wide"
 ---
 
-# **Introduction**
-
 A **Liquidation Address** is a permanent payment route which ties a blockchain address to either a fiat or blockchain address. When a customer sends crypto, such as USDC, to their liquidation address, Bridge will automatically send funds to the destination.
 
-# **Point a liquidation address to an external bank account**
+## **Point a liquidation address to an external bank account**
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
@@ -41,7 +39,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/l
 
 The response object contains the blockchain `address` of the liquidation address. Now anytime your customer receives funds on this address, Bridge will automatically convert it to USD and send a wire payment with the wire message.
 
-# **Create a liquidation address with a crypto destination**
+## **Create a liquidation address with a crypto destination**
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
@@ -71,7 +69,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/l
 }
 ```
 
-## Memo based blockchains
+### Memo based blockchains
 
 <Warning>
   Don't forget the blockchain memo.
@@ -92,9 +90,9 @@ For memo-based blockchains, such as Stellar, a `blockchain_memo` will be provide
 }
 ```
 
-# Create a liquidation address with a custom developer fee
+## Create a liquidation address with a custom developer fee
 
-[<u>Setting a custom developer fee</u>](/fees/devfees) overrides the default Liquidation Address developer fee for a given Liquidation Address upon creation.
+[Setting a custom developer fee](/fees/devfees) overrides the default Liquidation Address developer fee for a given Liquidation Address upon creation.
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
@@ -114,6 +112,6 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/l
 
 ---
 
-# **Static Template Transfers vs Liquidation Addresses**
+## **Static Template Transfers vs Liquidation Addresses**
 
 Static template transfers are similar to liquidation address in that they are both saved payment routes. The key difference is that a liquidation address is a permanent blockchain address, whereas static template transfer rely on the deposit message to route funds. For customers, it's more intuitive to use a unique blockchain address.
