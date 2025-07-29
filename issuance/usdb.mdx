@@ -8,13 +8,13 @@ USDB is a stablecoin issued and managed by Bridge. **USDB is always backed 1:1 b
 
 Onboarding is easy - just switch any stablecoin to `USDB` in your API calls.
 
-When you or your end users want to swap in and out of USDB we just use our orchestration API endpoints: [Transfers](/orchestration/transfer/transfer), [Virtual Accounts](/guides/movemoney/virtualaccounts), and [Liquidation Addresses](/orchestration/liquidation_address/liquidation_address).
+When you or your end users want to swap in and out of USDB we just use our orchestration API endpoints: [Transfers](/orchestration/transfer/transfer), [Virtual Accounts](/orchestration/virtual_account/virtual-account), and [Liquidation Addresses](/orchestration/liquidation_address/liquidation_address).
 
 # **Interacting with USDB**
 
 ## **Swapping to USDB**
 
-To swap from fiat or other stablecoins to USDB, you can use the [Transfers](/orchestration/transfer/transfer) API.
+To swap from fiat or other stablecoins to USDB, you can use the [Transfers API](/api-reference/transfers/create-a-transfer).
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
