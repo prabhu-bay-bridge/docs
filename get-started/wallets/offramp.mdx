@@ -17,7 +17,7 @@ Before you start, make sure you have
 
 <Steps>
   <Step title="Step 1: Create a transfer from a Bridge wallet to an external bank account" titleSize="h2">
-    Use [Create a transfer](ref:post_transfers) endpoint to move funds from a Bridge wallet to a fiat destination.
+    Use [Create a transfer](/api-reference/transfers/create-a-transfer) endpoint to move funds from a Bridge wallet to a fiat destination.
 
     ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
@@ -41,7 +41,7 @@ Before you start, make sure you have
     ```
   </Step>
   <Step title="Step 2: Monitor transfer status" titleSize="h2">
-    You can query the [Get a transfer](ref:get_transfers-transferid) endpoint or listen to webhook events to retrieve the transfer details:
+    You can query the [Get a transfer](/api-reference/transfers/get-a-transfer) endpoint or listen to webhook events to retrieve the transfer details:
 
     ```bash Request expandable
     curl --location --request GET 'https://api.bridge.xyz/v0/transfers/transfer_xyz' \
