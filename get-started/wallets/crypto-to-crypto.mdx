@@ -3,7 +3,7 @@ title: "Send funds from a Bridge wallet to a crypto address"
 mode: "wide"
 ---
 
-Bridge wallets are secure, custodial crypto wallets that let you send and receive stablecoins with ease. Once you've provisioned a wallet for your customer or company, you can send funds directly to external blockchain addresses using the transfers API.
+Bridge wallets are secure, custodial crypto wallets that let you send and receive stablecoins with ease. Once you've provisioned a wallet for your customer or company, you can send and receive funds using orchestration API.
 
 <Note>
   You must use Bridge’s orchestration APIs to move funds. **Do not attempt to send directly** from the wallet address.
@@ -39,7 +39,7 @@ Bridge wallets are secure, custodial crypto wallets that let you send and receiv
     Note the `id` returned — this is your `bridge_wallet_id`.
   </Step>
   <Step title="Step 2: Transfer funds from wallet to crypto address" titleSize="h2">
-    Use the [Transfers](ref:transfers) API with `bridge_wallet` as the source.
+    Use the [Transfers](/api-reference/transfers/create-a-transfer) API with `bridge_wallet` as the source.
 
     ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
