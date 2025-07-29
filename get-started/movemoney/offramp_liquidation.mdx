@@ -20,7 +20,7 @@ You can create a liquidation address with a fiat destination (off ramp).
 
 <Steps>
   <Step title="Step 1: Configure an external bank account" titleSize="h2">
-    For fiat destinations, you need to first register your customer's external bank account with us. The following example walks through the option to create external bank accounts via the Bridge API. You also have the option to use Plaid to let your customers link bank accounts, please refer [External Accounts](doc:external-accounts) for more details.
+    For fiat destinations, you need to first register your customer's external bank account with us. The following example walks through the option to create external bank accounts via the Bridge API. You also have the option to use Plaid to let your customers link bank accounts, please refer [External Accounts](/api-concepts/external-accounts/plaid) for more details.
 
     <Tabs>
       <Tab title="US Bank Account">
@@ -282,7 +282,7 @@ The response will contain the crypto address ready to start taking payments.
 
 When funds are deposited to a Liquidation Address, Bridge automatically “drains” those funds—converting and forwarding them to the configured destination. Each drain operation creates a **Drain Record**, which reflects the lifecycle of that individual payment.
 
-- You can retrieve the full drain history for a given liquidation address using the [Get drain history of a liquidation address](ref:get-drain-history-of-a-liquidation-address) endpoint.
+- You can retrieve the full drain history for a given liquidation address using the [Get drain history of a liquidation address](/api-reference/liquidation-addresses/get-drain-history-of-a-liquidation-address)) endpoint.
 - Bridge will also send you a **real time webhook** for new drains and state changes.
 
 ### Drain States
