@@ -12,91 +12,61 @@ mode: "custom"
       Bridge provides modern payments infrastructure to move money with stablecoins and fiat rails, custody funds via wallets, issue your own stablecoin, and spend via card—at the speed and scale of the internet.
     </p>
 
-    <a
+        <a
       href="/getting-started"
       className="inline-flex items-center px-6 py-3 bg-[#15803D] text-white hover:text-white rounded-lg font-medium hover:bg-[#166534] transition"
     >
-      Get started 
-      <Icon
-        icon="arrow-right"
-        iconType="solid"
-        size={12}
-        className="ml-2 text-white !text-white"
-      />
+      Get started
+      <Icon icon="arrow-right" iconType="solid" size={12} className="ml-4 text-white fill-white" />
     </a>
+
   </div>
 </div>
 
+
 <div className="bg-white pt-12 pb-16">
-  <div className="max-w-6xl mx-auto px-6">
+<div className="max-w-6xl mx-auto px-6">
+{/* Quickstart Guides */}
 
-    {/* Quickstart Guides */}
-    <div className="mb-12">
-      <h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Quickstart guides</h2>
-      <Columns cols={4}>
-        <Card
-          title="Accept fiat payments"
-          icon="money-bill"
-          href="/get-started/movemoney/virtualaccounts"
-        >
-          Use our virtual accounts to collect USD using account & routing numbers.
-        </Card>
+<div className="mb-12">
+<h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Quickstart guides</h2>
 
-        <Card
-          title="Convert currencies"
-          icon="shuffle"
-          href="/create-a-one-time-payment"
-        >
-          Walk through setting up and sending payments using the API.
-        </Card>
+<Columns cols={4}>
+  <Card title="Accept fiat payments" icon="money-bill" iconType="regular" href="/get-started/movemoney/virtualaccounts">
+    Use our virtual accounts to collect USD using account & routing numbers.
+  </Card>
+  <Card title="Convert currencies" icon="shuffle" iconType="regular" href="/create-a-one-time-payment">
+    Walk through setting up and sending payments using the API.
+  </Card>
+  <Card title="Issue cards" icon="credit-card" iconType="regular" href="/get-started/cards/overview">
+    Create and spend from cards connected to custodial balances.
+  </Card>
+  <Card title="Create wallets" icon="wallet" iconType="regular" href="/get-started/wallets/crypto-to-crypto">
+    Custody funds and orchestrate wallet-based money movement.
+  </Card>
+</Columns>
 
-        <Card
-          title="Issue cards"
-          icon="credit-card"
-          href="/get-started/cards/overview"
-        >
-          Create and spend from cards connected to custodial balances.
-        </Card>
+</div>
 
-        <Card
-          title="Create wallets"
-          icon="wallet"
-          href="/get-started/wallets/crypto-to-crypto"
-        >
-          Custody funds and orchestrate wallet-based money movement.
-        </Card>
-      </Columns>
-    </div>
+{/* Resources */}
 
-    {/* Resources */}
-    <div className="mb-12">
-      <h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Resources</h2>
-      <Columns cols={3}>
-        <Card
-          title="Contact support"
-          icon="headset"
-          href="https://support.bridge.xyz"
-        >
-          Reach out to our team for help with integration or technical issues.
-        </Card>
+<div className="mb-12">
+<h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Resources</h2>
 
-        <Card
-          title="Request sales"
-          icon="handshake"
-          href="https://www.bridge.xyz/requestfreedemo"
-        >
-          Click here to request a demo or reach out at sales@bridge.xyz.
-        </Card>
+<Columns cols={3}>
+  <Card title="Contact support" icon="headset" href="https://support.bridge.xyz">
+    Reach out to our team for help with integration or technical issues.
+  </Card>
+  <Card title="Request sales" icon="handshake" href="https://www.bridge.xyz/requestfreedemo">
+    Click here to request a demo or reach out at [sales@bridge.xyz](mailto:sales@bridge.xyz).
+  </Card>
+  <Card title="Demo" icon="presentation-screen" href="https://bridge.coastdemo.com/share/67f14d352788b1841300b826?mode=link">
+    Watch our interactive demo to see Bridge in action.
+  </Card>
+</Columns>
 
-        <Card
-          title="Demo"
-          icon="presentation-screen"
-          href="https://bridge.coastdemo.com/share/67f14d352788b1841300b826?mode=link"
-        >
-          Watch our interactive demo to see Bridge in action.
-        </Card>
-      </Columns>
-    </div>
+</div>
 
-  </div>
+</div>
+
 </div>
