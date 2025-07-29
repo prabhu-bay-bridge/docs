@@ -31,6 +31,8 @@ Integrating with [Plaid Link ](https://plaid.com/docs/link/)allows your users to
       "callback_url": "https://api.bridge.xyz/v0/plaid_exchange_public_token/{uuid}"
     }
     ```
+
+    Check out the API reference [here](/api-reference/plaid/generate-a-plaid-link-token-for-a-customer).
   </Step>
   <Step title="Initialize the Plaid SDK">
     Start the Plaid Link SDK using the `link_token` obtained from the initial request. Include an `onSuccess` callback to the endpoint provided in the `callback_url` field. To enhance security, we strongly advise initiating the Bridge endpoint call from the server side to prevent exposure of your API key.
@@ -54,7 +56,7 @@ Integrating with [Plaid Link ](https://plaid.com/docs/link/)allows your users to
     ```
   </Step>
   <Step title="Fetch Plaid linked bank accounts ">
-    After successfully exchanging the public token, Bridge will fetch all of the linked bank accounts from Plaid. This process normally takes a few seconds. Afterwards you can read from Bridge's external accounts endpoint to fetch the customer's newly linked external accounts
+    After successfully exchanging the public token, Bridge will fetch all of the linked bank accounts from Plaid. This process normally takes a few seconds. Afterwards you can read from Bridge's [external accounts endpoint](/api-reference/external-accounts/get-all-external-accounts) to fetch the customer's newly linked external accounts using.
 
     ```bash Request
     curl --request GET \
