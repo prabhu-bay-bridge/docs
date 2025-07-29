@@ -95,13 +95,13 @@ Once Bridge receives these funds, we'll look for the deposit message to find the
 
 ## Step 2: Monitor Transfer Status
 
-When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. The transfer status when it's delivered is `payment_processed`. You can pull the transfer status from the API or listen to webhooks to watch the transfer transition. 
+When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. The transfer status when it's delivered is `payment_processed`. You can pull the transfer status from the API or listen to webhooks to watch the transfer transition.
 
 View the full breakdown of transfer states [here](/orchestration/transfer/states).
 
 ### Fetching Transfers status via API
 
-You can use the [Get a transfer](ref:get_transfers-transferid) endpoint to fetch the latest Transfer status.
+You can use the [Get a transfer](/api-reference/transfers/get-a-transfer) endpoint to fetch the latest Transfer status.
 
 ```bash Request expandable
 curl --request GET \
@@ -198,7 +198,7 @@ curl --request GET \
 
 ### Advanced: Monitoring using webhooks
 
-You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](https://apidocs.bridge.xyz/docs/setting-up-webhooks) for more details on setting up webhooks.
+You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](/setting-up-webhooks) for more details on setting up webhooks.
 
 ```json Example webhook: payment_processed expandable
 {
