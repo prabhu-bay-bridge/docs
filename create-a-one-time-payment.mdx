@@ -3,21 +3,11 @@ title: "Create your first payment"
 mode: "wide"
 ---
 
-This guide will walk you through sending a one-time payment using Bridge's Transfer API. For this example, we'll be creating a one time payment from USD to USDC. With the Transfer API, you convert from any supported fiat currency to and from any supported crypto chain and currency. You can also use the Transfer API to take recurring payments.
+This guide will walk you through sending a one-time payment using Bridge's Transfer API.
 
-## Prerequisites
+## Transfer API
 
-Before you begin, ensure you have:
-
-- A Bridge account with API access
-- Your API key (keep this secure\!)
-- At least one verified customer - see [Create your first customer](/guides/getstarted/createcustomer).
-- Basic understanding of REST APIs
-- Development environment set up
-
-## Understanding Bridge Transfers
-
-Bridge transfers enable conversion between fiat and crypto across supported currencies and rails. There are three primary transfer types:
+The Transfer API enable conversion between fiat and crypto across supported currencies and rails. There are three primary transfer types:
 
 - **Fiat → Crypto (aka onramps)**: Convert traditional fiat currency to cryptocurrency
 - **Crypto → Crypto**: Exchange between different cryptocurrencies
@@ -30,7 +20,7 @@ Here are the key concepts to a transfer:
 - **On Behalf Of**: Customer identifier for compliance
 - **Amount**: Transfer amount (can be flexible)
 
-## Transfer Flow
+### Transfer Flow
 
 ![](https://files.readme.io/ab382eeec27e9c69149e4fbb3e16d0e0a1f60ba6deb472e2171e9b6f39bc1ad3-image.png)
 
@@ -79,7 +69,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   },
   "source_deposit_instructions": {
     "payment_rails": ["ach_push","wire"],
-    "currency": "ach",
+    "currency": "usd",
     "deposit_message": "BRGEXAMPLEMEMO",
 		"currency": "usd",
     "bank_beneficiary_name": "Test Beneficiary",
@@ -105,9 +95,9 @@ Once Bridge receives these funds, we'll look for the deposit message to find the
 
 ## Step 2: Monitor Transfer Status
 
-### Transfer states
+When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. The transfer status when it's delivered is `payment_processed`. You can pull the transfer status from the API or listen to webhooks to watch the transfer transition. 
 
-When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. From there, you can monitor the state until it's finally delivered. The transfer status when it's delivered is `payment_processed`. You can view the full breakdown of transfer states [here](/orchestration/transfer/states).
+View the full breakdown of transfer states [here](/orchestration/transfer/states).
 
 ### Fetching Transfers status via API
 
@@ -276,5 +266,5 @@ After successfully creating your first transfer:
 ## Additional Resources
 
 - [Transfers](/orchestration/transfer/transfer)
-- [Make recurring payments using saved payment routes](/guides/movemoney/recurring)
-- [Setting up webhooks](/guides/getstarted/setupwebhooks)
+- [Make recurring payments using saved payment routes](/get-started/movemoney/recurring)
+- [Setting up webhooks](/setting-up-webhooks)
