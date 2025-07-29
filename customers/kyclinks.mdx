@@ -3,13 +3,13 @@ title: "KYC Links for New Customers"
 mode: "wide"
 ---
 
-An alternative to using the [<u>Customers API</u>](/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
+An alternative to using the [Customers API](/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
 
 KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the customer is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
 
 There response will contain two different links that will need to be completed:
 
-- `tos_link` will contain a link to Bridge's Terms of Service, which can be seen [<u>here</u>](https://www.bridge.xyz/legal). These terms need to be accepted by the customer before they can be approved.
+- `tos_link` will contain a link to Bridge's Terms of Service, which can be seen [here](https://www.bridge.xyz/legal). These terms need to be accepted by the customer before they can be approved.
 - `kyc_link` will contain a link to a hosted KYC/B flow with our partner. Customers will need to go through this flow and submit information to Bridge before they can be approved.
 
 > NOTE: for a business customer use case, please enter the full legal name of the business entity under the `full_name` parameter
@@ -123,7 +123,7 @@ There are **2 critical** steps to follow when embedding the KYC link into an Ifr
 - Pass an `iframe-origin` query parameter with the value encoded as the current `window.location.origin`.
 - Replace the sub-path `/verify` with `/widget`.
 
-For help with troubleshooting common issues, please refer to this [<u>article</u>](https://docs.withpersona.com/docs/troubleshooting-common-issues-webview#camera-capture-flows-do-not-show-at-all-or-show-as-fullscreen).
+For help with troubleshooting common issues, please refer to this [article](https://docs.withpersona.com/embedded-flow-troubleshooting-common-issues).
 
 ```html
 <iframe
@@ -191,7 +191,7 @@ After submitting your customer for id verification (government photo id like a d
 
 Sometimes, your customer could immediately move from `not_started` to `rejected` and skip `under_review` entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have sent up for your customer (birth date, address, name).
 
-In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer via `[GET /customers/:id](https://apidocs.bridge.xyz/reference/get_customers-customerid)` would result in something like this:
+In this scenario, the customer starts off `not_started`, but after attempting to verify submitted information, there was an issue detected with the submission. It is possible to move directly to `rejected` and skip `under_review` entirely. In the `rejected` scenario, fetching the customer would result in something like this:
 
 ```json
 {
@@ -225,4 +225,4 @@ You can see that the customer's KYC status is `rejected` and that there are tw
 - `developer_reason` is meant to be used by developers for **internal purposes only.** This field can contain sensitive information intended for only the developer and is provided to help with troubleshooting potential issues or protecting against potential abuse.
 - `reason` can be shared by a developer directly with their customers.
 
-For reference, see our page on [<u>Rejection Reasons</u>](/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
+For reference, see our page on [Rejection Reasons](/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
