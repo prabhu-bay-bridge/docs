@@ -11,7 +11,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
 
 <Steps>
   <Step title="Step 1: Create a Static Template" titleSize="h2">
-    Use the [Create a transfer](ref:post_transfers) endpoint and set `"static_template": true`.
+    Use the [Create a transfer](/api-reference/transfers/create-a-transfer) endpoint and set `"static_template": true`.
 
     ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
@@ -36,7 +36,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
     }'
     ```
 
-    The response object will contain deposit instructions. You can share these with your customers. Every time your customers send Bridge a deposit with the message `BRGEXAMPLEMEMO`, we will match it to this template, and create a new transfer instance.
+    The response object will contain deposit instructions. You can share these with your customers. Every time your customers send Bridge a deposit with the message `BRGEXAMPLEMEMO`, we will match it to this template, and **create a new transfer instance.**
 
     ```json Response expandable
     {
@@ -78,7 +78,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
     - Creates a new Transfer instance
     - Processes the transfer automatically
     - Sends you a webhook
-    - Makes it available to fetch at [Get all transfers](ref:get_customers-customerid-transfers)
+    - Makes it available to fetch at [Get all transfers](/api-reference/transfers/get-all-transfers)
 
     ### Fetching static template created transfers via API
 
@@ -176,5 +176,5 @@ A **static template transfer** is a saved/reusable payment route that lets you g
 ## Tips
 
 - Omit "amount" to make the template flexible (`flexible_amount: true`)
-- Use [Update a transfer](ref:put_transfers-transferid) to modify template behavior (applies only to future deposits)
+- Use [Update a transfer](/api-reference/transfers/update-a-transfer) to modify template behavior (applies only to future deposits)
 - Static templates use **shared deposit instructions**, unlike Virtual Accounts, which are customer-specific
