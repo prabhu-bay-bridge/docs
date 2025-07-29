@@ -128,19 +128,19 @@
                             {
                                 "group": "Virtual Accounts",
                                 "pages": [
-                                    "orchestration/virtual_account/virtual_account",
-                                    "orchestration/virtual_account/events",
-                                    "orchestration/virtual_account/additional_functionality"
+                                    "orchestration/virtual_account/virtual-account",
+                                    "orchestration/virtual_account/virtual-account-events",
+                                  "orchestration/virtual_account/additional-functionality"
                                 ]
                             },
                             {
                                 "group": "Transfers",
                                 "pages": [
                                     "orchestration/transfer/transfer",
-                                    "orchestration/transfer/statictemplates",
-                                    "orchestration/transfer/states",
-                                    "orchestration/transfer/advanced",
-                                    "orchestration/transfer/details"
+                                    "orchestration/transfer/static-templates",
+                                    "orchestration/transfer/transfer-states",
+                                    "orchestration/transfer/transfer-features",
+                                    "orchestration/transfer/transfer-updates"
                                 ]
                             },
                             {
