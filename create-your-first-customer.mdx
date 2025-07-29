@@ -1,33 +1,20 @@
 ---
-title: "Create your first customer"
+title: "Onboard your first customer"
 mode: "wide"
 ---
-
-This guide walks you through onboarding your first customer using Bridge's API. Whether you want a fast start with a hosted KYC flow or prefer full control via API integration, this guide covers both options.
-
-## Prerequisites
-
-Before you begin, ensure you have:
-
-- A Bridge account with API access
-- Your API key (keep this secure\!)
-- A working development environment
-- Basic familiarity with REST APIs and JSON
-
-## What Is a Bridge Customer?
 
 Bridge customers represent users of your business who can send and receive money. There are two types:
 
 - **Individual customers**: Personal users with personal information
 - **Business customers**: Companies with business information and beneficial owners
 
-## Key Terms
+### Key Terms
 
 - **KYC (Know Your Customer)**: Identity verification process required for compliance
 - **Endorsements**: Approval for specific payment rails (USD, EUR, MXN)
 - **Terms of Service**: Legal agreement customers must accept
 
-Learn more about the customers api at [Customers](/customers/overview).
+---
 
 ## Method 1: Using KYC Links (Quick Start - Recommended)
 
@@ -39,7 +26,7 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
   <Step title="Step 1: Create a KYC Link" titleSize="h3">
     Use the `/kyc_links` endpoint to generate links for TOS acceptance and KYC verification
 
-    ```bash Request
+    ```bash Request expandable
     curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
     --header 'Content-Type: application/json' \
     --header 'Api-Key: <API Key>' \
@@ -75,10 +62,10 @@ Bridge provides a **hosted onboarding flows** so you don’t have to build your 
     2. Completing identity verification via the `kyc_link`
 
     This process typically takes less than a minute and updates automatically once complete.
-
-    More about KYC Links here: [KYC Links for New Customers](/customers/kyclinks)
   </Step>
 </Steps>
+
+More about KYC Links here: [KYC Links for New Customers](/customers/kyclinks)
 
 ## Method 2: Direct API Integration (More Control)
 
@@ -125,8 +112,6 @@ Prefer to control the onboarding UI? You can collect and submit customer data di
       ]
     }
     ```
-
-    For business customers or international onboarding, see the [Customers](/customers/overview) documentation.
   </Step>
   <Step title="Step 2: Customer Endorsements: Enabling Transacting" titleSize="h3">
     A customer endorsement activates a customer to use a specific payment rail. Most flows automatically request a "base" endorsement when creating a customer.
@@ -226,3 +211,5 @@ After creating your first customer:
 3. **Set up webhooks** to receive real-time status updates for customers
    1. See [Setting up webhooks](/guides/getstarted/setupwebhooks) for setting up your first webhook
 4. **Review security practices** to protect customer data
+
+Learn more at [Customers](/customers/overview).
