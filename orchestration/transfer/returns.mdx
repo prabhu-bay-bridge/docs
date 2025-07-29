@@ -3,7 +3,7 @@ title: "Returns"
 mode: "wide"
 ---
 
-# **Returning fiat deposits (ACH, Wire, and SEPA)**
+## **Returning fiat deposits (ACH, Wire, and SEPA)**
 
 If your customer previously onramped via **ACH, Wire, or SEPA, and you would like to return** those funds, you can do so by creating a new transfer via the Bridge API. This flow is supported only for **returning fiat deposits** and is typically used in cases of recalls, refunds, or rejected user activity. Using this API, you can return fiat deposits **across any orchestration product**, including Transfers and Virtual Accounts.
 
@@ -30,12 +30,12 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-## **How it Works**
+### **How it Works**
 
 - Bridge will return a transfer object with crypto funding instructions.
 - After you send the exact amount of crypto to the provided address, Bridge will initiate a return of fiat funds back to the original sender.
 
-## **Validations**
+### **Validations**
 
 When calling this endpoint, Bridge enforces the following rules:
 
@@ -47,7 +47,7 @@ When calling this endpoint, Bridge enforces the following rules:
 | `amount`                                   | For **ACH returns**, must match the original deposit amount. For **Wire** and **SEPA**, can be ≤ original amount. |
 | Time window                                | Returns must be initiated **within 60 days** of the original deposit.                                             |
 
-## **Recommended to use a Bridge wallet to fund returns**
+### **Recommended to use a Bridge wallet to fund returns**
 
 <Tip>
   **We recommend using a Bridge wallet for returns.**
@@ -76,7 +76,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-### **Why use a Bridge Wallet?**
+**Why use a Bridge Wallet?**
 
 - Simplifies automation of return flows
 - Avoids funding delays or incorrect on-chain transfers
@@ -84,13 +84,15 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 You can use your own wallet or the wallet belonging to your customer to fund the return.
 
-# **Returning crypto deposits**
+---
 
-## **⚠️ Set a Crypto Return Policy**
+## **Returning crypto deposits**
+
+### **⚠️ Set a Crypto Return Policy**
 
 If you're creating transactions that involve crypto deposits, it's critical to configure a **crypto return policy.** Without one, Bridge may be unable to safely return funds in the event of a failed transaction or refund — potentially resulting in lost customer funds.
 
-## **Why Is This Important?**
+### **Why Is This Important?**
 
 Unlike fiat payments, crypto transactions are irreversible. If a crypto deposit fails, Bridge needs to know where to return the funds.
 
@@ -105,7 +107,7 @@ You can configure one of two return strategies:
   Bridge will not do this unless explicitly configured. Most exchanges use omnibus wallets that serve many users. Returning funds to an exchange wallet often leads to fund loss or lengthy recovery procedures. Stellar and Tron require memos to attribute funds to users — and without a correct memo, funds may be permanently untraceable.
 </Danger>
 
-## **Recommend using a static return address**
+### **Recommend using a static return address**
 
 We strongly recommend configuring a Bridge wallet or a developer-controlled wallet as the designated return address.
 
@@ -125,9 +127,9 @@ We strongly recommend configuring a Bridge wallet or a developer-controlled wall
 - `payment_rail`: The blockchain the address belongs to (e.g., ethereum, solana).
 - `currency`: The expected refund asset.
 
-## **Limitations and Edge Cases**
+### **Limitations and Edge Cases**
 
-### **One Return Address per Currency and Chain**
+**One Return Address per Currency and Chain**
 
 When using the static_address strategy, you can define only **one return address per currency and chain combination.**
 
@@ -140,7 +142,7 @@ So if you’ve only set a return address for **USDC × Ethereum**, then **USDC �
   This fallback behavior is best-effort and may not work in all cases — especially if the recipient wallet isn’t cross-chain compatible. When in doubt, explicitly define return addresses for each chain-currency pair you intend to support.
 </Warning>
 
-### **Unsupported Chains for Returns**
+**Unsupported Chains for Returns**
 
 Some chains are supported for **deposits** but not for **refunds**.
 

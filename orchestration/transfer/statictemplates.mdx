@@ -77,7 +77,7 @@ This template will remain in the `awaiting_funds` state unless canceled. Each ti
 
 # **Fetching Transfers after funds received**
 
-You can query for transfer instances created from the static template using the [<u>Get all transfers</u>](https://apidocs.bridge.xyz/reference/get_transfers) endpoint.
+You can query for transfer instances created from the static template using the [<u>Get all transfers</u>](/api-reference/transfers/get-all-transfers) endpoint.
 
 ```bash filename
 curl --request GET \
@@ -168,8 +168,8 @@ curl --request GET \
 
 - The initial template you create will maintain the same id. Use this ID to interact with the Template through our API. Its state will remain `awaiting_source_deposit` as long as it is active. `static_template` feature field will always be true for Template Transfers.
 - Each time we receive funds, we will create a new Transfer. We will send webhooks when the new Transfer is created and any time we update information about each Transfer created from the template. For instances of the template, the `static_template` Transfer feature will not be present in the API response.
-- You can use the [<u>Update Transfer</u>](https://apidocs.bridge.xyz/reference/put_transfers-transferid) endpoint to make changes to the template. This will not change any existing instances of that template, but funds received after the changes will be processed according to the updated template instructions.
-- You can use the `template_id` query parameter to [<u>List All Transfer instances</u>](https://apidocs.bridge.xyz/reference/get_transfers) created from this template.
+- You can use the [<u>Update Transfer</u>](/api-reference/transfers/update-a-transfer) endpoint to make changes to the template. This will not change any existing instances of that template, but funds received after the changes will be processed according to the updated template instructions.
+- You can use the `template_id` query parameter to [<u>List All Transfer instances</u>](/api-reference/transfers/get-all-transfers) created from this template.
 
 # **Static Template vs Virtual Accounts**
 
