@@ -290,9 +290,8 @@
         ]
     },
     "logo": {
-      "light": "/logo/dark.svg",
-      "dark": "/logo/dark.png",
-      "href": "https://www.bridge.xyz"
+        "light": "/logo/bridge_logo.png",
+        "dark": "/logo/bridge_logo.png"
     },
     "navbar": {
         "links": [
