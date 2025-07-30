@@ -6,11 +6,23 @@
       "light": "#07C983",
       "dark": "#15803D"
     },
-      "appearance": {
+    "appearance": {
       "default": "light"
     },
     "background": {
       "decoration": "gradient"
+    },
+    "fonts": {
+      "heading": {
+        "family": "Abc Diatype Regular",
+        "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
+        "format": "woff2"
+      },
+      "body": {
+        "family": "Abc Diatype Regular",
+        "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
+        "format": "woff2"
+      }
     },
     "name": "Bridge",
     "favicon": "/logo/favicon.ico",
