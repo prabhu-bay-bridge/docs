@@ -73,7 +73,8 @@ a:hover,
 
 .bg-dots-gradient {
   background-image:
-    radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px),
+    radial-gradient(#23cd94 0.5px, transparent 0.5px),
     linear-gradient(to bottom, #d4f2ef, #f7fafc, white);
   background-size: 10px 10px, auto;
+  background-repeat: repeat, no-repeat;
 }
