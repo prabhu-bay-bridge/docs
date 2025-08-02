@@ -71,27 +71,27 @@
                             {
                                 "group": "Move money with Bridge",
                                 "pages": [
-                                    "get-started/introduction/guides/movemoney/overview",
-                                    "get-started/introduction/guides/movemoney/virtualaccounts",
+                                    "get-started/guides/movemoney/overview",
+                                    "get-started/guides/movemoney/virtualaccounts",
                                     "get-started/movemoney/recurring",
-                                    "get-started/introduction/guides/movemoney/offramp_liquidation",
-                                    "get-started/introduction/guides/movemoney/fiat_to_fiat"
+                                    "get-started/guides/movemoney/offramp_liquidation",
+                                    "get-started/guides/movemoney/fiat_to_fiat"
                                 ]
                             },
                             {
                                 "group": "Integrate custodial wallets",
                                 "pages": [
                                     "get-started/introduction/guides/wallets/overview",
-                                    "get-started/introduction/guides/wallets//onramp",
-                                    "get-started/introduction/guides/wallets/crypto-to-crypto",
-                                    "get-started/introduction/guides/wallets/offramp"
+                                    "get-started/guides/wallets//onramp",
+                                    "get-started/guides/wallets/crypto-to-crypto",
+                                    "get-started/guides/wallets/offramp"
                                 ]
                             },
                             {
                                 "group": "Provision and make card payments",
                                 "pages": [
-                                    "get-started/introduction/guides/cards/overview",
-                                    "get-started/introduction/guides/cards/spend"
+                                    "get-started/guides/cards/overview",
+                                    "get-started/guides/cards/spend"
                                 ]
                             }
                         ]
