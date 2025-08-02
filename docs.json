@@ -326,5 +326,11 @@
             "claude",
             "perplexity"
         ]
-    }
+    },
+    "redirects": [
+      {
+        "source": "/docs/getting-started",
+        "destination": "/get-started/introduction/overview"
+      }
+    ]
 }
