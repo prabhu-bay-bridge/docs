@@ -13,7 +13,7 @@ To obtain any endorsements, you must meet KYC Information and Terms of Service (
 
 ## **KYC Information**
 
-The first component is providing Bridge with the necessary KYC information from the customer by, either directly through the [<u>Customers API</u>](/customers/api), or by asking the customer to follow a developer provided [<u>KYC Link</u>](/customers/kyclinks).
+The first component is providing Bridge with the necessary KYC information from the customer by, either directly through the [<u>Customers API</u>](/platform/customers/customers/api), or by asking the customer to follow a developer provided [<u>KYC Link</u>](/platform/customers/customers/kyclinks).
 
 ### **Customers API**
 
@@ -141,7 +141,7 @@ Here is an example for submitting information directly via the Customers API.
   </Tab>
 </Tabs>
 
-For more detail, see the [customers API](/customers/api).
+For more detail, see the [customers API](/platform/customers/customers/api).
 
 ### **KYC Link**
 
@@ -160,13 +160,13 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 }'
 ```
 
-For more details please see the [<u>KYC Links</u>](/customers/kyclinks) page for new customers, or the [<u>Additional Requirements</u>](/customers/add_req) page for existing customers.
+For more details please see the [<u>KYC Links</u>](/platform/customers/customers/kyclinks) page for new customers, or the [<u>Additional Requirements</u>](/platform/customers/customers/add_req) page for existing customers.
 
 ## **Terms of Service**
 
-The second component is obtaining terms of service acceptance from your customer. This is accomplished by providing your customer with a [<u>Terms of Service</u>](https://apidocs.bridge.xyz/docs/terms-of-service)<u> [todo update link]</u> Link for them to follow.
+The second component is obtaining terms of service acceptance from your customer. This is accomplished by providing your customer with a [<u>Terms of Service</u>](/platform/customers/customers/tos)<u>. </u>Link for them to follow.
 
-Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](https://apidocs.bridge.xyz/reference/post_customers-tos-links) [todo update link]
+Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](/api-reference/customers/request-a-hosted-url-for-tos-acceptance-for-new-customer-creation).
 
 # **Endorsement Types**
 
