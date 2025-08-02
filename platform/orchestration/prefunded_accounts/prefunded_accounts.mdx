@@ -5,13 +5,34 @@ mode: "wide"
 
 Prefunded accounts allow you to maintain a balance of funds to power instant on-ramps for your customers. Prefunded accounts currently only support USD.
 
-# **Funding a Prefunded Account**
+## **Funding a prefunded account**
 
 The destination currency when funding a Prefunded Account should always be USD, regardless of what underlying currency is used for an on-chain prefunded account.
 
-## Funding via Transfer API
+### Funding via virtual account API
 
-In order to add funds to a Prefunded Account, it can be set as the destination of a Transfer.
+This creates a virtual account that automatically forwards fiat deposits to your prefunded account.
+
+```bash
+curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID>/virtual_accounts' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "source": {
+    "currency": "usd"
+  },
+  "destination": {
+    "payment_rail": "prefunded",
+    "currency": "usd",
+    "prefunded_account_id": "prefunded_account_id"
+  }
+```
+
+### Funding via transfer API
+
+You can set a prefunded account as the destination of a Transfer.
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
@@ -35,7 +56,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }'
 ```
 
-## Funding via Liquidation Address API
+### Funding via liquidation address API
+
+You can automatically forward crypto deposits to your prefunded account using the liquidation address api.
 
 ```bash Request expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID>/liquidation_addresses' \
@@ -52,7 +75,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/<Customer ID
 }
 ```
 
-# **Using Prefunded Accounts for Instant Onramps**
+## **Using prefunded accounts for instant onramps**
 
 Prefunded Accounts can be used as the source when making a Transfer. The currency when using a Prefunded Account as a source should always be USD.
 
@@ -71,9 +94,21 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
     "prefunded_account_id": "prefunded_account_id"
   },
   "destination": {
+    // You can set the destination to be a regular crypto address:
     "payment_rail": "ethereum",
     "currency": "usdc",
     "to_address": "0x..."
+
+    // Or to a bridge wallet:
+    "payment_rail": "<Bridge Wallet chain>",
+    "currency": "<Bridge Wallet currency>",
+    "bridge_wallet_id": "<Bridge Wallet id>"
+
+    // Or to an external address:
+    payment_rail: "wire",
+    currency: "usd",
+    wire_message: "<wire message>",
+    external_account_id: <External Account id>,
   }
 }'
 ```
