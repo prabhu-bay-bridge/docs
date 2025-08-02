@@ -43,7 +43,7 @@
                     {
                         "group": "Introduction",
                         "pages": [
-                            "overview",
+                            "get-started/introduction/overview",
                             {
                                 "group": "What we support",
                                 "pages": [
