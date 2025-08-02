@@ -3,7 +3,7 @@ title: "Move money to and from wallets"
 mode: "wide"
 ---
 
-# **Create a wallet**
+## **Create a wallet**
 
 Create a new custodial wallet for an individual user or for your company treasury.
 
@@ -33,18 +33,18 @@ curl --request POST \
 ```
 
 <Warning>
-  **Do not send tokens directly to this address.** You can use a [<u>Liquidation Address</u>](/orchestration/liquidation_address/liquidation_address) and point it to a wallet endpoint for incoming funds.
+  **Do not send tokens directly to this address.** You can use a [<u>Liquidation Address</u>](/platform/orchestration/liquidation_address/liquidation_address) and point it to a wallet endpoint for incoming funds.
 </Warning>
 
 Save the wallet id. It’s required for all future transfers or orchestration calls.
 
-# **Moving money using orchestration**
+## **Moving money using orchestration**
 
 All fund movements into or out of a Bridge wallet must go through orchestration APIs. You can build flexible payment workflows to and from your Bridge wallet using any of the following APIs:
 
-- [<u>Transfers</u>](/orchestration/transfer/transfer) - Move money to and from a Bridge wallet. You can specify a Bridge wallet as a source or destination for a transfer.
-- [<u>Liquidation Address</u>](/orchestration/liquidation_address/liquidation_address) - Auto forward funds sent to a crypto address directly to your Bridge wallet. To do so, you can specify a Bridge wallet as the destination for the liquidation address.
-- [<u>Virtual Accounts</u>](/orchestration/virtual_account/virtual_account) - Automatically convert fiat currency sent to your customer's virtual account and send those funds to a Bridge wallet. Check out [<u>Onramp stablecoins using Bridge Wallet & Virtual Account</u>](/guides/wallets/onramp).
+- [<u>Transfers</u>](/platform/orchestration/transfers/transfer) - Move money to and from a Bridge wallet. You can specify a Bridge wallet as a source or destination for a transfer.
+- [<u>Liquidation Address</u>](/platform/orchestration/liquidation_address/liquidation_address) - Auto forward funds sent to a crypto address directly to your Bridge wallet. To do so, you can specify a Bridge wallet as the destination for the liquidation address.
+- [<u>Virtual Accounts</u>](/platform/orchestration/virtual_accounts/virtual-account) - Automatically convert fiat currency sent to your customer's virtual account and send those funds to a Bridge wallet. Check out [<u>Onramp stablecoins using Bridge Wallet & Virtual Account</u>](/get-started/guides/wallets/onramp).
 
 Here's an example where of a transfer sending funds to a bridge wallet:
 
@@ -70,7 +70,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 
 ---
 
-# **Get Wallet Balance**
+## **Get Wallet Balance**
 
 Retrieve the balance of a specific wallet.
 
@@ -99,7 +99,7 @@ curl --request GET
 }
 ```
 
-# **Get Total Wallet Balance**
+## **Get Total Wallet Balance**
 
 Fetch the aggregate balance of all wallets under your developer account.
 
@@ -121,11 +121,11 @@ curl --request GET
 ]
 ```
 
-# **List All Wallets**
+## **List All Wallets**
 
 Allows you to get all the wallets associated with your developer id.
 
-## **List all** **wallets**
+### **List all** **wallets**
 
 ```bash
 curl --request GET \
@@ -133,7 +133,7 @@ curl --request GET \
      --header 'Api-Key: <API Key>'
 ```
 
-## **List all wallets for a specific customer**
+### **List all wallets for a specific customer**
 
 ```bash
 curl --request GET \
