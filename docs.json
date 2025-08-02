@@ -2,39 +2,41 @@
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
     "colors": {
-      "primary": "#16A34A",
-      "light": "#07C983",
-      "dark": "#15803D"
+        "primary": "#16A34A",
+        "light": "#07C983",
+        "dark": "#15803D"
     },
     "appearance": {
-      "default": "light"
+        "default": "light"
     },
     "background": {
-      "decoration": "gradient"
+        "decoration": "gradient"
     },
     "fonts": {
-      "heading": {
-        "family": "Abc Diatype Regular",
-        "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
-        "format": "woff2"
-      },
-      "body": {
-        "family": "Abc Diatype Regular",
-        "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
-        "format": "woff2"
-      }
+        "heading": {
+            "family": "Abc Diatype Regular",
+            "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
+            "format": "woff2"
+        },
+        "body": {
+            "family": "Abc Diatype Regular",
+            "source": "https://cdn.prod.website-files.com/66c78bffc753432b33c4f61a/66c78bffc753432b33c4f654_ABC%20Diatype%20Regular.ttf",
+            "format": "woff2"
+        }
     },
     "name": "Bridge",
     "favicon": "/logo/favicon.ico",
     "navigation": {
-        "pages": ["index"],
+        "pages": [
+            "index"
+        ],
         "tabs": [
             {
-              "tab": "Home",
-              "icon": "house",
-              "pages": [
-                "index"
-              ]
+                "tab": "Home",
+                "icon": "house",
+                "pages": [
+                    "index"
+                ]
             },
             {
                 "tab": "Get started",
@@ -124,8 +126,8 @@
                                     {
                                         "group": "Businesses",
                                         "pages": [
-                                          "platform/customers/compliance/businesses/overview",
-"platform/customers/compliance/businesses/entity",
+                                            "platform/customers/compliance/businesses/overview",
+                                            "platform/customers/compliance/businesses/entity",
                                             "platform/customers/compliance/businesses/ownership",
                                             "platform/customers/compliance/businesses/formation",
                                             "platform/customers/compliance/businesses/identification",
@@ -142,42 +144,42 @@
                     {
                         "group": "Orchestration",
                         "pages": [
-                            "orchestration/overview",
+                            "platform/orchestration/overview",
                             {
                                 "group": "Virtual Accounts",
                                 "pages": [
-                                    "platform/orchestration/virtual_account/virtual-account",
-                                    "platform/orchestration/virtual_account/virtual-account-events",
-                                  "platform/orchestration/virtual_account/additional-functionality"
+                                    "platform/orchestration/virtual_accounts/virtual-account",
+                                    "platform/orchestration/virtual_accounts/virtual-account-events",
+                                    "platform/orchestration/virtual_accounts/additional-functionality"
                                 ]
                             },
                             {
                                 "group": "Transfers",
                                 "pages": [
-                                    "platform/orchestration/transfer/transfer",
-                                    "platform/orchestration/transfer/static-templates",
-                                    "platform/orchestration/transfer/transfer-states",
-                                    "platform/orchestration/transfer/transfer-features",
-                                    "platform/orchestration/transfer/transfer-updates"
+                                    "platform/orchestration/transfers/transfer",
+                                    "platform/orchestration/transfers/static-templates",
+                                    "platform/orchestration/transfers/transfer-states",
+                                    "platform/orchestration/transfers/transfer-features",
+                                    "platform/orchestration/transfers/transfer-updates"
                                 ]
                             },
                             {
                                 "group": "Liquidation Address",
                                 "pages": [
-                                    "orchestration/liquidation_address/liquidation_address",
+                                    "platform/orchestration/liquidation_address/liquidation_address",
                                     "platform/orchestration/liquidation_address/drains"
                                 ]
                             },
                             {
-                                "group": "Prefunded Account",
+                                "group": "Prefunded Accounts",
                                 "pages": [
-                                    "platform/orchestration/prefunded_account/prefunded_accounts"
+                                    "platform/orchestration/prefunded_accounts/prefunded_accounts"
                                 ]
                             },
                             {
                                 "group": "External Accounts",
                                 "pages": [
-                                    "platform/orchestration/external-accounts/bridge",
+                                    "platform/orchestration/external-accounts/external-accounts-api",
                                     "platform/orchestration/external-accounts/plaid",
                                     "platform/orchestration/external-accounts/validations"
                                 ]
@@ -205,7 +207,7 @@
                         "group": "Wallets",
                         "pages": [
                             "platform/wallets/overview",
-                            "platform/wallets/move"
+                            "platform/wallets/move-money"
                         ]
                     },
                     {
