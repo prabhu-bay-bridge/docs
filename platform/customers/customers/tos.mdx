@@ -7,7 +7,7 @@ Customers need to agree to Bridge's terms of services (ToS) before we can proces
 
 ## **ToS acceptance for a new customer**
 
-For new customer creations, use this endpoint to request a URL and reference our [<u>ToS Links API</u>](/api-reference/customers/request-a-hosted-url-for-tos-acceptance-for-new-customer-creation)
+For new customer creations, use this endpoint to request a URL and reference our [ToS Links API](/api-reference/customers/request-a-hosted-url-for-tos-acceptance-for-new-customer-creation)
 
 ```bash Request
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/tos_links' \
@@ -40,4 +40,4 @@ curl --location --request GET 'https://api.bridge.xyz/v0/customers/cust_123/tos_
 
 Use this `url` to guide the customer towards Terms of Service acceptance. You can embed this URL in an iFrame or display in a new browser window. For iFrame and WebView implementations, we recommend listening to the `postMessage` event for the `signedAgreementId`. Moreover, you can pass a `redirect_uri` query parameter that will redirect the TOS page back to your application with a `signed_agreement_id` as a query parameter.
 
-Please reference our [<u>ToS Acceptance Link API</u>](/api-reference/customers/retrieve-a-hosted-url-for-tos-acceptance-for-an-existing-customer) for existing customers for more details.
+Please reference our [ToS Acceptance Link API](/api-reference/customers/retrieve-a-hosted-url-for-tos-acceptance-for-an-existing-customer) for existing customers for more details.
