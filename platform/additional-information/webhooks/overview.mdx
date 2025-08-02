@@ -3,7 +3,7 @@ title: "Webhooks"
 mode: "wide"
 ---
 
-Bridge's [Webhooks API](/api-reference/webhooks) lets developers manage webhook endpoints that are subscribed to webhook events for real-time updates instead of relying on API polling for a faster, more efficient, and better overall experience. Webhook endpoints require you to provide a `url` with the https scheme and a valid X.509 certificate. When your endpoint is created, a `PKI public key` in `PEM` format will be assigned to it and shared with you. Refer to [Webhook Event Signature Verification](/api-concepts/webhooks/signature) for details on how to verify the authenticity of incoming events.
+Bridge's [Webhooks API](/api-reference/webhooks) lets developers manage webhook endpoints that are subscribed to webhook events for real-time updates instead of relying on API polling for a faster, more efficient, and better overall experience. Webhook endpoints require you to provide a `url` with the https scheme and a valid X.509 certificate. When your endpoint is created, a `PKI public key` in `PEM` format will be assigned to it and shared with you. Refer to [Webhook Event Signature Verification](/platform/additional-information/webhooks/signature) for details on how to verify the authenticity of incoming events.
 
 When your endpoint is active, Bridge will deliver events with `POST` with the `application/json` content type. The endpoint should return a 200 status to Bridge as quickly as possible to avoid timeouts and retries on the Bridge side.
 
@@ -12,7 +12,7 @@ When your endpoint is active, Bridge will deliver events with `POST` with the `a
 A typical flow to implement Bridge webhooks within your application may like the following
 
 1. Make a [POST request to /webhooks](/api-reference/webhooks/create-a-webhook-endpoint) to create your endpoint in the `disabled` state.
-2. Implement your application's logic for [Webhook Event Signature Verification](/api-concepts/webhooks/signature).
+2. Implement your application's logic for [Webhook Event Signature Verification](/platform/additional-information/webhooks/signature).
 3. [Get upcoming webhook events](/api-reference/webhooks/list-upcoming-events) and [send events](/api-reference/webhooks/send-event) to test the logic for receiving events from bridge. You can [view event delivery logs](/api-reference/webhooks/view-logs) to debug any issues
 4. After verifying your webhook functionality, enable it using [PUT /webhooks](/api-reference/webhooks/update-a-webhook)
 
