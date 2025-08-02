@@ -43,24 +43,24 @@
                     {
                         "group": "Introduction",
                         "pages": [
-                            "getting-started",
+                            "overview",
                             {
                                 "group": "What we support",
                                 "pages": [
-                                    "get-started/functionality/blockchains",
-                                    "get-started/functionality/fiat",
-                                    "get-started/functionality/geo",
-                                    "get-started/functionality/1st-and-3rd-party-payments"
+                                    "get-started/introduction/what-we-support/blockchains",
+                                    "get-started/introduction/what-we-support/fiat",
+                                    "get-started/introduction/what-we-support/geo",
+                                    "get-started/introduction/what-we-support/1st-and-3rd-party-payments"
                                 ]
                             },
                             {
                                 "group": "Quick Start",
                                 "pages": [
-                                    "get-set-up-with-bridge",
-                                    "create-your-first-customer",
-                                    "create-a-one-time-payment",
-                                    "setting-up-webhooks",
-                                    "setting-up-sandbox"
+                                    "get-started/introduction/quick-start/get-set-up-with-bridge",
+                                    "get-started/introduction/quick-start/create-your-first-customer",
+                                    "get-started/introduction/quick-start/create-a-one-time-payment",
+                                    "get-started/introduction/quick-start/setting-up-webhooks",
+                                    "get-started/introduction/quick-start/setting-up-sandbox"
                                 ]
                             }
                         ]
