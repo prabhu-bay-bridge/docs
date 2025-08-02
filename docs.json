@@ -105,36 +105,36 @@
                     {
                         "group": "Customers",
                         "pages": [
-                            "customers/overview",
+                            "platform/customers/overview",
                             {
                                 "group": "Customers",
                                 "pages": [
-                                    "customers/api",
-                                    "customers/kyclinks",
-                                    "customers/add_req",
-                                    "customers/endorsements",
-                                    "customers/tos",
-                                    "customers/rejection_reasons"
+                                    "platform/customers/customers/api",
+                                    "platform/customers/customers/kyclinks",
+                                    "platform/customers/customers/add_req",
+                                    "platform/customers/customers/endorsements",
+                                    "platform/customers/customers/tos",
+                                    "platform/customers/customers/rejection_reasons"
                                 ]
                             },
                             {
                                 "group": "Compliance",
                                 "pages": [
-                                    "compliance/individuals/individuals",
+                                    "platform/customers/compliance/individuals",
                                     {
                                         "group": "Businesses",
                                         "pages": [
-                                            "compliance/businesses/overview",
-                                            "compliance/businesses/entity",
-                                            "compliance/businesses/ownership",
-                                            "compliance/businesses/formation",
-                                            "compliance/businesses/identification",
-                                            "compliance/businesses/highrisk"
+                                            "platform/customers/compliance/businesses/overview",
+                                            "platform/customers/compliance/businesses/entity",
+                                            "platform/customers/compliance/businesses/ownership",
+                                            "platform/customers/compliance/businesses/formation",
+                                            "platform/customers/compliance/businesses/identification",
+                                            "platform/customers/compliance/businesses/highrisk"
                                         ]
                                     },
-                                    "compliance/compliance/dao",
-                                    "compliance/compliance/docs",
-                                    "compliance/compliance/poa"
+                                    "platform/customers/compliance/dao",
+                                    "platform/customers/compliance/docs",
+                                    "platform/customers/compliance/poa"
                                 ]
                             }
                         ]
