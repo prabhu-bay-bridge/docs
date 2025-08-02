@@ -8,11 +8,11 @@ USDB is a stablecoin issued and managed by Bridge. **USDB is always backed 1:1 b
 
 Onboarding is easy - just switch any stablecoin to `USDB` in your API calls.
 
-When you or your end users want to swap in and out of USDB we just use our orchestration API endpoints: [Transfers](/orchestration/transfer/transfer), [Virtual Accounts](/orchestration/virtual_account/virtual-account), and [Liquidation Addresses](/orchestration/liquidation_address/liquidation_address).
+When you or your end users want to swap in and out of USDB we just use our orchestration API endpoints: [Transfers](/platform/orchestration/transfers/transfer), [Virtual Accounts](/platform/orchestration/virtual_accounts/virtual-account), and [Liquidation Addresses](/platform/orchestration/liquidation_address/liquidation_address).
 
-# **Interacting with USDB**
+## **Interacting with USDB**
 
-## **Swapping to USDB**
+### **Swapping to USDB**
 
 To swap from fiat or other stablecoins to USDB, you can use the [Transfers API](/api-reference/transfers/create-a-transfer).
 
@@ -67,7 +67,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-## **Swapping from USDB to Fiat**
+### **Swapping from USDB to Fiat**
 
 If you want to convert `USDB` to fiat, you can issue an API call like this:
 
@@ -129,7 +129,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-## **Swapping from USDB to other stablecoins**
+### **Swapping from USDB to other stablecoins**
 
 If you want to convert `USDB` to other stablecoins, like `USDC`, you can issue an API call like this:
 
@@ -191,7 +191,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-# **Reporting and Transparency**
+## **Reporting and Transparency**
 
 We provide the following types of reports:
 
@@ -201,7 +201,7 @@ We provide the following types of reports:
 - **Monthly**: Summary of transaction activity, balances and earnings delivered by the 5th day of the month.
 - **Quarterly**: Attestations of our tokens and rewards by an independent third party.
 
-## **Circulating Token Supply**
+### **Circulating Token Supply**
 
 The total circulating supply of USDB.
 

@@ -6,9 +6,9 @@ mode: "wide"
 
 Custom stablecoins (xUSD) are stablecoins issued and managed by Bridge. xUSD is always backed 1:1 by the equivalent value of US dollars. xUSD can be exchanged to and from most stablecoins or fiat using Bridge Orchestration APIs (transfers, liquidation addresses and virtual accounts).
 
-When you or your end users want to swap in and out of xUSD we just use our orchestration API endpoints. We support all the same routes as [<u>Transfers</u>](/orchestration/transfer/transfer)<u>,</u> [<u>Liquidation Addresses</u>](/orchestration/liquidation_address/liquidation_address), and [<u>Virtual Accounts</u>](/orchestration/virtual_account/virtual-account-events).
+When you or your end users want to swap in and out of xUSD we just use our orchestration API endpoints. We support all the same routes [here](/get-started/introduction/what-we-support/blockchains).
 
-# **Configuring xUSD**
+## **Configuring xUSD**
 
 When setting up a custom stablecoin there are a number of steps to complete in the onboarding process.
 
@@ -21,7 +21,7 @@ When setting up a custom stablecoin there are a number of steps to complete in t
 
 It usually takes about 2-4 weeks to get completely set up, due to external account opening dependencies.
 
-# **Cash Reserves and Refundable Deposits**
+## **Cash Reserves and Refundable Deposits**
 
 Cash reserves allow for “fast offramps” because we have the liquidity on hand for users to receive fiat or USDC/T quickly. If there is not enough cash on hand, we need to sell assets from our reserves account which typically settles T\+1.
 
@@ -29,9 +29,9 @@ Refundable deposits allow for “fast onramps” because we will have xUSD token
 
 Bridge can only guarantee real time swaps during banking hours.
 
-# **Interacting with xUSD**
+## **Interacting with xUSD**
 
-## **Swapping to xUSD**
+### **Swapping to xUSD**
 
 To swap from fiat or other stablecoins to xUSD you can issue an API call that looks like this:
 
@@ -86,7 +86,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-## **Swapping from xUSD to Fiat**
+### **Swapping from xUSD to Fiat**
 
 If you want to convert `xUSD` to fiat, you can issue an API call like this:
 
@@ -110,8 +110,6 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   },
 }'
 ```
-
-#### **Response**
 
 ```json Response expandable
 {
@@ -150,7 +148,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-## **Swapping from xUSD to other stablecoins**
+### **Swapping from xUSD to other stablecoins**
 
 If you want to convert `xUSD` to other stablecoins, like `USDC`, you can issue an API call like this:
 
@@ -212,7 +210,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 }
 ```
 
-# **Reporting and Transparency**
+## **Reporting and Transparency**
 
 We provide the following types of reports:
 
