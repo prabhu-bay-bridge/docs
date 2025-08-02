@@ -55,19 +55,19 @@ mode: "wide"
 
   1.`customer_id` added to `LiquidationAddress`
 
-  You can now identify which customer owns a liquidation address. Refer API reference at [<u>Get a liquidation address</u>](/api-reference/liquidation-addresses/get-a-liquidation-address).
+  You can now identify which customer owns a liquidation address. Refer API reference at [Get a liquidation address](/api-reference/liquidation-addresses/get-a-liquidation-address).
 
   2. `created_at`**added to VirtualAccount and StaticMemo**
 
-  Timestamp fields are now included to help with auditing and sorting. Refer API reference at [<u>Get a Virtual Account</u>](/api-reference/virtual-accounts/get-a-virtual-account).
+  Timestamp fields are now included to help with auditing and sorting. Refer API reference at [Get a Virtual Account](/api-reference/virtual-accounts/get-a-virtual-account).
 
   3.`source_deposit_instructions.payment_rails` added to `StaticMemo`
 
-  Includes the source details in the static memo response (supported rails right now are ACH & wire). Refer API reference at [<u>Get a Static Memo</u>](/api-reference/static-memos/get-a-static-memo).
+  Includes the source details in the static memo response (supported rails right now are ACH & wire). Refer API reference at [Get a Static Memo](/api-reference/static-memos/get-a-static-memo).
 
   4.`destination_payment_rail`**now included in history records**
 
   The `StaticMemo` and `VirtualAccount` objects returned in history endpoints now show the `destination_payment_rail` (e.g. USD.USDC.polygon) once the payment completes successfully.
 
-  Refer API reference at [<u>Virtual Account Activity</u>](/api-reference/virtual-accounts/virtual-account-activity) and [<u>Static Memo Activity</u>](/api-reference/static-memos/static-memo-activity)
+  Refer API reference at [Virtual Account Activity](/api-reference/virtual-accounts/virtual-account-activity) and [Static Memo Activity](/api-reference/static-memos/static-memo-activity)
 </Update>
