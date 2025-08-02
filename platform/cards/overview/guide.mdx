@@ -5,11 +5,11 @@ mode: "wide"
 
 Creating a card and running your first transaction is the best way to get a feel for the Bridge Cards API. To create your first card you will need to both create a customer and then create a card for them to use.
 
-# **Step 1: Create a customer**
+## **Step 1: Create a customer**
 
-Before issuing a card, you must first onboard a customer. Learn more at [<u>Create your first customer</u>](/guides/getstarted/createcustomer).
+Before issuing a card, you must first onboard a customer. Learn more at [<u>Create your first customer</u>](/get-started/introduction/quick-start/create-your-first-customer).
 
-# **Step 2: Provision a Card Account**
+## **Step 2: Provision a Card Account**
 
 Once your customer is onboarded, you can create a card account. Each card is tied to a single currency and network. This cannot be changed after creation.
 
@@ -29,7 +29,7 @@ curl -X POST 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts' \
  }'
 ```
 
-# **Step 3: View card details**
+## **Step 3: View card details**
 
 After provisioning the card, retrieve its details to display to your user. This includes metadata like the BIN, expiration, and a secure `card_image_url` that reveals full card data including CVV and PIN.
 
@@ -53,11 +53,11 @@ curl --request GET \
 }
 ```
 
-# **Step 4: Create a test transaction**
+## **Step 4: Create a test transaction**
 
 You can now use your test card with any e-commerce site that accepts cards. We recommend using a known merchant with stable infrastructure.
 
-# **Step 5: Listen for pending transactions**
+## **Step 5: Listen for pending transactions**
 
 Track real-time authorizations using the `card_transaction.created` webhook. This gives you a view of authorized but not yet settled transactions.
 
@@ -89,7 +89,6 @@ Track real-time authorizations using the `card_transaction.created` webhook. Thi
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 If you want, you can also fetch pending transactions ad hoc via the following API:
@@ -100,7 +99,7 @@ curl -X POST 'https://api.bridge.xyz/v0/customers/{customerID}/card_accounts/{ca
  --header 'Api-Key: <API Key>'
 ```
 
-# **Step 6: Listen for settled transactions**
+## **Step 6: Listen for settled transactions**
 
 Use the `card_transaction.updated.status_transitioned` webhook to track settlement status.
 

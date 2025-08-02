@@ -3,27 +3,27 @@ title: "Managing PINs"
 mode: "wide"
 ---
 
-# **Overview**
+## **Overview**
 
 Personal Identification Numbers (PINs) are an important security control and help keep your user's funds safe and card program low-risk. By providing an easy to use PIN management flow you can keep your users safe and ensure that transactions are not blocked.
 
-## **Security Considerations**
+### **Security Considerations**
 
 PINs are sensitive data, so we take special caution to never transmit directly through your servers
 
 In order to address both security and regulatory concerns (PCI) all PIN operations are mediated via time-limited, single-use URLs surfaced in hosted frames.
 
-# **PIN Management Operations**
+## **PIN Management Operations**
 
 As of date, Bridge only offers a single PIN management operation:
 
 - \*\*Update Card PIN: \*\*Allows customers to securely set or change their card PIN. Note that they cannot view their PIN in this flow.
 
-## **Updating a Card PIN**
+### **Updating a Card PIN**
 
 To allow a customer to update their PIN you will need to request a signed URL from the Bridge API, and then use that URL to render an iframe in your application or a webview.
 
-To do so, you should use the [<u>Create Card PIN Update URL</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-card-accounts-cardaccountid-pin)<u> [todo update link]</u> API to request a signed URL which your user can use to kick off a PIN editing session.
+To do so, you should use the [Create Card PIN Update URL](/api-reference/cards/create-card-pin-update-url) API to request a signed URL which your user can use to kick off a PIN editing session.
 
 ```bash
 curl -x POST https\://<https://api.bridge.xyz/customers/>\<CUSTOMER_ID>/card_accounts/\<CARD_ACCOUNT_ID>/pin  

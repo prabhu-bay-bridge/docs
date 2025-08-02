@@ -1,14 +1,13 @@
 ---
 title: "Webhooks"
-description: "Description of your new file."
 mode: "wide"
 ---
 
-# **Overview**
+## **Overview**
 
 In order to keep your application up to date, and notify your users of changes to their card account, you should listen to webhooks originated by Bridge and sent to your servers.
 
-# **Webhook types**
+## **Webhook types**
 
 | **Object**         | **Event category**                | **Description**                                                                                                                                        |
 | :----------------- | :-------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -18,13 +17,13 @@ In order to keep your application up to date, and notify your users of changes t
 | Dispute            | `card_dispute`                    | Represents state changes in disputes made on cards issued in your card program.                                                                        |
 | Card withdrawal    | `card_withdrawal`                 | Reflects status changes for withdrawals from custodial card accounts. Only funds flows which use pre-funded balances will receive these notifications. |
 
-# **Example webhooks**
+## **Example webhooks**
 
-## **Scenario 1: Successful Transaction**
+### **Scenario 1: Successful Transaction**
 
 In a normal, successful transaction, an `approved` event will be published at the time of the initial purchase.
 
-### **Event 1: Card transaction approved**
+**Event 1: Card transaction approved**
 
 ```json expandable
 {
@@ -59,7 +58,7 @@ In a normal, successful transaction, an `approved` event will be published at th
 
 When the transaction is officially confirmed, a `settled` event will be published for the full amount of the transaction.
 
-### **Event 2: Card transaction settled**
+**Event 2: Card transaction settled**
 
 ```json expandable
 {
@@ -99,11 +98,11 @@ When the transaction is officially confirmed, a `settled` event will be publishe
 }
 ```
 
-## **Scenario 2: Transaction Denied**
+### **Scenario 2: Transaction Denied**
 
 In the case of a card transaction decline, a single event will be published with the transaction in a `denied` state. See [<u>a below section</u>](https://apidocs.bridge.xyz/null/null#card-transaction-status-reasons) on a comprehensive listing of the possible `status_reason`s.
 
-### **Event 1: Card transaction denied**
+**Event 1: Card transaction denied**
 
 ```json expandable
 {
@@ -134,14 +133,13 @@ In the case of a card transaction decline, a single event will be published with
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
-## **Scenario 3: Authorization Reversal**
+### **Scenario 3: Authorization Reversal**
 
 A transaction may also be reversed before it gets settled. The original authorization event will look largely the same as scenario 1:
 
-### **Event 1: Card transaction approved**
+**Event 1: Card transaction approved**
 
 ```json expandable
 {
@@ -175,7 +173,7 @@ A transaction may also be reversed before it gets settled. The original authoriz
 
 When the card transaction gets reversed, the transaction will move into a state of `reversed`, and the amount will change to reflect that no funds have been settled. The original authorization amount will still be available on the `original_amount` field.
 
-### **Event 2: Card transaction reversed**
+**Event 2: Card transaction reversed**
 
 ```json expandable
 {
@@ -211,11 +209,11 @@ When the card transaction gets reversed, the transaction will move into a state 
 }
 ```
 
-## **Scenario 4: Refund After Settlement**
+### **Scenario 4: Refund After Settlement**
 
 If a card transaction gets refunded after settlement, our system will see an authorization and settlement for a positive amount. (Note that up until now, events for normal purchases have been denoted as negative amounts against the card account balance.) In the webhook event, the category of the transaction will be denoted as `refund`.
 
-### **Event 1: Refund transaction approved**
+**Event 1: Refund transaction approved**
 
 ```json
 {
@@ -249,7 +247,7 @@ If a card transaction gets refunded after settlement, our system will see an aut
 
 Subsequently, a `settled` event will be published when the refund transaction is settled.
 
-### **Event 2: Refund transaction settlement**
+**Event 2: Refund transaction settlement**
 
 ```json expandable
 {
@@ -286,11 +284,11 @@ Subsequently, a `settled` event will be published when the refund transaction is
 }
 ```
 
-## **Scenario 5: Incremental Authorization**
+### **Scenario 5: Incremental Authorization**
 
 In many situations, the amount of a transaction will change after it has been authorized but before it has been settled. The original authorization event will look largely similar to the other scenarios outlined in this document, but after that, more events will be published to provide information about the additional amount.
 
-### **Event 1: Card transaction approved**
+**Event 1: Card transaction approved**
 
 ```json expandable
 {
@@ -320,12 +318,11 @@ In many situations, the amount of a transaction will change after it has been au
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 Subsequently, when an additional amount gets on authorized the same transaction, an `incremental_auth_approved` event will be published for the full amount of the transaction. Note that the `authorized_at` timestamp will still reflect the timestamp of the original authorization approval. The original authorization amount will still be available on the `original_amount` field.
 
-### **Event 2a: Additional amount authorized**
+**Event 2a: Additional amount authorized**
 
 ```json expandable
 {
@@ -359,12 +356,11 @@ Subsequently, when an additional amount gets on authorized the same transaction,
   },
   "event_created_at": "2025-02-04T06:30:20.000Z",
 }
-
 ```
 
 Alternatively, an incremental authorization may also be denied:
 
-### **Event 2b: Additional amount authorized**
+**Event 2b: Additional amount authorized**
 
 ```json expandable
 {
@@ -399,12 +395,11 @@ Alternatively, an incremental authorization may also be denied:
   },
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 After a successful incremental auth (event 2a), the settlement object looks the same as in scenario 1, but the `settled_amount` reflects the full amount of the transaction after the incremental authorization.
 
-### **Event 3: Total amount settled**
+**Event 3: Total amount settled**
 
 ```json expandable
 {
@@ -443,11 +438,11 @@ After a successful incremental auth (event 2a), the settlement object looks the 
 }
 ```
 
-## **Scenario 6: Authorization Expiration**
+### **Scenario 6: Authorization Expiration**
 
 Authorizations are not indefinite, and can expire. This is rare but not impossible in the real world. For example, if you check in at a hotel, the front desk might place a temporary hold on the balance for incidental charges, but the card authorization will expire after some period of time after checking out of the hotel.
 
-### Event 1: Card transaction approved
+**Event 1: Card transaction approved**
 
 ```json expandable
 {
@@ -477,12 +472,11 @@ Authorizations are not indefinite, and can expire. This is rare but not impossib
   "event_object_changes": {},
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 When the authorization expires, an `expired` event will be published, with the amount changed.
 
-### Event 2: Card transaction expired
+**Event 2: Card transaction expired**
 
 ```json expandable
 {
@@ -517,12 +511,11 @@ When the authorization expires, an `expired` event will be published, with the a
   },
   "event_created_at": "2025-02-04T05:19:20.000Z",
 }
-
 ```
 
 Note that card transactions may still be settled after the authorization expires. This is even rarer, but not impossible.
 
-### **Event 3: Card transaction settled after auth expiration**
+**Event 3: Card transaction settled after auth expiration**
 
 ```json expandable
 {
@@ -560,7 +553,7 @@ Note that card transactions may still be settled after the authorization expires
 }
 ```
 
-# **Card Transaction Status Reasons**
+## **Card Transaction Status Reasons**
 
 Below is a comprehensive listing of the possible `status_reason` values you may receive in the `card_transaction` webhook event object.
 

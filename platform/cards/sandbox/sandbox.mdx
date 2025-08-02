@@ -30,7 +30,7 @@ curl -X POST 'https://api.sandbox.bridge.xyz/v0/cards/enable' \
 
 ## **Creating a card account**
 
-You should follow the steps outlined [<u>here</u>](/cards/guide) to create a customer and a card account, using the sandbox API URL.
+You should follow the steps outlined [<u>here</u>](/platform/cards/overview/guide) to create a customer and a card account, using the sandbox API URL.
 
 ## **Simulate balance top up**
 
@@ -62,7 +62,7 @@ curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_acco
  -d '{"amount: "100.0", "merchant_name": "test"}'
 ```
 
-When a card transaction is authorized but not yet settled, you will be able to retrieve it using the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+When a card transaction is authorized but not yet settled, you will be able to retrieve it using the [<u>pending card authorizations</u>](/api-reference/cards/retrieve-pending-card-authorizations) endpoint.
 
 **Step 2 To simulate the card settlement:**
 
@@ -88,7 +88,7 @@ curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_acco
  -d '{"amount": "200.0", "merchant_name": "test", "transaction_type": "preauthorization"}'
 ```
 
-You should see the new card authorization when calling the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+You should see the new card authorization when calling the [<u>pending card authorizations</u>](/api-reference/cards/retrieve-pending-card-authorizations) endpoint.
 
 **Step 2** With the additional room service, the card authorization amount needs to be increased by \$20 from the preauthorization. To simulate this incremental authorization, copy the `authorization_id` from the response in Step 1, and use it as the `original_authorization_id` by calling the following API:
 
@@ -100,7 +100,7 @@ curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_acco
  -d '{"amount":"20.0","merchant_name":"test","transaction_type":"incremental_preauthorization","original_authorization_id":"<CardAuthorizationIdFromStep1>"}'
 ```
 
-You should see in the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint, the card authorization from Step 1 has been replaced with the new incremental authorization you just submitted.
+You should see in the [<u>pending card authorizations</u>](/api-reference/cards/retrieve-pending-card-authorizations) endpoint, the card authorization from Step 1 has been replaced with the new incremental authorization you just submitted.
 
 **Step 3** At check-out, the card authorization is completed for \$20 total charge. To simulate the authorization completion, copy the `authorization_id` from the response in Step 2, and use it as the `original_authorization_id` by calling the following API:
 
@@ -112,7 +112,7 @@ curl -X POST 'https://api.sandbox.bridge.xyz/v0/customers/<CustomerId>/card_acco
  -d '{"amount":"20.0","merchant_name":"test","transaction_type":"completion","original_authorization_id":"<CardAuthorizationIdFromStep2>"}'
 ```
 
-Again, you should see the new authorization when calling the [<u>pending card authorizations</u>](https://apidocs.bridge.xyz/reference/get_customers-customerid-card-accounts-cardaccountid-authorizations) endpoint.
+Again, you should see the new authorization when calling the [<u>pending card authorizations</u>](/api-reference/cards/retrieve-pending-card-authorizations) endpoint.
 
 **Step 4** To simulate the card transaction settlement, copy the `authorization_id` from the response in Step 3, and use it as the `authorization_id`in the call to the the following API:
 

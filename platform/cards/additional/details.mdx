@@ -18,7 +18,7 @@ Once implemented, the flow between your frontend, your backend, and Bridge shoul
 
 Below, we'll discuss each of the steps in this flow in detail.
 
-# **1. Client derives a Nonce and sends it to your backend**
+## **1. Client derives a Nonce and sends it to your backend**
 
 Your client generates a secret, and uses `SHA-256` to generate a nonce from the secret, and a deterministic string `nonce:{timestamp}`. As this needs to be done in a particular way, you can use the following snippets in your client as a reference:
 
@@ -63,7 +63,7 @@ The client will send just the final `nonce` from each of these snippets to your 
 
 It will then reserve the original `clientSecret` and `clientTimestamp` it used to generate the nonce, as it will need to be used validate the ephemeral key in step 4 below. The client must not store or reuse the secret or timestamp.
 
-# **2. Your backend relays the Nonce to Bridge**
+## **2. Your backend relays the Nonce to Bridge**
 
 Your backend will then send the derived nonce to Bridge by `POST`ing to `/v0/customers/{customerId}/card_accounts/{cardAccountId}/ephemeral_keys`. The request should contain just the client nonce itself, like so:
 
@@ -75,7 +75,7 @@ Your backend will then send the derived nonce to Bridge by `POST`ing to `/v0/cus
 
 Note that Bridge has no ability to authenticate where the `client_nonce` is actually from. The responsibility is on your backend to authenticate that the nonce was sent from the right customer to access the right card account.
 
-# **3. Bridge generates a one-time Ephemeral Key associated to the Nonce**
+## **3. Bridge generates a one-time Ephemeral Key associated to the Nonce**
 
 The response returned by Bridge in `/v0/customers/{customerId}/card_accounts/{cardAccountId}/ephemeral_keys` will contain just one field, `ephemeral_key`, which contains a token that can be used once to reveal the card details. This token expires in 5 minutes.
 
@@ -89,7 +89,7 @@ Here is an example of the response:
 
 **Do not** have your backend directly call Bridge to retrieve card credentials using this ephemeral key. Instead, it should pass this ephemeral key directly back to your frontend to perform the next step.
 
-# **4. Your frontend directly calls Bridge with the Ephemeral Key, Nonce, and Secret**
+## **4. Your frontend directly calls Bridge with the Ephemeral Key, Nonce, and Secret**
 
 To reveal the card credentials, your frontend will directly call a special Bridge endpoint. This endpoint does not require a Bridge API key, and instead requires just ephemeral key itself in the `Authorization` header as the credential, like so:
 
