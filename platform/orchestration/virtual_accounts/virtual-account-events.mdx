@@ -80,8 +80,6 @@ Below are the different types of virtual account events you may receive. You can
       }
     }
     ```
-
-    ## 
   </Accordion>
   <Accordion title="Payment submitted">
     Information about any funds sent on chain using the deposit instructions. This event is created when the funds are sent on chain. The `payment_submitted` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each fee. Some information such as `destination_tx_hash` may not be available immediately after the event is created but will be populated later when the transaction is confirmed on chain.
@@ -120,8 +118,6 @@ Below are the different types of virtual account events you may receive. You can
       }
     }
     ```
-
-    ## 
   </Accordion>
   <Accordion title="Payment processed">
     Information about any funds sent on chain using the deposit instructions. This event is created when the funds are confirmed on chain. The `payment_processed` event amount is the funds sent to the destination after all fees are taken out and includes a breakdown of the amount of each fee. The`destination_tx_hash`will always be populated for these events. This is final event in the onramp payment lifecycle and the best event to determine when a payment is fully complete.
@@ -162,8 +158,6 @@ Below are the different types of virtual account events you may receive. You can
       }
     }
     ```
-
-    ## 
   </Accordion>
   <Accordion title="Funds scheduled">
     The events provides a notification that incoming funds are processing through the ACH system and an estimated arrival date for the credit. These events only occur for funds sent through ACH.
@@ -214,8 +208,6 @@ Below are the different types of virtual account events you may receive. You can
       }
     }
     ```
-
-    ## 
   </Accordion>
   <Accordion title="Refund events">
     Information about funds this Virtual Account received which were refunded back to the sender. Details about the refund are included in the "refund" section of the event which includes:
@@ -285,7 +277,7 @@ Below are the different types of virtual account events you may receive. You can
     When a customer links their Virtual Account with another financial platform (e.g. a fintech app or payroll provider), they may be prompted to verify ownership through one of two methods:
 
     - **Microdeposit Verification** – A small amount (typically less than \$1) is deposited and withdrawn to confirm the account is active.
-    - \*\*Challenge deposit verification \*\*– One or more microdeposits are made, and the customer must input the exact deposit amounts (e.g. \$0.56 and \$0.84) to pass verification.
+    - **Challenge deposit verification** – One or more microdeposits are made, and the customer must input the exact deposit amounts (e.g. \$0.56 and \$0.84) to pass verification.
 
     Bridge supports both of these methods by allowing microdebits and credits to pass through. Please note:
 
@@ -349,7 +341,7 @@ Below are the different types of virtual account events you may receive. You can
     ```
   </Accordion>
   <Accordion title="Account update">
-    If a Virtual Account is modified using the [<u>Update a Virtual Account</u>](https://apidocs.bridge.xyz/reference/put_customers-customerid-virtual-accounts-virtualaccountid) endpoint, its history will include an `account_update` event to track what changed. The `account_updates` field in this event will contain a map of fields with their previous and updated values.
+    If a Virtual Account is modified using the [<u>Update a Virtual Account</u>](/api-reference/virtual-accounts/update-a-virtual-account) endpoint, its history will include an `account_update` event to track what changed. The `account_updates` field in this event will contain a map of fields with their previous and updated values.
 
     ```json
     {
