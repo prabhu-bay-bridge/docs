@@ -3,11 +3,11 @@ title: "Developer Fees"
 mode: "wide"
 ---
 
-# **Introduction**
+## **Introduction**
 
 Bridge allows developers to collect **custom, per-transaction fees** from their users. These developer fees are automatically withheld from the customer’s transaction amount and set aside in a ledger reserved for you.
 
-Fees are settled and **paid out monthly** on the 5th of each month to your configured external account. You can use the [<u>Configure a fee External Account</u>](https://apidocs.bridge.xyz/reference/post_developer-fee-external-account)<u> [todo update link]</u> API to configure the external account you want to get paid out in.
+Fees are settled and **paid out monthly** on the 5th of each month to your configured external account. You can use the [Configure a fee External Account](/platform/orchestration/external-accounts/external-accounts-api) API to configure the external account you want to get paid out in.
 
 <Note>
   **Fees are optional.** Leaving the developer_fee or developer_fee_percent field blank is treated as a fee of 0.0.
@@ -15,11 +15,11 @@ Fees are settled and **paid out monthly** on the 5th of each month to your confi
 
 ---
 
-# **Transfers**
+## **Transfers**
 
-## **Transfers with fixed amounts**
+### **Transfers with fixed amounts**
 
-For transfers with a fixed amount, Bridge supports developer fees expressed in USD (as a fixed decimal amount). You can set `developer_fee` in the [<u>API request</u>](https://apidocs.bridge.xyz/reference/post_transfers)
+For transfers with a fixed amount, Bridge supports developer fees expressed in USD (as a fixed decimal amount). You can set `developer_fee` in the [<u>API request</u>](/api-reference/transfers/create-a-transfer)
 
 ```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
@@ -61,12 +61,12 @@ In this example:
 
 - Currency: `developer_fee` is denominated in USD, not a percentage.
 - Per-Transaction: You specify the fee with each request — allowing full control.
-- Must have sufficient minimum: You cannot deduct more than the total transaction amount. After we deduct the fee, there must be enough for the transaction minimum. Refer [<u>Transaction Minimums</u>](/fees/mins).
+- Must have sufficient minimum: You cannot deduct more than the total transaction amount. After we deduct the fee, there must be enough for the transaction minimum. Refer [<u>Transaction Minimums</u>](/platform/orchestration/fees-and-mins/mins).
 - Precision: Up to 2 decimal places (e.g., 10.99 is valid, 10.999 is not).
 - Destination amount: Always equal to amount - developer_fee.
 - The fee is only valid on transactions where funds are transferred by Bridge (not to Bridge)
 
-## **Transfers with flexible amounts**
+### **Transfers with flexible amounts**
 
 When you're creating Transfers with `flexible_amount` enabled, only percentage-based fees are supported via the `developer_fee_percent` field.
 
@@ -100,7 +100,7 @@ For example:
 
 ---
 
-# **Virtual Accounts**
+## **Virtual Accounts**
 
 When using Virtual Accounts, the exact amount of incoming funds is not known ahead of time. As a result, developer fees must be specified as a percentage, using the `developer_fee_percent` field.
 
@@ -132,9 +132,9 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/v
 
 ---
 
-# **Liquidation Address**
+## **Liquidation Address**
 
-## **Global default developer fee percent**
+### **Global default developer fee percent**
 
 To set a global fee that applies to all Liquidation Addresses, use the [<u>developer fees API</u>](https://apidocs.bridge.xyz/reference/post_developer-fees).
 
@@ -152,9 +152,9 @@ In this example:
 - If a user deposits \$50.00, they receive \$49.75
 - \$0.25 (0.5%) is credited to the developer's fee ledger
 
-## **Per address developer fee percent**
+### **Per address developer fee percent**
 
-To override the default for a specific address, include `custom_developer_fee_percent` when [<u>creating a Liquidation Address</u>](https://apidocs.bridge.xyz/reference/post_customers-customerid-liquidation-addresses).
+To override the default for a specific address, include `custom_developer_fee_percent` when [<u>creating a Liquidation Address</u>](/api-reference/developers/update-the-configured-fees).
 
 ```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers/cust_alice/liquidation_addresses' \
