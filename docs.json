@@ -176,26 +176,26 @@
                             {
                                 "group": "External Accounts",
                                 "pages": [
-                                    "api-concepts/external-accounts/bridge",
-                                    "api-concepts/external-accounts/plaid",
-                                    "api-concepts/external-accounts/validations"
+                                    "platform/orchestration/external-accounts/bridge",
+                                    "platform/orchestration/external-accounts/plaid",
+                                    "platform/orchestration/external-accounts/validations"
                                 ]
                             },
                             {
                                 "group": "Fees & Minimums",
                                 "pages": [
-                                    "fees/devfees",
-                                    "fees/mins"
+                                    "platform/orchestration/fees-and-mins/devfees",
+                                    "platform/orchestration/fees-and-mins/mins"
                                 ]
                             },
                             {
                                 "group": "More",
                                 "pages": [
-                                    "logistics/cutoffs",
-                                    "logistics/holidays",
-                                    "logistics/trackers",
-                                    "orchestration/transfer/returns",
-                                    "orchestration/staticmemo/staticmemos"
+                                    "platform/orchestration/more/cutoffs",
+                                    "platform/orchestration/more/holidays",
+                                    "platform/orchestration/more/trackers",
+                                    "platform/orchestration/more/returns",
+                                    "platform/orchestration/more/staticmemos"
                                 ]
                             }
                         ]
