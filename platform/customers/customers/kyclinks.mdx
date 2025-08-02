@@ -3,7 +3,7 @@ title: "KYC Links for New Customers"
 mode: "wide"
 ---
 
-An alternative to using the [Customers API](/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
+An alternative to using the [Customers API](/platform/customers/customers/api) to KYC/B Customers (both individuals and businesses) is to use KYC Links. KYC Links support individual and business customers from all over the world (US \+ international).
 
 KYC Links takes a `full_name`, `email`, and `type`. The `full_name` can be populated with either the customer name or unique identifier. When the customer is created, the `first_name` and `last_name` are derived from the verification information submitted during the KYC process. After generating the KYC link, pass the link on to your customers to enable them to complete the KYC process. Links enable you to get up and running faster by eliminating the need to build the UI/UX needed to collect much of this compliance information.
 
@@ -225,4 +225,4 @@ You can see that the customer's KYC status is `rejected` and that there are tw
 - `developer_reason` is meant to be used by developers for **internal purposes only.** This field can contain sensitive information intended for only the developer and is provided to help with troubleshooting potential issues or protecting against potential abuse.
 - `reason` can be shared by a developer directly with their customers.
 
-For reference, see our page on [Rejection Reasons](/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
+For reference, see our page on [Rejection Reasons](/platform/customers/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
