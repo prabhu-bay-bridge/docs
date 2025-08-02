@@ -73,7 +73,7 @@
                                 "pages": [
                                     "get-started/guides/movemoney/overview",
                                     "get-started/guides/movemoney/virtualaccounts",
-                                    "get-started/movemoney/recurring",
+                                    "get-started/guides/movemoney/recurring",
                                     "get-started/guides/movemoney/offramp_liquidation",
                                     "get-started/guides/movemoney/fiat_to_fiat"
                                 ]
@@ -81,8 +81,8 @@
                             {
                                 "group": "Integrate custodial wallets",
                                 "pages": [
-                                    "get-started/introduction/guides/wallets/overview",
-                                    "get-started/guides/wallets//onramp",
+                                    "get-started/guides/wallets/overview",
+                                    "get-started/guides/wallets/onramp",
                                     "get-started/guides/wallets/crypto-to-crypto",
                                     "get-started/guides/wallets/offramp"
                                 ]
