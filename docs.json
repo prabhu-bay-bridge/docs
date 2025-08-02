@@ -145,32 +145,32 @@
                             {
                                 "group": "Virtual Accounts",
                                 "pages": [
-                                    "orchestration/virtual_account/virtual-account",
-                                    "orchestration/virtual_account/virtual-account-events",
-                                  "orchestration/virtual_account/additional-functionality"
+                                    "platform/orchestration/virtual_account/virtual-account",
+                                    "platform/orchestration/virtual_account/virtual-account-events",
+                                  "platform/orchestration/virtual_account/additional-functionality"
                                 ]
                             },
                             {
                                 "group": "Transfers",
                                 "pages": [
-                                    "orchestration/transfer/transfer",
-                                    "orchestration/transfer/static-templates",
-                                    "orchestration/transfer/transfer-states",
-                                    "orchestration/transfer/transfer-features",
-                                    "orchestration/transfer/transfer-updates"
+                                    "platform/orchestration/transfer/transfer",
+                                    "platform/orchestration/transfer/static-templates",
+                                    "platform/orchestration/transfer/transfer-states",
+                                    "platform/orchestration/transfer/transfer-features",
+                                    "platform/orchestration/transfer/transfer-updates"
                                 ]
                             },
                             {
                                 "group": "Liquidation Address",
                                 "pages": [
                                     "orchestration/liquidation_address/liquidation_address",
-                                    "orchestration/liquidation_address/drains"
+                                    "platform/orchestration/liquidation_address/drains"
                                 ]
                             },
                             {
                                 "group": "Prefunded Account",
                                 "pages": [
-                                    "orchestration/prefunded_account/prefunded_accounts"
+                                    "platform/orchestration/prefunded_account/prefunded_accounts"
                                 ]
                             },
                             {
