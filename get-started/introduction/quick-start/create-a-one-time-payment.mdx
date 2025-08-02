@@ -24,7 +24,7 @@ Here are the key concepts to a transfer:
 
 ![](https://files.readme.io/ab382eeec27e9c69149e4fbb3e16d0e0a1f60ba6deb472e2171e9b6f39bc1ad3-image.png)
 
-For detailed information, see [Transfers](/orchestration/transfer/transfer).
+For detailed information, see [Transfers](/platform/orchestration/transfers/transfer).
 
 ---
 
@@ -97,7 +97,7 @@ Once Bridge receives these funds, we'll look for the deposit message to find the
 
 When Bridge receives the deposit, we'll transition the transfer state to `funds_received`. The transfer status when it's delivered is `payment_processed`. You can pull the transfer status from the API or listen to webhooks to watch the transfer transition.
 
-View the full breakdown of transfer states [here](/orchestration/transfer/states).
+View the full breakdown of transfer states [here](/platform/orchestration/transfers/transfer-states).
 
 ### Fetching Transfers status via API
 
@@ -198,7 +198,7 @@ curl --request GET \
 
 ### Advanced: Monitoring using webhooks
 
-You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](/setting-up-webhooks) for more details on setting up webhooks.
+You can set up webhooks to receive real-time notifications about transfer status changes. See [guide](/get-started/introduction/quick-start/setting-up-webhooks) for more details on setting up webhooks.
 
 ```json Example webhook: payment_processed expandable
 {
@@ -265,6 +265,6 @@ After successfully creating your first transfer:
 
 ## Additional Resources
 
-- [Transfers](/orchestration/transfer/transfer)
-- [Make recurring payments using saved payment routes](/get-started/movemoney/recurring)
-- [Setting up webhooks](/setting-up-webhooks)
+- [Transfers](/platform/orchestration/transfers/transfer)
+- [Make recurring payments using saved payment routes](/get-started/guides/move-money/recurring)
+- [Setting up webhooks](/get-started/introduction/quick-start/setting-up-webhooks)
