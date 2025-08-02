@@ -328,9 +328,13 @@
         ]
     },
     "redirects": [
-      {
-        "source": "/docs/getting-started",
-        "destination": "/get-started/introduction/overview"
-      }
+        {
+            "source": "/docs/getting-started",
+            "destination": "/get-started/introduction/overview"
+        },
+        {
+            "source": "/docs/reference",
+            "destination": "/api-reference"
+        }
     ]
 }
