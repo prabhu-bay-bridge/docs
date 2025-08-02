@@ -193,7 +193,7 @@
                                 "pages": [
                                     "platform/orchestration/more/cutoffs",
                                     "platform/orchestration/more/holidays",
-                                    "platform/orchestration/more/trackers",
+                                    "platform/orchestration/more/payment-tracking",
                                     "platform/orchestration/more/returns",
                                     "platform/orchestration/more/staticmemos"
                                 ]
@@ -203,43 +203,43 @@
                     {
                         "group": "Wallets",
                         "pages": [
-                            "wallets/overview",
-                            "wallets/move"
+                            "platform/wallets/overview",
+                            "platform/wallets/move"
                         ]
                     },
                     {
                         "group": "Issuance",
                         "pages": [
-                            "issuance/overview",
-                            "issuance/usdb",
-                            "issuance/custom",
-                            "issuance/faq"
+                            "platform/issuance/overview",
+                            "platform/issuance/usdb",
+                            "platform/issuance/custom",
+                            "platform/issuance/faq"
                         ]
                     },
                     {
                         "group": "Cards",
                         "pages": [
-                            "cards/overview/overview",
-                            "cards/overview/concepts",
-                            "cards/overview/guide",
-                            "cards/overview/advanced",
-                            "cards/overview/webhooks",
+                            "platform/cards/overview/overview",
+                            "platform/cards/overview/concepts",
+                            "platform/cards/overview/guide",
+                            "platform/cards/overview/advanced",
+                            "platform/cards/overview/webhooks",
                             {
                                 "group": "Sandbox",
                                 "pages": [
-                                    "cards/sandbox/sandbox",
-                                    "cards/sandbox/testing"
+                                    "platform/cards/sandbox/sandbox",
+                                    "platform/cards/sandbox/testing"
                                 ]
                             },
                             {
                                 "group": "More",
                                 "pages": [
-                                    "cards/additional/freezing",
-                                    "cards/additional/statements",
-                                    "cards/additional/pins",
-                                    "cards/additional/customizing",
-                                    "cards/additional/marketing",
-                                    "cards/additional/details"
+                                    "platform/cards/additional/freezing",
+                                    "platform/cards/additional/statements",
+                                    "platform/cards/additional/pins",
+                                    "platform/cards/additional/customizing",
+                                    "platform/cards/additional/marketing",
+                                    "platform/cards/additional/details"
                                 ]
                             }
                         ]
