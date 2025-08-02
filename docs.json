@@ -120,11 +120,12 @@
                             {
                                 "group": "Compliance",
                                 "pages": [
-                                    "platform/customers/compliance/overview",
                                     "platform/customers/compliance/individuals",
                                     {
                                         "group": "Businesses",
-                                        "pages": [                                            "platform/customers/compliance/businesses/entity",
+                                        "pages": [      
+                                                                              "platform/customers/compliance/businesses/overview",
+"platform/customers/compliance/businesses/entity",
                                             "platform/customers/compliance/businesses/ownership",
                                             "platform/customers/compliance/businesses/formation",
                                             "platform/customers/compliance/businesses/identification",
