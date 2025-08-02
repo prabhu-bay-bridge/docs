@@ -250,18 +250,18 @@
                     {
                         "group": "Additional information",
                         "pages": [
-                            "api-concepts/concepts/precision",
-                            "api-concepts/concepts/receipts",
+                            "platform/additional-information/precision",
+                            "platform/additional-information/receipts",
                             {
                                 "group": "Webhooks",
                                 "pages": [
-                                    "api-concepts/webhooks/overview",
-                                    "api-concepts/webhooks/signature",
-                                    "api-concepts/webhooks/structure"
+                                    "platform/additional-information/webhooks/overview",
+                                    "platform/additional-information/webhooks/signature",
+                                    "platform/additional-information/webhooks/structure"
                                 ]
                             },
-                            "logistics/faq",
-                            "fees/pricing"
+                            "platform/additional-information/faq",
+                            "platform/additional-information/pricing"
                         ]
                     }
                 ]
