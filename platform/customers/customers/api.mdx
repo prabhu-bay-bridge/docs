@@ -13,7 +13,7 @@ If certain information was invalid or missing, the customer object will return t
 
 After obtaining a `signed_agreement_id` (details here: [Terms of Service](/platform/customers/customers/tos)), you can now use the [Customers API](/api-reference/customers/create-a-customer) to create customers as follows.
 
-# **Individual customer creation**
+## **Individual customer creation**
 
 You can use the following endpoint.
 
@@ -143,7 +143,7 @@ Note: `proof_of_address_document` may be required for individual customers from 
 
 For international customers, submit an [<u>ISO 3166-1 alpha-3</u>](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) country code and an [<u>ISO 3166-2 subdivision code</u>](https://en.wikipedia.org/wiki/ISO_3166-2:AR) (minus the country prefix) for the state. So for the above example, `GB-MAN` is the code, but just `MAN` is submitted.
 
-# **Business customer creation**
+## **Business customer creation**
 
 ```bash expandable
 curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
@@ -255,11 +255,11 @@ curl --location --request POST 'https://api.bridge.xyz/v0/customers' \
 }
 ```
 
-# **Customer status**
+## **Customer status**
 
 Upon customer creation, Bridge will review the submitted customer information and return statuses for both overall KYC (`kyc_status`) as well as a status for each requested endorsement (e.g. `base`, the endorsement for US rails, will have its own `status`). Bridge recommends using **both** `kyc_status`and endorsement `status` to determine the customer's ability to use the Bridge platform.
 
-## **KYC status**
+### **KYC status**
 
 Upon customer creation, Bridge will review all KYCs for the customer and return a `status` field that denotes the KYC status (as applicable) for the user (example KYC statuses include `not_started`, `active`, or `rejected`). The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
 
@@ -288,7 +288,7 @@ While KYC generally works quickly, there are edge cases that are important to ac
 
 ![db44208-Screenshot_2024-02-02_at_12.42.46_PM.png](/images/db44208-Screenshot_2024-02-02_at_12.42.46_PM.png)
 
-## **KYC rejection**
+### **KYC rejection**
 
 Sometimes, your customer could immediately move from not_started to rejected and skip under_review entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have submitted for your customer (birth date, address, name, or business details).
 
@@ -325,7 +325,7 @@ You can see that the customer's KYC status is `rejected` and that there are tw
 
 For reference, see our page on [Rejection Reasons](/platform/customers/customers/rejection_reasons) for `developer_reason` and `reason` mappings for KYC rejection reasons.
 
-## **Updating Customers**
+### **Updating Customers**
 
 Customer information can be updated at `PUT /customers/:id` . This endpoint accepts the same shape of data as the creation endpoint.
 
@@ -335,7 +335,7 @@ Notes:
   - Bridge currently supports partial updates (e.g., not including all fields in the request) only the following parameters are included: `endorsements, residential_address, physical_address, verified_proof_of_address_at, documents` (with purpose = proof_of_address)
 - Updating the customer object won't clear their rejection reasons from earlier attempts, but that won't prevent them passing KYC.
 
-## **Supported Government ID's by Country**
+### **Supported Government ID's by Country**
 
 <Accordion title="Government IDs by Country">
   Y = Yes (Supported) | \* (Requires backside )

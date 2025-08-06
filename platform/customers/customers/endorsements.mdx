@@ -7,7 +7,7 @@ Endorsements represent an approval of a customer to onboard and transact with Br
 
 To onboard a customer and enable them to take actions on Bridge, the customer must provide their KYC information and accept the terms of service for the required endorsement type.
 
-# **Prerequisites**
+## **Prerequisites**
 
 To obtain any endorsements, you must meet KYC Information and Terms of Service (ToS) requirements.
 
@@ -168,23 +168,23 @@ The second component is obtaining terms of service acceptance from your customer
 
 Use this endpoint to request a URL and reference our [<u>ToS Links API</u>](/api-reference/customers/request-a-hosted-url-for-tos-acceptance-for-new-customer-creation).
 
-# **Endorsement Types**
+## **Endorsement Types**
 
 There are a few different endorsements you can obtain for your customer. The type of endorsement you need for your customer depends on the region of residence and which fiat rails they're intending to utilize.
 
-## **Base Endorsement**
+### **Base Endorsement**
 
 The `base` endorsement represents approval of a customer to onboard and transact with USD payment rails.
 
-## **SEPA Endorsement**
+### **SEPA Endorsement**
 
 The `sepa` endorsement represents approval of using SEPA/Euro services offered by Bridge.
 
-## **SPEI Endorsement**
+### **SPEI Endorsement**
 
 The `spei` endorsement represents approval of using SPEI/MXN peso services offered by Bridge.
 
-# **Endorsement requirements**
+## **Endorsement requirements**
 
 The customer object contains an **endorsements** attribute, where each endorsement will includes a **requirements** object. Developers can use it to get a comprehensive view into the status of endorsements, detailing which requirements are:
 

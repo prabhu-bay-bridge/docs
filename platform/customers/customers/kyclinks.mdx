@@ -114,7 +114,7 @@ This endpoint will respond with:
 
 This will result in the customer being redirected to [<u>https://bridge.xyz/example</u>](https://bridge.xyz/example) at the end of the KYC flow.
 
-# **Embedding as an iframe**
+## **Embedding as an iframe**
 
 You can implement a `kyc_link` by using an iframe, which can then be embedded in a custom modal or page.
 
@@ -135,23 +135,23 @@ For help with troubleshooting common issues, please refer to this [article](http
 />
 ```
 
-# **Turnaround response time**
+## **Turnaround response time**
 
 The average decision time for KYC is typically less than one minute. If a manual review is required for KYC, the decision may take until next business day. KYB reviews typically happen same business day, up to next business day.
 
-# **KYC Status Transitions**
+## **KYC Status Transitions**
 
 All KYC flows for individual customers begin with customers in a `not_started` status. Once the customer has taken any action to begin the KYC process they move into an `incomplete` status. Based on the information provided a customer can then move to `approved`, `rejected`, or `under_review`.
 
 ![00f1a7b-Screenshot_2024-02-02_at_12.42.46_PM.png](/images/00f1a7b-Screenshot_2024-02-02_at_12.42.46_PM.png)
 
-# **KYB Status Transitions**
+## **KYB Status Transitions**
 
 KYB flows are similar to individual customers, with the additional step of collecting the KYC information for any "ultimate beneficial owners". Every business that goes through our KYB process provides information about the business, information about UBOs, goes through a manual review before being approved or rejected.
 
 ![7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png](/images/7ab438e-Screenshot_2024-02-02_at_12.43.04_PM.png)
 
-# **Sad Paths**
+## **Sad Paths**
 
 While KYC/KYB generally works quickly, there are edge cases that are important to account for. Here are a few examples of how the KYC/KYB statuses of a customer could progress:
 
@@ -163,7 +163,7 @@ While KYC/KYB generally works quickly, there are edge cases that are important t
 `not_started` -\> `under_review` -\> `rejected`\
 `not_started` -\> `rejected`
 
-## **Under Review**
+### **Under Review**
 
 In this scenario, the customer starts off `not_started`, but after verifying the initial set of data (name, address, TIN, birth date) there was something off about the customer information. In this scenario, fetching the customer via `GET /customers/:id` would result in something like this:
 
@@ -187,7 +187,7 @@ After submitting your customer for id verification (government photo id like a d
 - Bridge will approve your customer, and the KYC status on the customer will move to `active`
 - Bridge will reject your customer, and the KYC status on the customer will move to `rejected`.
 
-## **Immediate Rejection**
+### **Immediate Rejection**
 
 Sometimes, your customer could immediately move from `not_started` to `rejected` and skip `under_review` entirely. The primary reason this happens is when the tax identification number is entered incorrectly. Without a valid tax identification number, Bridge is unable to verify any of the other details you have sent up for your customer (birth date, address, name).
 
