@@ -49,6 +49,7 @@
                                 "group": "Get Started",
                                 "pages": [
                                     "get-started/introduction/overview",
+                                    "get-started/introduction/quick-start/overview",
                                     "get-started/introduction/quick-start/get-set-up-with-bridge",
                                     "get-started/introduction/quick-start/create-your-first-customer",
                                     "get-started/introduction/quick-start/create-a-one-time-payment",
@@ -73,7 +74,6 @@
                             {
                                 "group": "Move money with Bridge",
                                 "pages": [
-                                    "get-started/guides/move-money/overview",
                                     "get-started/guides/move-money/virtualaccounts",
                                     "get-started/guides/move-money/recurring",
                                     "get-started/guides/move-money/offramp_liquidation",
