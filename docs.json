@@ -45,7 +45,17 @@
                     {
                         "group": "Introduction",
                         "pages": [
-                            "get-started/introduction/overview",
+                            {
+                                "group": "Get Started",
+                                "pages": [
+                                    "get-started/introduction/overview",
+                                    "get-started/introduction/quick-start/get-set-up-with-bridge",
+                                    "get-started/introduction/quick-start/create-your-first-customer",
+                                    "get-started/introduction/quick-start/create-a-one-time-payment",
+                                    "get-started/introduction/quick-start/setting-up-webhooks",
+                                    "get-started/introduction/quick-start/setting-up-sandbox"
+                                ]
+                            },
                             {
                                 "group": "What we support",
                                 "pages": [
@@ -53,16 +63,6 @@
                                     "get-started/introduction/what-we-support/fiat",
                                     "get-started/introduction/what-we-support/geo",
                                     "get-started/introduction/what-we-support/1st-and-3rd-party-payments"
-                                ]
-                            },
-                            {
-                                "group": "Quick Start",
-                                "pages": [
-                                    "get-started/introduction/quick-start/get-set-up-with-bridge",
-                                    "get-started/introduction/quick-start/create-your-first-customer",
-                                    "get-started/introduction/quick-start/create-a-one-time-payment",
-                                    "get-started/introduction/quick-start/setting-up-webhooks",
-                                    "get-started/introduction/quick-start/setting-up-sandbox"
                                 ]
                             }
                         ]
