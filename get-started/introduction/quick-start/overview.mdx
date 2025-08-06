@@ -1,13 +1,41 @@
 ---
-title: "Overview of the Bridge developer platform"
+title: "Platform overview"
 mode: "wide"
 ---
 
-Bridge APIs are lego blocks that let you build delightful payment experiences for your customers. The guides in this section will walk you through the following APIs.
+Bridge APIs are lego blocks that let you build delightful payment experiences for your customers. They are meant to be flexible to empower you to build out your unique use case. Below is a high level overview of the key platform offerrings and when to use them.
 
-| **API**                                                                                    | **Description**                                                                                                       | **When to Use**                                                                                          |
+## Orchestration
+
+Orchestration APIs let you accept fiat or crypto deposits and send fiat or crypto payments
+
+| **Product**                                                                                | **Description**                                                                                                       | **When to Use**                                                                                          |
 | :----------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
 | [**Virtual Accounts**](/platform/orchestration/virtual_accounts/virtual-account)           | **Unique fiat deposit addresses** issued to your customers so they can receive fiat deposits (ACH, Wire, SEPA, SPEI). | When you want to collect fiat payments for your customers via bank transfers, especially for repeat use. |
 | [**Transfers**](/platform/orchestration/transfers/transfer)                                | **One-time fiat or stablecoin transfers**. Supports onramps, offramps, and crypto-to-crypto flows.                    | When you need to send or receive money programmatically - either fiat or crypto.                         |
 | [**Static Template Transfers**](/platform/orchestration/transfers/static-templates)        | **Reusable transfer instructions** for **recurring**, template-based transfers.                                       | When your customer wants to **make recurring payments.**                                                 |
 | [**Liquidation Address**](/platform/orchestration/liquidation_address/liquidation_address) | Permanent on-chain address that **auto-forwards incoming crypto to a fia**t or crypto destination.                    | When you need a **fixed blockchain address** and want funds automatically converted or routed.           |
+
+## **Wallets**
+
+| **Product**        | **Description**                                                                       | **When to Use**                                                                                             |
+| :----------------- | :------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------- |
+| **Bridge Wallets** | Secure, custodial crypto wallets that let you send and receive stablecoins with ease. | When you need to custody funds for customers or your business, with full compliance and regulatory support. |
+
+## **Cards**
+
+| **Product** | **Description**                                                                                                  | **When to Use**                                                                                    |
+| :---------- | :--------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| **Card**    | Issue virtual or physical Visa cards that spend directly from Bridge-managed wallets or external crypto wallets. | When you want to enable customers to spend stablecoin balances anywhere Visa is accepted globally. |
+
+## **Issuance**
+
+| **Product**                   | **Description**                                                                                               | **When to Use**                                                                                    |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------- |
+| **USDB / Custom Stablecoins** | Access Bridge's USDB stablecoin or create your own branded stablecoin, both earning rewards on held balances. | When you want to earn yield on stablecoin balances or need a branded stablecoin for your platform. |
+
+## **Customers**
+
+| **Product**             | **Description**                                                                                 | **When to Use**                                                                                          |
+| :---------------------- | :---------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
+| **Customer Onboarding** | KYC/KYB verification and customer management with endorsements for specific rails and services. | When you need to onboard users with compliant identity verification before they can use Bridge services. |
