@@ -3,40 +3,52 @@ title: "Platform overview"
 mode: "wide"
 ---
 
-Bridge APIs are lego blocks that let you build delightful payment experiences for your customers. They are meant to be flexible to empower you to build out your unique use case. Below is a high level overview of the key platform offerrings and when to use them.
+Bridge APIs are modular building blocks that let you create fast, flexible, and compliant payment experiences. Whether you’re collecting fiat, moving stablecoins, or issuing cards, our APIs are designed to support your unique use case — across fiat and crypto.
 
-## Orchestration
+This guide outlines the **core product categories**, what each product does, and **when you should use them**.
 
-Orchestration APIs let you accept fiat or crypto deposits and send fiat or crypto payments
+---
 
-| **Product**                                                                                                                 | **Description**                                                                                                                         | **When to Use**                                                                                          |
-| :-------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
-| [**Virtual Accounts**](/platform/orchestration/virtual_accounts/virtual-account)                                            | **Unique fiat deposit addresses** issued to your customers so they can receive fiat deposits (ACH, Wire, SEPA, SPEI).                   | When you want to collect fiat payments for your customers via bank transfers, especially for repeat use. |
-| [**Transfers**](/platform/orchestration/transfers/transfer)                                                                 | **One-time fiat or stablecoin transfers**. Supports onramps, offramps, and crypto-to-crypto flows.                                      | When you need to send or receive money programmatically - either fiat or crypto.                         |
-| [**Static Template Transfers**](/platform/orchestration/transfers/static-templates)                                         | **Reusable transfer instructions** for **recurring**, template-based transfers.                                                         | When your customer wants to **make recurring payments.**                                                 |
-| [**Liquidation Address**](/platform/orchestration/liquidation_address/liquidation_address)                                  | Permanent on-chain address that **auto-forwards incoming crypto to a fia**t or crypto destination.                                      | When you need a **fixed blockchain address** and want funds automatically converted or routed.           |
-| [**Prefunded Accounts**](https://bridge-727305d3.mintlify.app/platform/orchestration/prefunded_accounts/prefunded_accounts) | **Preload funds to a Bridge-managed balance and use that balanceto send instant fiat offramps** without waiting for deposit settlement. | Use when speed is critical and you want to **guarantee fast offramps**.                                  |
+## 🔁 Orchestration: Move Money In and Out
 
-## **Wallets**
+Bridge orchestration APIs power your fiat and crypto flows — enabling deposits, payouts, conversions, and on/off-ramps.
 
-| **Product**        | **Description**                                                                       | **When to Use**                                                                                             |
-| :----------------- | :------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------- |
-| **Bridge Wallets** | Secure, custodial crypto wallets that let you send and receive stablecoins with ease. | When you need to custody funds for customers or your business, with full compliance and regulatory support. |
+| Product                       | Description                                                                                        | Use when you need to...                                                          |
+| :---------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| **Virtual Accounts**          | **Unique fiat deposit addresses** (ACH, Wire, SEPA, SPEI) issued to your customers.                | Collect fiat bank transfers - especially for recurring deposits.                 |
+| **Transfers**                 | **One-time fiat or stablecoin transfers**. Supports onramps, offramps, and crypto-to-crypto flows. | When you need to send or receive money programmatically - either fiat or crypto. |
+| **Static Template Transfers** | **Reusable transfer instructions** for **recurring**, template-based transfers.                    | Let customers make recurring payments.                                           |
+| **Liquidation Addresses**     | **On-chain addresses **that auto-forward to a crypto or fiat destination.                          | Accept crypto at fixed addresses and automatically route or convert funds.       |
+| **Prefunded Accounts**        | Load fiat into Bridge-managed balances for instant offramps.                                       | **Guarantee fast withdrawals** without waiting for inbound deposits to settle.   |
 
-## **Cards**
+## 👜 Wallets: Custody Crypto
 
-| **Product** | **Description**                                                                                                  | **When to Use**                                                                                    |
-| :---------- | :--------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| **Card**    | Issue virtual or physical Visa cards that spend directly from Bridge-managed wallets or external crypto wallets. | When you want to enable customers to spend stablecoin balances anywhere Visa is accepted globally. |
+Bridge offers secure custodial wallets that allow you to hold and transfer stablecoins — with full compliance built-in. You can provision wallets for your customers or even for yourself to help with treasury management.
 
-## **Issuance**
+| **Product**        | **Description**                                                            | **Use When You Need To...**                    |
+| :----------------- | :------------------------------------------------------------------------- | ---------------------------------------------- |
+| **Bridge Wallets** | Custodial wallets for managing crypto on behalf of users or your business. | Custody crypto and power stablecoin transfers. |
 
-| **Product**                   | **Description**                                                                                               | **When to Use**                                                                                    |
-| :---------------------------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------- |
-| **USDB / Custom Stablecoins** | Access Bridge's USDB stablecoin or create your own branded stablecoin, both earning rewards on held balances. | When you want to earn yield on stablecoin balances or need a branded stablecoin for your platform. |
+## 💳 Cards: Spend Stablecoins Anywhere
 
-## **Customers**
+Let users spend their stablecoin balances globally using virtual Visa cards.
 
-| **Product**             | **Description**                                                                                 | **When to Use**                                                                                          |
-| :---------------------- | :---------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
-| **Customer Onboarding** | KYC/KYB verification and customer management with endorsements for specific rails and services. | When you need to onboard users with compliant identity verification before they can use Bridge services. |
+| **Product** | **Description**                                           | **Use When You Need To...**                                                                        |
+| :---------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| **Card**    | Issue virtual cards linked to Bridge or external wallets. | When you want to enable customers to spend stablecoin balances anywhere Visa is accepted globally. |
+
+## 🪙 Issuance: Create or Use Stablecoins
+
+Use Bridge’s stablecoin (USDB) or launch your own branded version.
+
+| **Product**                   | **Description**                                                    | **Use When You Need To...**                                   |
+| :---------------------------- | :----------------------------------------------------------------- | :------------------------------------------------------------ |
+| **USDB / Custom Stablecoins** | Mint USDB or branded stablecoins that earn yield on held balances. | Offer branded stablecoins, or earn yield on reserve balances. |
+
+## 👤 Customers: Onboarding & Compliance
+
+Bridge provides built-in tools to onboard and manage your users with full KYC/KYB compliance.
+
+| **Product**             | **Description**                                                            | **Use When You Need To...**                                                        |
+| :---------------------- | :------------------------------------------------------------------------- | :--------------------------------------------------------------------------------- |
+| **Customer Onboarding** | Verify identity and onboard customers across financial rails and products. | Onboard users to new payment products and need to satisfy compliance requirements. |
