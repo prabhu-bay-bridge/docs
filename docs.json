@@ -39,14 +39,14 @@
                 ]
             },
             {
-                "tab": "Get started",
+                "tab": "Get Started",
                 "icon": "play",
                 "groups": [
                     {
                         "group": "Introduction",
                         "pages": [
                             {
-                                "group": "Get Started",
+                                "group": "Get started",
                                 "pages": [
                                     "get-started/introduction/overview",
                                     "get-started/introduction/quick-start/overview",
