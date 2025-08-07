@@ -1,0 +1,256 @@
+import { useEffect } from "react";
+
+const currencyToSourceRails = {
+  mxn: ["spei"],
+  usd: ["ach"],
+  euro: ["sepa"],
+  usdc: ["ethereum", "polygon", "base", "arbitrum", "avalanche", "optimism", "solana", "stellar"],
+  usdt: ["ethereum", "tron"],
+  dai: ["ethereum"],
+  usdp: ["ethereum"],
+  pyusd: ["ethereum", "solana"],
+  eurc: ["solana"],
+  btc: ["bitcoin"],
+  eth: ["ethereum"],
+  usdb: ["bridge_wallet"]
+};
+
+const currencyToDestRails = {
+  mxn: ["spei"],
+  usd: ["ach_push", "ach_same_day"],
+  euro: ["sepa"],
+  usdc: ["ethereum", "polygon", "base", "arbitrum", "avalanche", "optimism", "solana", "stellar"],
+  usdt: ["ethereum", "tron"],
+  dai: ["ethereum"],
+  usdp: ["ethereum"],
+  pyusd: ["ethereum", "solana"],
+  eurc: ["solana"],
+  btc: ["bitcoin"],
+  eth: ["ethereum"],
+  usdb: ["bridge_wallet"]
+};
+
+const allCurrencies = Object.keys(currencyToSourceRails);
+const allRails = [...new Set(Object.values(currencyToSourceRails).flat().concat(Object.values(currencyToDestRails).flat()))];
+
+export default function TransactionMinimumCalculator() {
+  useEffect(() => {
+    const sourceCurrency = document.getElementById("sourceCurrency");
+    const sourceRail = document.getElementById("sourceRail");
+    const destCurrency = document.getElementById("destCurrency");
+    const destRail = document.getElementById("destRail");
+    const calculateBtn = document.getElementById("calculateBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const resultBox = document.getElementById("result");
+
+    function populateDropdown(selectEl, options, selectedVal = "") {
+      selectEl.innerHTML = '<option value="">-- Select --</option>';
+      options.slice().sort((a, b) => a.localeCompare(b)).forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt.toUpperCase();
+        if (opt === selectedVal) o.selected = true;
+        selectEl.appendChild(o);
+      });
+    }
+
+    function validateForm() {
+      const filled = sourceCurrency.value && sourceRail.value && destCurrency.value && destRail.value;
+      calculateBtn.disabled = !filled;
+    }
+
+    function updateRails(currency, railSelect, map) {
+      if (!currency) return populateDropdown(railSelect, allRails);
+      const validRails = map[currency] || [];
+      const currentVal = railSelect.value;
+      populateDropdown(railSelect, validRails, validRails.includes(currentVal) ? currentVal : "");
+      if (validRails.length === 1) railSelect.value = validRails[0];
+    }
+
+    function updateCurrencies(rail, currencySelect, reverseMap) {
+      if (!rail) return populateDropdown(currencySelect, allCurrencies);
+      const validCurrencies = allCurrencies.filter(cur => (reverseMap[cur] || []).includes(rail));
+      const currentVal = currencySelect.value;
+      populateDropdown(currencySelect, validCurrencies, validCurrencies.includes(currentVal) ? currentVal : "");
+      if (validCurrencies.length === 1) currencySelect.value = validCurrencies[0];
+    }
+
+    [sourceCurrency, sourceRail, destCurrency, destRail].forEach(el => el.addEventListener("change", validateForm));
+
+    sourceCurrency.addEventListener("change", () => {
+      updateRails(sourceCurrency.value, sourceRail, currencyToSourceRails);
+      validateForm();
+    });
+
+    sourceRail.addEventListener("change", () => {
+      updateCurrencies(sourceRail.value, sourceCurrency, currencyToSourceRails);
+      validateForm();
+    });
+
+    destCurrency.addEventListener("change", () => {
+      updateRails(destCurrency.value, destRail, currencyToDestRails);
+      validateForm();
+    });
+
+    destRail.addEventListener("change", () => {
+      updateCurrencies(destRail.value, destCurrency, currencyToDestRails);
+      validateForm();
+    });
+
+    populateDropdown(sourceCurrency, allCurrencies);
+    populateDropdown(destCurrency, allCurrencies);
+    populateDropdown(sourceRail, allRails);
+    populateDropdown(destRail, allRails);
+
+    calculateBtn.addEventListener("click", () => {
+      const src = sourceCurrency.value.toLowerCase();
+      const dst = destCurrency.value.toLowerCase();
+      const rail = sourceRail.value.toLowerCase();
+      const dstRail = destRail.value.toLowerCase();
+
+      const fiats = ["usd", "euro", "mxn"];
+      if (fiats.includes(src) && fiats.includes(dst)) {
+        resultBox.innerHTML = '<span style="color: orange;">🛠️ Fiat-to-fiat transfers are not available yet, but coming soon!</span><br/>';
+        return;
+      }
+
+      let reasons = [];
+      let base = 1.0;
+      const stable = ["usdc", "usdt", "usdp", "dai", "pyusd", "eurc"];
+      const nonStable = ["eth", "btc"];
+      const exchangeFee = ["dai", "usdt"];
+      const requiresGasForWithdrawal = ["btc", "dai", "eth", "usdt"];
+      const expensiveGas = ["bitcoin", "ethereum"];
+
+      base = !fiats.includes(src) ? (stable.includes(src) ? 1.0 : 2.0) : 1.0;
+
+      let mins = [base];
+
+      if (exchangeFee.includes(src) || exchangeFee.includes(dst) || nonStable.includes(src) || nonStable.includes(dst)) {
+        mins.push(2);
+        reasons.push("Exchange or crypto fee");
+      }
+
+      if (requiresGasForWithdrawal.includes(dst) && expensiveGas.includes(dstRail)) {
+        mins.push(20);
+        reasons.push("Gas cost on destination rail");
+      }
+
+      if (rail === "tron" || dstRail === "tron") {
+        mins.push(5);
+        reasons.push("Tron adjustment");
+      }
+
+      if (src === "mxn") {
+        mins.push(50);
+        reasons.push("MXN source minimum");
+      }
+      if (dst === "mxn") {
+        mins.push(2);
+        reasons.push("MXN destination minimum");
+      }
+
+      const finalMin = Math.max(...mins);
+      const displayCurrency = src.toUpperCase();
+
+      resultBox.innerHTML = `
+        Minimum required: ${finalMin.toFixed(2)} ${displayCurrency}<br/>
+        <small>Reason: ${reasons.join(", ") || "base minimum applied"}</small>
+      `;
+    });
+
+    resetBtn.addEventListener("click", () => {
+      [sourceCurrency, sourceRail, destCurrency, destRail].forEach(select => select.selectedIndex = 0);
+      populateDropdown(sourceCurrency, allCurrencies);
+      populateDropdown(destCurrency, allCurrencies);
+      populateDropdown(sourceRail, allRails);
+      populateDropdown(destRail, allRails);
+      resultBox.textContent = "Minimum required: —";
+      calculateBtn.disabled = true;
+    });
+  }, []);
+
+  return (
+    <div className="container">
+      <div className="group">
+        <legend>Select Transfer Details</legend>
+        <div className="row">
+          <div className="field">
+            <label htmlFor="sourceCurrency">Source Currency</label>
+            <select id="sourceCurrency" />
+          </div>
+          <div className="field">
+            <label htmlFor="sourceRail">Source Rail</label>
+            <select id="sourceRail" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="field">
+            <label htmlFor="destCurrency">Destination Currency</label>
+            <select id="destCurrency" />
+          </div>
+          <div className="field">
+            <label htmlFor="destRail">Destination Rail</label>
+            <select id="destRail" />
+          </div>
+        </div>
+        <div className="button-row">
+          <button id="calculateBtn" disabled>Calculate Minimum</button>
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+        <div id="result">Minimum required: —</div>
+      </div>
+      <style jsx>{`
+        .container {
+          max-width: 640px;
+          margin: 0 auto;
+          font-family: sans-serif;
+        }
+        .row {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 15px;
+        }
+        .field {
+          flex: 1;
+        }
+        label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 4px;
+        }
+        select, button {
+          width: 100%;
+          padding: 8px;
+          font-size: 1rem;
+        }
+        button {
+          margin-top: 10px;
+          cursor: pointer;
+        }
+        button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        #result {
+          margin-top: 20px;
+          font-weight: bold;
+        }
+        .group {
+          border: 1px solid #ccc;
+          padding: 15px;
+          border-radius: 6px;
+          margin-bottom: 20px;
+        }
+        .group legend {
+          font-weight: bold;
+          padding: 0 8px;
+        }
+        .button-row {
+          display: flex;
+          gap: 10px;
+        }
+      `}</style>
+    </div>
+  );
+}
