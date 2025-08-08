@@ -276,7 +276,7 @@
                     {
                         "group": "Endpoints",
                         "openapi": {
-                            "source": "https://apidocs.bridge.xyz/openapi/65cfb83f5b8a790047b6a7ec",
+                            "source": "https://bridge-docs.readme.io/openapi/65cfb83f5b8a790047b6a7ec",
                             "directory": "api-reference"
                         }
                     }
