@@ -1,75 +1,37 @@
----
-title: "Bridge Developer Docs"
-mode: "custom"
----
+<div class="container">
+  <h2>Minimum Transaction Calculator</h2>
 
+  <fieldset class="group">
+    <legend>Source</legend>
+    <div class="row">
+      <div class="field">
+        <label for="sourceCurrency">Source Currency</label>
+        <select id="sourceCurrency"></select>
+      </div>
+      <div class="field">
+        <label for="sourceRail">Source Payment Rail</label>
+        <select id="sourceRail"></select>
+      </div>
+    </div>
+  </fieldset>
 
-<div className="bg-dots-gradient text-center text-gray-900">
-  <div className="hero max-w-4xl mx-auto px-6 pt-24 pb-20">
+  <fieldset class="group">
+    <legend>Destination</legend>
+    <div class="row">
+      <div class="field">
+        <label for="destCurrency">Destination Currency</label>
+        <select id="destCurrency"></select>
+      </div>
+      <div class="field">
+        <label for="destRail">Destination Payment Rail</label>
+        <select id="destRail"></select>
+      </div>
+    </div>
+  </fieldset>
 
-    <h1 className="tracking-tight pb-4">Build with Bridge.</h1>
-
-    <p className="subline text-base md:text-base text-gray-600 mb-8 tracking-tight">
-      Bridge provides modern payments infrastructure to move money with stablecoins and fiat rails, custody funds via wallets, issue your own stablecoin, and provision globally accepted cards — at the speed and scale of the internet.
-    </p>
-
-        <a
-      href="/get-started/introduction/overview"
-      className="inline-flex items-center px-6 py-3 bg-[#15803D] text-white hover:text-white rounded-lg font-medium hover:bg-[#166534] transition"
-    >
-      Get started ->
-    </a>
+  <div class="button-row">
+    <button id="calculateBtn" disabled>Calculate Minimum</button>
+    <button id="resetBtn">Reset</button>
   </div>
-</div>
 
-
-<div className="bg-white pt-12 pb-16">
-<div className="max-w-6xl mx-auto px-6">
-{/* Quickstart Guides */}
-
-<div className="mb-12">
-<h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Quickstart guides</h2>
-
-<Columns cols={3}>
-  <Card title="Create a virtual account" icon="money-bill" iconType="regular" href="/get-started/guides/move-money/virtualaccounts">
-    Use a virtual account to accept USD deposits with a unique account & routing number.
-  </Card>
-  <Card title="Make payments" icon="shuffle" iconType="regular" href="/get-started/introduction/quick-start/create-a-one-time-payment">
-    Easily create onramps, offramps, and crypto to crypto transfers using our orchestration APIs.
-  </Card>
-  <Card title="Provision cards" icon="credit-card" iconType="regular" href="/get-started/guides/cards/overview">
-    Provision a card backed by stablecoins and spend anywhere in the world.
-  </Card>
-</Columns>
-  <Columns cols={3} className="justify-center">
-    <Card title="Create wallets" icon="wallet" iconType="regular" href="/get-started/guides/wallets/crypto-to-crypto">
-      Custody funds in a wallet. Use it to send, receive, or hold stablecoins.
-    </Card>
-    <Card title="Issue stablecoins" icon="coin" iconType="regular" href="/platform/issuance/custom">
-      Issue your own stablecoin and start earning yield.
-    </Card>
-  </Columns>
-</div>
-
-{/* Resources */}
-
-<div className="mb-12">
-<h2 className="text-lg text-gray-800 mb-4 font-medium tracking-tight">Resources</h2>
-
-<Columns cols={3}>
-  <Card title="Contact support" icon="headset" href="https://support.bridge.xyz">
-    Reach out to our team for help with integration or technical issues.
-  </Card>
-  <Card title="Request sales" icon="handshake" href="https://www.bridge.xyz/requestfreedemo">
-    Click here to request a demo or reach out at [sales@bridge.xyz](mailto:sales@bridge.xyz).
-  </Card>
-  <Card title="Demo" icon="presentation-screen" href="https://bridge.coastdemo.com/share/67f14d352788b1841300b826?mode=link">
-    Watch our interactive demo to see Bridge in action.
-  </Card>
-</Columns>
-
-</div>
-
-</div>
-
-</div>
+  <div id="result">Minimum required: —</div>
