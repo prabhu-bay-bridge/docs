@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function MinimumTransactionCalculator() {
   const currencyToSourceRails = {
     mxn: ["spei"],
@@ -12,7 +14,7 @@ export default function MinimumTransactionCalculator() {
     btc: ["bitcoin"],
     eth: ["ethereum"],
     usdb: ["bridge_wallet"],
-  } as const;
+  }
 
   const currencyToDestRails = {
     mxn: ["spei"],
@@ -27,7 +29,7 @@ export default function MinimumTransactionCalculator() {
     btc: ["bitcoin"],
     eth: ["ethereum"],
     usdb: ["bridge_wallet"],
-  } as const;
+  }
 
   const allCurrencies = Object.keys(currencyToSourceRails);
   const allRails = Array.from(
