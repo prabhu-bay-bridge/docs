@@ -104,7 +104,7 @@ export default function MinimumTransactionCalculator() {
       return;
     }
 
-    const reasons: string[] = [];
+    const reasons = [];
     let base = 1.0;
     const stable = ["usdc", "usdt", "usdp", "dai", "pyusd", "eurc"];
     const nonStable = ["eth", "btc"];
@@ -114,7 +114,7 @@ export default function MinimumTransactionCalculator() {
 
     base = !fiats.includes(src) ? (stable.includes(src) ? 1.0 : 2.0) : 1.0;
 
-    const mins: number[] = [base];
+    const mins = [base];
 
     if (
       exchangeFee.includes(src) ||
