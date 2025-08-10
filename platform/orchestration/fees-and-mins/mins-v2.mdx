@@ -1,4 +1,15 @@
+---
+title: "Test"
+---
 
-import { TxnMinCalc } from '/snippets/txn-min-calc';
+export const Counter = () => {
+ const [count, setCount] = useState(0)
 
-<TxnMinCalc />
+ const increment = () => setCount(count + 1)
+ const decrement = () => setCount(count - 1)
+
+ return (
+ <div className="flex items-center justify-center">
+ <div className="flex items-center rounded-xl overflow-hidden border border-zinc-950/20 dark:border-white/20">
+ <button
+ onClick={decrement}
