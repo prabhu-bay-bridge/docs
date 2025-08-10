@@ -347,6 +347,11 @@
         {
             "source": "/page/business-industry-list-updated-2022-naics-codes",
             "destination": "/platform/customers/compliance/business-industry-list-updated-2022-naics-codes"
+        },
+        {
+            "source": "/docs/business-accounts",
+            "destination": "/platform/customers/compliance/businesses/overview"
         }
+      
     ]
 }
