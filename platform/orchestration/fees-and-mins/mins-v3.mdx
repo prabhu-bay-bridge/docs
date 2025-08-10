@@ -1,0 +1,151 @@
+import React from 'react';
+
+export default function MinimumTransactionCalculator() {
+  return (
+    <div className="container">
+      <h2>Minimum Transaction Calculator</h2>
+
+      <fieldset className="group">
+        <legend>Source</legend>
+        <div className="row">
+          <div className="field">
+            <label htmlFor="sourceCurrency">Source Currency</label>
+            <select
+              id="sourceCurrency"
+              value={sourceCurrency}
+              onChange={(e) => setSourceCurrency(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              {sourceCurrencyOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="sourceRail">Source Payment Rail</label>
+            <select
+              id="sourceRail"
+              value={sourceRail}
+              onChange={(e) => setSourceRail(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              {sourceRailOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset className="group">
+        <legend>Destination</legend>
+        <div className="row">
+          <div className="field">
+            <label htmlFor="destCurrency">Destination Currency</label>
+            <select
+              id="destCurrency"
+              value={destCurrency}
+              onChange={(e) => setDestCurrency(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              {destCurrencyOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="destRail">Destination Payment Rail</label>
+            <select
+              id="destRail"
+              value={destRail}
+              onChange={(e) => setDestRail(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              {destRailOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <div className="button-row">
+        <button id="calculateBtn" disabled={!canCalculate} onClick={onCalculate}>
+          Calculate Minimum
+        </button>
+        <button id="resetBtn" onClick={onReset}>Reset</button>
+      </div>
+
+      <div id="result" className="resultBox">
+        {result.split("\n").map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
+      </div>
+
+      <style>{`
+        body {
+          font-family: sans-serif;
+          padding: 20px;
+        }
+        .container {
+          max-width: 640px;
+          margin: 0 auto;
+        }
+        .row {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 15px;
+          flex-wrap: wrap;
+        }
+        .field {
+          flex: 1;
+          min-width: 220px;
+        }
+        label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 4px;
+        }
+        select, button {
+          width: 100%;
+          padding: 8px;
+          font-size: 1rem;
+        }
+        button {
+          margin-top: 10px;
+          cursor: pointer;
+        }
+        button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        #result {
+          margin-top: 20px;
+          font-weight: bold;
+        }
+        .group {
+          border: 1px solid #ccc;
+          padding: 15px;
+          border-radius: 6px;
+          margin-bottom: 20px;
+        }
+        .group legend {
+          font-weight: bold;
+          padding: 0 8px;
+        }
+        .button-row {
+          display: flex;
+          gap: 10px;
+        }
+      `}</style>
+    </div>
+  );
+}
