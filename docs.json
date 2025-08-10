@@ -337,7 +337,7 @@
             "destination": "/api-reference"
         },
         {
-            "source": "/docs/terms-of-service#tos-acceptance-for-a-new-customer",
+            "source": "/docs/terms-of-service",
             "destination": "/platform/customers/customers/tos"
         },
         {
