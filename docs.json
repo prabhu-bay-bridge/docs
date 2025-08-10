@@ -335,6 +335,14 @@
         {
             "source": "/docs/reference",
             "destination": "/api-reference"
+        },
+        {
+            "source": "/docs/terms-of-service#tos-acceptance-for-a-new-customer",
+            "destination": "/platform/customers/customers/tos"
+        },
+        {
+            "source": "/docs/individuals",
+            "destination": "/platform/customers/compliance/individuals"
         }
     ]
 }
