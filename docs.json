@@ -390,7 +390,7 @@
         },
         {
             "source": "/docs/developer-fees",
-            "destination": "/platform/orchestration/devfees"
+            "destination": "/platform/orchestration/fees-and-mins/devfees"
         }
     ]
 }
