@@ -373,10 +373,6 @@
             "destination": "/platform/customers/compliance/docs"
         },
         {
-            "source": "/docs/developer-fees#transfers-with-flexible-amounts",
-            "destination": "/platform/orchestration/transfers/transfer-features#flexible-amounts"
-        },
-        {
             "source": "/docs/us-beneficiary-address-validation",
             "destination": "/platform/customers/compliance/beneficiary-address-validation"
         },
