@@ -351,6 +351,10 @@
         {
             "source": "/docs/business-accounts",
             "destination": "/platform/customers/compliance/businesses/overview"
+        },
+        {
+            "source": "/docs/transfers-1",
+            "destination": "/platform/orchestration/transfers/transfer-states"
         }
       
     ]
