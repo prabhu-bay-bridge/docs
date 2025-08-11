@@ -355,7 +355,10 @@
         {
             "source": "/docs/transfers-1",
             "destination": "/platform/orchestration/transfers/transfer-states"
+        },
+        {
+            "source": "docs/business-tax-identification-numbers-by-country",
+            "destination": "/platform/customers/compliance/businesses/identification"
         }
-      
     ]
 }
