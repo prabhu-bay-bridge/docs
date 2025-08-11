@@ -353,7 +353,7 @@
             "destination": "/platform/customers/compliance/businesses/overview"
         },
         {
-            "source": "/docs/transfers-1#transfer-states",
+            "source": "/docs/transfers-1",
             "destination": "/platform/orchestration/transfers"
         },
         {
@@ -375,10 +375,6 @@
         {
             "source": "/docs/developer-fees#transfers-with-flexible-amounts",
             "destination": "/platform/orchestration/transfers/transfer-features#flexible-amounts"
-        },
-        {
-            "source": "/docs/transfers-1#transfer-features",
-            "destination": "/platform/orchestration/transfers"
         },
         {
             "source": "/docs/us-beneficiary-address-validation",
