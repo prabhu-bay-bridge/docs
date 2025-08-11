@@ -354,7 +354,7 @@
         },
         {
             "source": "/docs/transfers-1#transfer-states",
-            "destination": "/platform/orchestration/transfers/transfer-states"
+            "destination": "/platform/orchestration/transfers"
         },
         {
             "source": "/docs/business-tax-identification-numbers-by-country",
@@ -378,7 +378,7 @@
         },
         {
             "source": "/docs/transfers-1#transfer-features",
-            "destination": "/platform/orchestration/transfers/transfer-features"
+            "destination": "/platform/orchestration/transfers"
         },
         {
             "source": "/docs/us-beneficiary-address-validation",
@@ -386,7 +386,7 @@
         },
         {
             "source": "/docs/safely-reveal-card-details-to-customers",
-            "destination": "platform/cards/additional/safely-reveal"
+            "destination": "/platform/cards/additional/safely-reveal"
         },
         {
             "source": "/docs/developer-fees",
