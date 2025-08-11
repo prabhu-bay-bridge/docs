@@ -205,7 +205,7 @@
                                     "platform/cards/additional/pins",
                                     "platform/cards/additional/customizing",
                                     "platform/cards/additional/marketing",
-                                    "platform/cards/additional/details"
+                                    "platform/cards/additional/safely-reveal"
                                 ]
                             }
                         ]
@@ -353,7 +353,7 @@
             "destination": "/platform/customers/compliance/businesses/overview"
         },
         {
-            "source": "/docs/transfers-1",
+            "source": "/docs/transfers-1#transfer-states",
             "destination": "/platform/orchestration/transfers/transfer-states"
         },
         {
@@ -371,6 +371,26 @@
         {
             "source": "/docs/supported-documents",
             "destination": "/platform/customers/compliance/docs"
+        },
+        {
+            "source": "/docs/developer-fees#transfers-with-flexible-amounts",
+            "destination": "/platform/orchestration/transfers/transfer-features#flexible-amounts"
+        },
+        {
+            "source": "/docs/transfers-1#transfer-features",
+            "destination": "/platform/orchestration/transfers/transfer-features"
+        },
+        {
+            "source": "/docs/us-beneficiary-address-validation",
+            "destination": "/platform/customers/compliance/beneficiary-address-validation"
+        },
+        {
+            "source": "/docs/safely-reveal-card-details-to-customers",
+            "destination": "platform/cards/additional/safely-reveal"
+        },
+        {
+            "source": "/docs/developer-fees",
+            "destination": "/platform/orchestration/devfees"
         }
     ]
 }
