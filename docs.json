@@ -359,6 +359,18 @@
         {
             "source": "/docs/business-tax-identification-numbers-by-country",
             "destination": "/platform/customers/compliance/businesses/identification"
+        },
+        {
+            "source": "/page/sof-eu-most-recent-occupation-list",
+            "destination": "/platform/customers/compliance/sof-eu-most-recent-occupation-list"
+        },
+        {
+            "source": "/docs/individual-tax-identification-numbers-by-country",
+            "destination": "/platform/customers/compliance/individuals#individual-identification-numbers-by-country"
+        },
+        {
+            "source": "/docs/supported-documents",
+            "destination": "/platform/customers/compliance/docs"
         }
     ]
 }
