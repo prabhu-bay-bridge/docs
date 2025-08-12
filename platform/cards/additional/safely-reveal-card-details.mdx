@@ -1,0 +1,194 @@
+---
+title: "Safely Reveal Card Details to Customers"
+---
+
+Sensitive card details such as the card number and security code are not returned in the responses of normal cards endpoints. Instead, Bridge provides a way for you to safely expose PANs to users in a way that keeps your servers out of [PCI compliance scope](https://listings.pcisecuritystandards.org/documents/PCIDSS_QRGv3_1.pdf).
+
+The following is an overview of the steps you will need to take in order to implement this functionality:
+
+- Your backend implements an endpoint to generate an ephemeral key for your customer.
+- Your frontend will generate a random secret, and use it to generate a nonce, which will be passed through your backend and then to Bridge to generate a one-time ephemeral key.
+- Your frontend will then directly call a special Bridge endpoint with this ephemeral key as the credential, and provide the original secret to prove ownership.
+- Bridge will then reveal the card number, security code, and expiration date directly to the frontend, without any sensitive card details passing through your backend.
+
+Once implemented, the flow between your frontend, your backend, and Bridge should look similar to the following:
+
+![8ba52f648c7f64f902ebe4ad754b8371d4dfb77c12a2e2c5bf76217af237a6f6-Card_Credentials_Reveal_Flow.png](/images/8ba52f648c7f64f902ebe4ad754b8371d4dfb77c12a2e2c5bf76217af237a6f6-Card_Credentials_Reveal_Flow.png)
+
+Below, we'll discuss each of the steps in this flow in detail.
+
+## **1. Client derives a Nonce and sends it to your backend**
+
+Your client generates a secret, and uses `SHA-256` to generate a nonce from the secret, and a deterministic string `nonce:{timestamp}`. As this needs to be done in a particular way, you can use the following snippets in your client as a reference:
+
+<Tabs>
+  <Tab title="Typescript">
+    ```typescript expandable
+    async function generateClientNonce(clientSecret: string, clientTimestamp: number): Promise<string> {
+      const message = `nonce:${clientTimestamp}`;
+      
+      // Convert secret and message to ArrayBuffer
+      const encoder = new TextEncoder();
+      const keyData = encoder.encode(clientSecret);
+      const messageData = encoder.encode(message);
+      
+      // Import the key
+      const cryptoKey = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign']
+      );
+      
+      // Sign the message
+      const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
+      
+      // Convert to base64
+      const signatureArray = new Uint8Array(signature);
+      return btoa(String.fromCharCode(...signatureArray));
+    }
+    
+    // Usage example
+    const randomBytes = new Uint8Array(32);
+    crypto.getRandomValues(randomBytes);
+    const clientSecret = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    const clientTimestamp = Math.floor(Date.now() / 1000);
+    const nonce = await generateClientNonce(clientSecret, clientTimestamp);
+    
+    // pass `nonce` in step 2
+    // pass `clientSecret` and `clientTimestamp` in step 4 
+    ```
+  </Tab>
+  <Tab title="Swift">
+    ```swift
+    import Foundation
+    import CommonCrypto
+    
+    func generateHmacSignature(clientSecret: String, clientTimestamp: Int) -> String? {
+        let message = "nonce:\(clientTimestamp)"
+        
+        guard let keyData = clientSecret.data(using: .utf8),
+              let messageData = message.data(using: .utf8) else {
+            return nil
+        }
+        
+        var hmac = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        
+        keyData.withUnsafeBytes { keyBytes in
+            messageData.withUnsafeBytes { messageBytes in
+                CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA256),
+                       keyBytes.bindMemory(to: UInt8.self).baseAddress, keyData.count,
+                       messageBytes.bindMemory(to: UInt8.self).baseAddress, messageData.count,
+                       &hmac)
+            }
+        }
+        
+        let hmacData = Data(hmac)
+        return hmacData.base64EncodedString()
+    }
+    
+    // Usage
+    let clientSecret = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+    let clientTimestamp = Int(Date().timeIntervalSince1970)
+    let nonce = generateHmacSignature(clientSecret: clientSecret, clientTimestamp: clientTimestamp)
+    
+    // pass `nonce` to your backend and Bridge in step 2
+    // pass `clientSecret` and `clientTimestamp` to Bridge in step 4
+    ```
+  </Tab>
+  <Tab title="Kotlin">
+    ```kotlin
+    import java.security.InvalidKeyException
+    import java.security.NoSuchAlgorithmException
+    import java.util.Base64
+    import javax.crypto.Mac
+    import javax.crypto.spec.SecretKeySpec
+    
+    fun generateHmacSignature(clientSecret: String, clientTimestamp: Long): String {
+        val message = "nonce:$clientTimestamp"
+        
+        try {
+            val secretKeySpec = SecretKeySpec(clientSecret.toByteArray(), "HmacSHA256")
+            val mac = Mac.getInstance("HmacSHA256")
+            mac.init(secretKeySpec)
+            
+            val hmacBytes = mac.doFinal(message.toByteArray())
+            return Base64.getEncoder().encodeToString(hmacBytes)
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException("HmacSHA256 algorithm not available", e)
+        } catch (e: InvalidKeyException) {
+            throw RuntimeException("Invalid key", e)
+        }
+    }
+    
+    // Usage
+    fun main() {
+      val clientSecret = java.util.UUID.randomUUID().toString().replace("-", "")
+      val clientTimestamp = System.currentTimeMillis() / 1000
+      val nonce = generateHmacSignature(clientSecret, clientTimestamp)
+      
+      // pass `nonce` to your backend and Bridge in step 2
+    	// pass `clientSecret` and `clientTimestamp` to Bridge in step 4
+    }
+    ```
+  </Tab>
+</Tabs>
+
+The client will send just the final `nonce` from each of these snippets to your backend.
+
+It will then reserve the original `clientSecret` and `clientTimestamp` it used to generate the nonce, as it will need to be used validate the ephemeral key in step 4 below. The client must not store or reuse the secret or timestamp.
+
+## **2. Your backend relays the Nonce to Bridge**
+
+Your backend will then send the derived nonce to Bridge by `POST`ing to `/v0/customers/{customerId}/card_accounts/{cardAccountId}/ephemeral_keys`. The request should contain just the client nonce itself, like so:
+
+```json
+{
+  "client_nonce": "nNhJ3tP3Rqah2evIdlCx7HFdPuwd0BMZOZyz7a21ufI="
+}
+```
+
+Note that Bridge has no ability to authenticate where the `client_nonce` is actually from. The responsibility is on your backend to authenticate that the nonce was sent from the right customer to access the right card account.
+
+## **3. Bridge generates a one-time Ephemeral Key associated to the Nonce**
+
+The response returned by Bridge in `/v0/customers/{customerId}/card_accounts/{cardAccountId}/ephemeral_keys` will contain just one field, `ephemeral_key`, which contains a token that can be used once to reveal the card details. This token expires in 5 minutes.
+
+Here is an example of the response:
+
+```json
+{
+  "ephemeral_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTE5MjMxNzIsIm5iZiI6MTc1MTkyMzE3MiwiZXhwIjoxNzUxOTIzNDcyLCJzdWIiOiJmMTg0M2IwNi0xZTgwLTQzMGUtOGUxMy01MTk5OWNmNjZmYjgiLCJhdWQiOiJzZGZzZmQiLCJpc3MiOiJicmlkZ2UtcGNpIn0.QBP7SKYildM9raQN_m3bijbaqO-JZ8I7OSkj2IFHvUQ84e3Fr5DdFt3peBLbsSY4CYVf4w951MCUDgdHMbHCgiD_niEzUS1KxHtT3otT1dbCg4DO0MY3siwjsV9UAWd4huLYvBACWs316Ydk_38Qy5Q_cudkvTKHBzMYm7LsKMwEiCGDeFw95_JJwmvWCoLPx2Xn7MXfYeFOMEYXBKSiUwNtoGVYJxPeO4C-Krj79QklRKcCMrhY-s-rGTPt-trPnanCPEMnQwX4AjyNjHWAYh-sX_cQgpiYX1GymPaYoZkhfxNL2pxNZJjBp1BgAUvGy1rHrTeDa4Pn4kPVNemr_w"
+}
+```
+
+**Do not** have your backend directly call Bridge to retrieve card credentials using this ephemeral key. Instead, it should pass this ephemeral key directly back to your frontend to perform the next step.
+
+## **4. Your frontend directly calls Bridge with the Ephemeral Key, Nonce, and Secret**
+
+To reveal the card credentials, your frontend will directly call a special Bridge endpoint. This endpoint does not require a Bridge API key, and instead requires just ephemeral key itself in the `Authorization` header as the credential, like so:
+
+```
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTE5MjMxNzIsIm5iZiI6MTc1MTkyMzE3MiwiZXhwIjoxNzUxOTIzNDcyLCJzdWIiOiJmMTg0M2IwNi0xZTgwLTQzMGUtOGUxMy01MTk5OWNmNjZmYjgiLCJhdWQiOiJzZGZzZmQiLCJpc3MiOiJicmlkZ2UtcGNpIn0.QBP7SKYildM9raQN_m3bijbaqO-JZ8I7OSkj2IFHvUQ84e3Fr5DdFt3peBLbsSY4CYVf4w951MCUDgdHMbHCgiD_niEzUS1KxHtT3otT1dbCg4DO0MY3siwjsV9UAWd4huLYvBACWs316Ydk_38Qy5Q_cudkvTKHBzMYm7LsKMwEiCGDeFw95_JJwmvWCoLPx2Xn7MXfYeFOMEYXBKSiUwNtoGVYJxPeO4C-Krj79QklRKcCMrhY-s-rGTPt-trPnanCPEMnQwX4AjyNjHWAYh-sX_cQgpiYX1GymPaYoZkhfxNL2pxNZJjBp1BgAUvGy1rHrTeDa4Pn4kPVNemr_w
+```
+
+The client will include the original `clientSecret` and `clientTimestamp` used to generate the nonce as query parameters in the requested URL, like so:
+
+```
+https://cards-pci.bridge.xyz/v0/card_details/?secret={clientSecret}&timestamp={clientTimestamp}
+```
+
+Bridge will validate that the `ephemeralKey` is associated with the `nonce` derived from the same `clientSecret` and `clientTimestamp`. It will also validate that the ephemeral key has not already been used, and that the key hasn't expired yet.
+
+This endpoint will return a response similar to the following:
+
+```json
+{
+  "card_number": "4432528012345678",
+  "card_security_code": "123",
+  "expiry_date": "2030-12-12"
+}
+```
+
+This ephemeral key can only be used once, so the client will need to generate a new secret and nonce in order to show the card details again. In order to comply with [<u>PCI DSS requirement 3.4</u>](https://listings.pcisecuritystandards.org/documents/PCIDSS_QRGv3_1.pdf), you must not store the card details returned from this endpoint.
