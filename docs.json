@@ -377,10 +377,6 @@
             "destination": "/platform/customers/compliance/beneficiary-address-validation"
         },
         {
-            "source": "/docs/safely-reveal-card-details-to-customers",
-            "destination": "/platform/cards/additional/safely-reveal"
-        },
-        {
             "source": "/docs/developer-fees",
             "destination": "/platform/orchestration/fees-and-mins/devfees"
         }
