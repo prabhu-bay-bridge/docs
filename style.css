@@ -25,14 +25,14 @@ body {
 /* Link + button colors */
 a,
 .button-primary {
-  color: #34d399;
+  color: #17A34A;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 a:hover,
 .button-primary:hover {
-  color: #10b981;
+  color: #039839;
 }
 
 .button-secondary {
