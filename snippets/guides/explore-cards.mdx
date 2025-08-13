@@ -3,4 +3,47 @@ title: "New file"
 description: "Description of your new file."
 ---
 
-Check our guide [here](/get-started/guides/cards/spend) on letting your customers spend their wallet balances using a globally accepted debit card.
+The below API example provision a card tied to a Bridge wallet.
+
+```bash expandable
+curl --request POST \
+     --url https://api.bridge.xyz/v0/customers/customerID/card_accounts \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --data '{
+  "currency": "usdb",
+  "chain": "solana",
+  "crypto_account": {
+    "type": "bridge_wallet",
+    "address": "4oG1sWkP8vcrnhbkzZc1m9RTT2VUjZHKx92qiVFK7FuZ"
+  }
+}'
+```
+
+### Retrieve card details
+
+Access  card metadata, expiration, and access a secure image of the card.
+
+```bash Request expandable
+curl -X GET 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts/<cardAccountID>' \
+--header 'Api-Key: <API Key>'
+```
+
+```json Response expandable
+{
+  "id": "XXX-YYY",
+  "status": "active",
+  "card_image_url": "https://...",
+  "card_details": {
+    "last_4": "1264",
+    "expiry": "10/24",
+    "bin": "44325280"
+  }
+}
+```
+
+<Check>
+  You can now share these card details with your customer to **start spending\!**
+</Check>
+
+Check our guide [here](/get-started/guides/cards/spend) for more information on setting up cards\!
