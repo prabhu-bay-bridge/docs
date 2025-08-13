@@ -1,0 +1,32 @@
+---
+title: "New file"
+description: "Description of your new file."
+---
+
+Create a wallet for your customer to hold stablecoins
+
+```bash Request expandable
+curl --request POST \
+     --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
+     --header 'Api-Key: <API Key>' \
+     --header 'Idempotency-Key: <Unique-Key>' \
+     --header 'Content-Type: application/json' \
+     --data-raw '{
+       "chain": "solana"
+     }'
+```
+
+```json Response expandable
+{
+  "id": "wallet_abc123",
+  "chain": "solana",
+  "address": "4oG1sWkP8vcrnhbkzZc1m9RTT2VUjZHKx92qiVFK7FuZ",
+  "created_at": "2025-07-15T18:00:00Z"
+}
+```
+
+<Note>
+  Use the `bridge_wallet_id` (wallet_abc123 above) when referencing the wallet in other Bridge APIs.
+</Note>
+
+Check out this [guide](/get-started/guides/wallets/overview) for more information on using Bridge wallets.

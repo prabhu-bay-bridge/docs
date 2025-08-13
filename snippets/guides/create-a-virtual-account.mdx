@@ -1,0 +1,48 @@
+---
+title: "New file"
+description: "Description of your new file."
+---
+
+Create a USD or EUR account for your customer. Provide the bank instructions to them so that they can receive direct bank transfers and deposits. Funds deposited are converted to stablecoins and sent directly to your customer’s wallet.
+
+Now, link the wallet to a virtual account. Any fiat deposits into the account will be automatically converted to USDB and delivered to the wallet.
+
+```bash Request expandable
+curl --request POST \
+     --url https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts \
+     --header 'Api-Key: <API Key>' \
+     --header 'Idempotency-Key: <Unique-Key>' \
+     --header 'Content-Type: application/json' \
+     --data-raw '{
+       "source": {
+         "currency": "usd"
+       },
+       "destination": {
+         "payment_rail": "solana",
+         "currency": "usdb",
+         "bridge_wallet_id": "wallet_abc123"
+       }
+     }'
+```
+
+```json Response expandable
+{
+  "id": "va_123",
+  "status": "activated",
+  "customer_id": "cust_alice",
+  "source_deposit_instructions": {
+    "currency": "usd",
+    "bank_beneficiary_name": "Alice Customer",
+    "bank_name": "Lead Bank",
+    "bank_address": "1801 Main St., Kansas City, MO 64108",
+    "bank_routing_number": "101019644",
+    "bank_account_number": "123456789",
+    "payment_rails": ["ach_push", "wire"],
+  },
+  "destination": {
+    "bridge_wallet_id": "wallet_abc123",
+    "currency": "usdb"
+  }
+```
+
+Check out the guide [here](/get-started/guides/move-money/virtualaccounts) to learn more about virtual accounts.

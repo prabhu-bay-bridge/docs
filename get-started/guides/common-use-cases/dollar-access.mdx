@@ -5,127 +5,29 @@ title: "Dollar Access"
 To enable your customer to get paid, save and spend in USD or EUR, you need to create a **virtual account** and a **wallet** for each customer. Once your customer receives funds into their virtual account, Bridge converts the fiat to stablecoins and sends the stablecoins to your customer's wallet.
 
 ---
+import GenerateApiKeys from '/snippets/guides/generate-api-keys.mdx';
+import CreateACustomer from '/snippets/guides/create-a-customer.mdx';
+import CreateAWallet from '/snippets/guides/create-a-wallet.mdx';
+import CreateAVirtualAccount from '/snippets/guides/create-a-virtual-account.mdx';
+import ExploreCards from '/snippets/guides/explore-cards.mdx';
 
-## Step 1: Generate your API keys
 
-Head over to [**dashboard.bridge.xyz**](https://dashboard.bridge.xyz/). Once logged in, click on the “API Keys” tab on the top menu bar and generate a new API key.
+## Step 1: Generate your API Keys
 
-Bridge will make your **API key available only once**, so make sure to **immediately copy and save the key safely and securely**. \
-\
-Your key is used to authenticate into our APIs and is highly sensitive. If it ever gets compromised, you can immediately revoke key access from our dashboard and generate a new key.
+<GenerateApiKeys/>
 
 ## Step 2: Create a customer
 
-Create a customer object for each user that needs a USD or EUR account. Check out this [guide](/get-started/introduction/quick-start/create-your-first-customer) for a full in depth explanation on onboarding customers. You can create a KYC link with the following API request and share the KYC link with your customer.
-
-```bash Request expandable
-curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
---header 'Content-Type: application/json' \
---header 'Api-Key: <API Key>' \
---header 'Idempotency-Key: <generate a uuid>' \
---data-raw '{
-  "full_name": "John Doe",
-  "email": "johndoe@example.com",
-  "type": "individual"
-}'
-```
-
-```json Response expandable
-{
-  "id": "uuid",
-  "full_name": "John Doe",
-  "email": "johndoe@example.com",
-  "type": "individual", // or "business"
-  "kyc_link": "https://bridge.withpersona.com/verify?",
-  "tos_link": "https://dashboard.bridge.xyz/accept-terms-of-service?",
-  "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
-  "rejection_reasons": [],
-  "tos_status": "pending", // or "approved"
-  "created_at": "2025-07-16T18:28:25.970Z",
-  "customer_id": "customer_id",
-  "persona_inquiry_type": "gov_id_db"
-}
-```
-
-Guide the user through:
-
-1. Visiting the `tos_link` and accepting terms of service
-2. Completing identity verification via the `kyc_link`
-
-This process typically takes less than a minute and updates automatically once complete.
+<CreateACustomer/>
 
 ## Step 3: Create a wallet
 
-Create a wallet for your customer to hold stablecoins
-
-```bash Request expandable
-curl --request POST \
-     --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
-     --header 'Api-Key: <API Key>' \
-     --header 'Idempotency-Key: <Unique-Key>' \
-     --header 'Content-Type: application/json' \
-     --data-raw '{
-       "chain": "solana"
-     }'
-```
-
-```json Response expandable
-{
-  "id": "wallet_abc123",
-  "chain": "solana",
-  "address": "4oG1sWkP8vcrnhbkzZc1m9RTT2VUjZHKx92qiVFK7FuZ",
-  "created_at": "2025-07-15T18:00:00Z"
-}
-```
-
-<Note>
-  Use the `bridge_wallet_id` (wallet_abc123 above) when referencing the wallet in other Bridge APIs.
-</Note>
+<CreateAWallet/>
 
 ## Step 4: Create a virtual account
 
-Create a USD or EUR account for your customer. Provide the bank instructions to them so that they can receive direct bank transfers and deposits. Funds deposited are converted to stablecoins and sent directly to your customer’s wallet.
+<CreateAVirtualAccount/>
+  
+## Step 5: Create a virtual account
 
-Now, link the wallet to a virtual account. Any fiat deposits into the account will be automatically converted to USDB and delivered to the wallet.
-
-```bash Request expandable
-curl --request POST \
-     --url https://api.bridge.xyz/v0/customers/<customer_id>/virtual_accounts \
-     --header 'Api-Key: <API Key>' \
-     --header 'Idempotency-Key: <Unique-Key>' \
-     --header 'Content-Type: application/json' \
-     --data-raw '{
-       "source": {
-         "currency": "usd"
-       },
-       "destination": {
-         "payment_rail": "solana",
-         "currency": "usdb",
-         "bridge_wallet_id": "wallet_abc123"
-       }
-     }'
-```
-
-```json Response expandable
-{
-  "id": "va_123",
-  "status": "activated",
-  "customer_id": "cust_alice",
-  "source_deposit_instructions": {
-    "currency": "usd",
-    "bank_beneficiary_name": "Alice Customer",
-    "bank_name": "Lead Bank",
-    "bank_address": "1801 Main St., Kansas City, MO 64108",
-    "bank_routing_number": "101019644",
-    "bank_account_number": "123456789",
-    "payment_rails": ["ach_push", "wire"],
-  },
-  "destination": {
-    "bridge_wallet_id": "wallet_abc123",
-    "currency": "usdb"
-  }
-```
-
-## Step 5: Explore cards
-
-Check our guide [here](/get-started/guides/cards/spend) on letting your customers spend their wallet balances using a globally accepted debit card.
+<ExploreCards/>
