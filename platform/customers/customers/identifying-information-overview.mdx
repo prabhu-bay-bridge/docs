@@ -1,0 +1,31 @@
+---
+title: "Identifying Information Overview"
+description: "This document outlines how to correctly utilize the identifying_information attribute on the POST & PUT v0/customer API."
+---
+
+Please reference our latest API documentation [here](/api-reference/customers/create-a-customer) for an in-depth look at entire request payload.
+
+**General rules:**\
+All business and individual customers (including associated persons) verified by Bridge must satisfy our `identifying_information` requirements. These requirements consist of providing a valid Tax ID document and Government Photo ID.
+
+### Individuals and Associated Persons
+
+**National/Tax Identification requirement:** You must include at least one valid identification number to satisfy the tax id requirement. Please reference [this list](/platform/customers/compliance/individuals#individual-identification-numbers-by-country) for acceptable types for individuals. You can also optionally provide a `passport` or `national_id` number (image optional) and we will accept this as a valid Tax ID for all countries **except for the US**.
+
+**For US-based Individuals:** only an `ssn` or `itin` is valid.
+
+**Government Photo ID requirement:** All non-US individuals must include a valid government issued photo ID. The following types are acceptable: `drivers_license`, `matriculate_id`, `military_id`, `permanent_residency_id`, `state_or_provincial_id`, `visa`, `passport`, `national_id`.
+
+_Please contact support if you have a use case for a different government issued photo ID that you'd like Bridge to consider adding._
+
+The `number` of this document is optional but the `image_front` is required.
+
+**For US-based individuals:** Although optional, we strongly recommend providing a photo ID to streamline their onboarding (higher likelihood of automatic approval), minimize RFIs, and reduce transaction reviews/delays.
+
+**Other Considerations:** For non-US individuals, a `passport` or `national_id` can be used to satisfy both the individuals tax id and government photo id requirement if you provide both the `number` and `image_front` of the document.
+
+### Businesses
+
+**Tax Identification requirement:** You must include at least one valid tax identification number to satisfy the Tax ID requirement. Please reference [this list](/platform/customers/compliance/businesses/identification) for acceptable types for businesses.
+
+_Sole proprietorships can submit any valid individual Tax ID number for their same respective country._

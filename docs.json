@@ -388,6 +388,10 @@
         {
             "source": "/docs/kyx-reliance",
             "destination": "/platform/customers/compliance/kyx-reliance"
+        },
+        {
+            "source": "/docs/identifying-information-overview",
+            "destination": "/platform/customers/customers/identifying-information-overview"
         }
     ]
 }
