@@ -1,0 +1,176 @@
+---
+title: "KYX Reliance"
+---
+
+## **What is reliance?**
+
+For most developers, Bridge runs thorough verification on all input KYB/KYC data provided for end customers. If a developer has a robust KYC/KYB program for their customer base, Bridge may (after reviewing the developer’s policies/procedures) approve the developer for a reliance arrangement with Bridge. This means that Bridge and the developer agree that the developer will be in charge of verifying KYC/KYB data for end users. With this, there are certain additional data requirements for how Bridge APIs are used. Such an arrangement is beneficial for developer costs as well as in streamlining end customers’ onboarding experience.
+
+## **Additional Fields we Require**
+
+This is in addition to the normal requirements for [creating a customer](https://apidocs.bridge.xyz/api-reference/customers/create-a-customer)
+
+```json
+"endorsements": ["reliance"], # must include the reliance endorsement!
+"kyc_screen": {  # Required
+  "screened_at": <datetime>,
+  "result": ("passed"|"failed")
+},  
+"ofac_screen": {  # Required
+  "screened_at": <datetime>,   
+  "result": ("passed"|"failed")  
+},
+"verified_database_at": <datetime> # Optional, see note
+"verified_proof_of_address_at": <datetime> # Optional (required for EEA customers/SEPA rails, see note)
+```
+
+- if `verified_database_at` is provided, requirements for `identifying_information` are loosened:
+  - you do not need to include a government ID image
+  - you still need to include a number from a form of identification, but it can come from any a tax document or a standard ID document type (e.g., unlike in other cases, including a drivers_license with a number would be sufficient)
+- `verified_proof_of_address_at` is required if proof of address would otherwise be required (i.e. customers residing in the EEA or customers who wish to use SEPA rails).
+
+Note that, in the case of a business customer, these additional fields need to be specified for each associated person as well.
+
+## **Accessing Virtual Accounts**
+
+Despite our reliance model, our bank partner maintains strict requirements before they can open a virtual account on behalf of your end customers. After providing sufficient information to Bridge via API for your customer to unlock virtual accounts, they should (asynchronously) receive the `kyc_reliance_data_received` endorsement.
+
+<Tabs>
+  <Tab title="Individual Requirements">
+    ```
+    - first_name
+    - last_name
+    - date_of_birth
+    - email
+    - residential_address # street_line_1 must be at least 4 characters
+    - identifying_information
+    - kyc_screen
+    - ofac_screen
+    ```
+  </Tab>
+  <Tab title="Business Requirements">
+    ```
+    Note: Individual requirements must be met for each included associated person as well!
+      
+    business_name
+    business_type
+    associated_persons
+    business_industry
+    email
+    physical_address # street_line_1 must be at least 4 characters
+    identifying_information
+    kyc_screen
+    ofac_screen
+    ```
+  </Tab>
+</Tabs>
+
+## **Minimal Code Samples**
+
+### **Business**
+
+```json expandable
+{  
+  "type": "business",  
+  "business_legal_name": "Acme Solutions Inc.",  
+  "business_industry": "11",  
+  "email": "example@acmesolutions.com",  
+  "primary_website": "https://acmesolutions.com",  
+  "business_type": "llc",  
+  "is_dao": false,  
+  "source_of_funds": "treasury_reserves",  
+  "account_purpose": "ecommerce_retail_payments",  
+  "registered_address": {  
+    "subdivision": "CA",  
+    "country": "US"  
+  },  
+  "physical_address": {  
+    "subdivision": "CA",  
+    "country": "US"  
+  },  
+  "kyc_screen": {  
+    "screened_at": "2025-01-01",  
+    "result": "passed"  
+  },  
+  "ofac_screen": {  
+    "screened_at": "2025-01-01",  
+    "result": "passed"  
+  },  
+  "signed_agreement_id": "5634d2ad-aa9e-43b1-8601-0d4d400a8f6e",  
+  "associated_persons": [  
+    {  
+      "first_name": "John",  
+      "last_name": "Doe",  
+      "birth_date": "1990-01-01",  
+      "email": "john_doe@example.xyz",  
+      "residential_address": {  
+        "street_line_1": "123 Sample Lane",  
+        "city": "New City",  
+        "subdivision": "CA",  
+        "postal_code": "12345",  
+        "country": "USA"  
+      },  
+      "has_ownership": false,  
+      "has_control": true,  
+      "title": "CEO",  
+      "is_signer": true,  
+      "identifying_information": [  
+        {  
+          "type": "ssn",  
+          "issuing_country": "usa",  
+          "number": "xxx-xx-xxxx"  
+        }  
+      ],  
+      "documents": [],  
+      "kyc_screen": {  
+        "screened_at": "2025-01-01",  
+        "result": "passed"  
+      },  
+      "ofac_screen": {  
+        "screened_at": "2025-01-01",  
+        "result": "passed"  
+      }  
+    }  
+  ],  
+  "identifying_information": [  
+    {  
+      "type": "ein",  
+      "issuing_country": "US",  
+      "number": "xxx-xx-xxxx"  
+    }  
+  ]  
+}
+```
+
+### **Customer**
+
+```json expandable
+{  
+  "type": "individual",  
+  "first_name": "John",  
+  "last_name": "Doe",  
+  "birth_date": "1990-01-01",  
+  "email": "john_doe@example.xyz",  
+  "signed_agreement_id": "5634d2ad-aa9e-43b1-8601-0d4d400a8f6e",  
+  "identifying_information": [  
+    {  
+      "type": "ssn",  
+      "number": "xxx-xx-xxxx",  
+      "issuing_country": "us"  
+    }  
+  ],  
+  "residential_address": {  
+    "subdivision": "ca",  
+    "country": "usa"  
+  },  
+  "kyc_screen": {  
+    "screened_at": "2025-02-12",  
+    "result": "passed"  
+  },  
+  "ofac_screen": {  
+    "screened_at": "2025-02-12",  
+    "result": "passed"  
+  },  
+  "documents": []  
+}
+```

@@ -384,6 +384,10 @@
         {
             "source": "/docs/terms-of-service-reliance",
             "destination": "/platform/customers/compliance/terms-of-service-reliance"
+        },
+        {
+            "source": "/docs/kyx-reliance",
+            "destination": "/platform/customers/compliance/kyx-reliance"
         }
     ]
 }
