@@ -380,6 +380,10 @@
         {
             "source": "/docs/developer-fees",
             "destination": "/platform/orchestration/fees-and-mins/devfees"
+        },
+        {
+            "source": "/docs/terms-of-service-reliance",
+            "destination": "/platform/customers/compliance/terms-of-service-reliance"
         }
     ]
 }
