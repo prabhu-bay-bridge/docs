@@ -1,0 +1,22 @@
+---
+title: "Terms of Service Reliance"
+---
+
+Permission to use terms of service reliance will only be granted after a review of your onboarding process that includes documentation (i.e. screenshots) of where our terms of service are being presented to your users. In no way does this relax our requirement that users are shown our terms of service.
+
+## **KycLinks API**
+
+Include the following parameters:
+
+```json
+"developer_accepted_tos": true
+```
+
+## **Customers API**
+
+```json
+"has_accepted_terms_of_service": true,  
+"signed_agreement_id": <some_id>
+```
+
+Note: The signed_agreement_id provided should correspond to an internal identifier in your system that can be used to find an attestation that the customer completed terms of service. We may provide a list of signed_agreement_ids and request their corresponding attestations at any time.
