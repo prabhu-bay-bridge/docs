@@ -5,7 +5,7 @@ description: "Description of your new file."
 
 The below example explains how to create a Bridge wallet associated with a customer object.
 
-```bash Request expandable
+```bash Request
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/<customer_id>/wallets \
      --header 'Api-Key: <API Key>' \
@@ -16,7 +16,7 @@ curl --request POST \
      }'
 ```
 
-```json Response expandable
+```json Response
 {
   "id": "wallet_abc123",
   "chain": "solana",

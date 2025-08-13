@@ -5,7 +5,7 @@ description: "Description of your new file."
 
 Check out this [guide](/get-started/introduction/quick-start/create-your-first-customer) for a full in depth explanation on onboarding customers. The below example walks you through using a KYC link to onboard your customer.
 
-```bash Request expandable
+```bash Request
 curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 --header 'Content-Type: application/json' \
 --header 'Api-Key: <API Key>' \
@@ -17,7 +17,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
 }'
 ```
 
-```json Response expandable
+```json Response
 {
   "id": "uuid",
   "full_name": "John Doe",

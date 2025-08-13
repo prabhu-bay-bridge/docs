@@ -5,7 +5,7 @@ description: "Description of your new file."
 
 The below API example provision a card tied to a Bridge wallet.
 
-```bash expandable
+```bash
 curl --request POST \
      --url https://api.bridge.xyz/v0/customers/customerID/card_accounts \
      --header 'accept: application/json' \
@@ -24,12 +24,12 @@ curl --request POST \
 
 Access  card metadata, expiration, and access a secure image of the card.
 
-```bash Request expandable
+```bash Request
 curl -X GET 'https://api.bridge.xyz/v0/customers/<customerID>/card_accounts/<cardAccountID>' \
 --header 'Api-Key: <API Key>'
 ```
 
-```json Response expandable
+```json Response
 {
   "id": "XXX-YYY",
   "status": "active",
