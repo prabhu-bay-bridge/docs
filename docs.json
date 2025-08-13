@@ -190,6 +190,7 @@
                             "platform/cards/overview/guide",
                             "platform/cards/overview/advanced",
                             "platform/cards/overview/webhooks",
+                            "platform/cards/overview/kyc",
                             {
                                 "group": "Sandbox",
                                 "pages": [
