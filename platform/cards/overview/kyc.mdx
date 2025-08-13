@@ -21,13 +21,13 @@ This will return a response like so:
 
 This link will open a flow for the customer to complete KYC or confirm that their previously-provided KYC information is correct. Do not store this URL, as it may expire arbitrarily.
 
-If the customer has completed KYC within the past 24 hours, they will be immediately approved for the `cards` endorsement. You can check this by immediately calling the [Customer endpoint](https://bridge-docs.readme.io/reference/get_customers-customerid) for the endorsement status (more on this in the following section).
+If the customer has completed KYC within the past 24 hours, they will be immediately approved for the `cards` endorsement. You can check this by immediately calling the [Customer endpoint](https://apidocs.bridge.xyz/api-reference/customers/get-a-single-customer-object#get-a-single-customer-object) for the endorsement status (more on this in the following section).
 
 Otherwise, the approval for the cards endorsement is not necessarily immediate. When the link is created  KYC refresh flow, you cannot assume that their cards endorsement will be approved immediately. Instead, you must check the status of the `cards` endorsement, either by directly checking the Customer endpoint, or by consuming the `customers` webhook event category.
 
 # Check Customer Status or Webhooks For Card Endorsement Status
 
-The status of the `cards` endorsement is exposed in the [Customer](https://apidocs.bridge.xyz/reference/get_customers-customerid) object, within the `endorsements` array. You can also receive endorsements updates via webhook events with the `customer` category, with events conforming to the same Customer object definition.
+The status of the `cards` endorsement is exposed in the [Customer](https://apidocs.bridge.xyz/api-reference/customers/get-a-single-customer-object#get-a-single-customer-object) object, within the `endorsements` array. You can also receive endorsements updates via webhook events with the `customer` category, with events conforming to the same Customer object definition.
 
 Once the customer is approved for cards, the customer's `endorsements` array should contain the following:
 
