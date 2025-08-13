@@ -21,7 +21,7 @@ Note that in the dashboard, this is referred to as a **saved payment route.**
 
 Simply add set `static_template` to `true`.
 
-```bash Request expandable
+```bash Request
 curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
 --header 'Api-Key: <API Key>' \
 --header 'Idempotency-Key: <Unique Idempotency Key>' \
@@ -38,6 +38,7 @@ curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
   },
   "features": {
     "static_template": true,
+	"allow_any_from_address": true // lets the deposit originate from any address
   }
 }'
 ```

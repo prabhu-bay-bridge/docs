@@ -13,7 +13,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
   <Step title="Step 1: Create a Static Template" titleSize="h2">
     Use the [Create a transfer](/api-reference/transfers/create-a-transfer) endpoint and set `"static_template": true`.
 
-    ```bash Request expandable
+    ```bash Request
     curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
     --header 'Api-Key: <API Key>' \
     --header 'Idempotency-Key: <Unique Key>' \
@@ -31,7 +31,7 @@ A **static template transfer** is a saved/reusable payment route that lets you g
       },
       "features": {
       	"static_template": true
-        "flexible_amount": true // allows for any deposit amount
+        "allow_from_any_address": true // allows for any deposit address
       }
     }'
     ```
