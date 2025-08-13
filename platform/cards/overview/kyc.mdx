@@ -1,0 +1,80 @@
+---
+title: "Managing Customer Eligibility for Cards"
+description: "How to manage customers"
+---
+
+In order to issue a card to a [Customer](https://apidocs.bridge.xyz/docs/customers), you must request a new type of [Endorsement](\(https://apidocs.bridge.xyz/platform/customers/customers/endorsements#endorsements) specifically for cards. This endorsement has some specific requirements that differ slightly from other endorsements for customers to access Bridge's money movement capabilities. In addition, the ability for a given customer to be issued a card may be dependent on whether your card program has been approved to operate in a given region.
+
+In this page, we'll provide an overview of how to manage a customer's eligibility for card issuance.
+
+# Request a KYC Link for a Cards Endorsement
+
+Regardless of whether you are onboarding a new customer or issuing a card to an existing customer, you can use the [Customer KYC Link retrieval](/platform/customers/customers/kyclinks) endpoint to request a cards endorsement using a query parameter of `?endorsement=cards` (when requesting multiple capabilities, e.g. cards and SEPA, you can set the `endorsement` param similarly to this: `endorsement[]=cards&endorsement[]=sepa`).
+
+This will return a response like so:
+
+```json
+{
+    "url": "https://bridge.withpersona.com/inquiry?inquiry-id=inq_CncY1CqRivqDMcjkxW9PMv2aPBnE"
+}
+```
+
+This link will open a flow for the customer to complete KYC or confirm that their previously-provided KYC information is correct. Do not store this URL, as it may expire arbitrarily.
+
+If the customer has completed KYC within the past 24 hours, they will be immediately approved for the `cards` endorsement. You can check this by immediately calling the [Customer endpoint](https://bridge-docs.readme.io/reference/get_customers-customerid) for the endorsement status (more on this in the following section). 
+
+Otherwise, the approval for the cards endorsement is not necessarily immediate. When the link is created  KYC refresh flow, you cannot assume that their cards endorsement will be approved immediately. Instead, you must check the status of the `cards` endorsement, either by directly checking the Customer endpoint, or by consuming the `customers` webhook event category. 
+
+# Check Customer Status or Webhooks For Card Endorsement Status
+
+The status of the `cards` endorsement is exposed in the [Customer](https://apidocs.bridge.xyz/reference/get_customers-customerid) object, within the `endorsements` array. You can also receive endorsements updates via webhook events with the `customer` category, with events conforming to the same Customer object definition. 
+
+Once the customer is approved for cards, the customer's `endorsements` array should contain the following:
+
+```json
+"endorsements": [
+    ...
+    {
+        "name": "cards",
+        "status": "approved",
+        "requirements": {
+            "complete": [
+                "terms_of_service_v1",
+                "first_name",
+                "last_name",
+                "tax_identification_number",
+                "email_address",
+                "address_of_residence",
+                "date_of_birth",
+                "proof_of_address",
+                "sanctions_screen",
+                "pep_screen",
+                "blocklist_lookup",
+                "min_age_18",
+                "database_lookup",
+                "government_id_verification",
+                "customer_region_supports_cards",
+                "customer_address_is_valid_for_cards",
+                ...
+            ],
+            "pending": [],
+            "missing": null,
+            "issues": []
+        }
+    },
+    ...
+```
+
+When the `cards` endorsement has status `approved`, you may issue the customer a card using the [Provision Card Account](https://apidocs.bridge.xyz/api-reference/cards/provision-a-card-account#provision-a-card-account) endpoint. Please note that an approved `cards` endorsement will expire in 24 hours if a card is not created within that period, as it is a compliance requirement to ensure that the customer confirms their information is up to date within 24 hours of the card account creation. If a cards endorsement has been approved for more than 24 hours, it will automatically transition to the `revoked` state. At that point, you will need to re-request another KYC Link for a `cards` endorsement for that customer to reconfirm their information. This 24 hour validity period may be subject to change depending on compliance requirements.
+
+If there are any eligibility issues with the customer's ability to use cards, the endorsement will be in an `incomplete` state, and the `issues` field will contain additional details indicating the reasons. In addition to [standard issues](https://apidocs.bridge.xyz/docs/endorsements) surfaced in the customer object, there are some behaviors specific to the cards endorsement: 
+
+- `endorsement_not_available_in_customers_region`: cards is not supported in the country or state specified in the customer's residence address. This could be due to MTL regulations, or because the specified country has not yet been approved for card issuance for your developer.
+
+- `residence_address_invalid_city`: the customer's address has an invalid city name. for cards specifically, the cardholder’s city has a maximum length of 30 characters that may include letters, spaces, hyphens, and periods. Numbers are not allowed in the city name currently.
+
+- `residence_address_invalid_address_line1`: the customer's address has an invalid first line. The first line of the customer's address must contain at least 4 characters.
+
+- `residence_address_invalid_postal_code`: the customer's address is missing a postal code. For some countries without postal code systems, we will apply a default postal code, but otherwise the customer generally must provide a postal code between 4 and 10 characters in their address.
+
+- `residence_address_invalid_subdivision_code`: the customer omitted or provided an invalid subdivision code in their address.
