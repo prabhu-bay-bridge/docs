@@ -1,0 +1,42 @@
+---
+title: "New file"
+description: "Description of your new file."
+---
+
+Create a customer object for each user that needs a USD or EUR account. Check out this [guide](/get-started/introduction/quick-start/create-your-first-customer) for a full in depth explanation on onboarding customers. You can create a KYC link with the following API request and share the KYC link with your customer.
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/kyc_links' \
+--header 'Content-Type: application/json' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <generate a uuid>' \
+--data-raw '{
+  "full_name": "John Doe",
+  "email": "johndoe@example.com",
+  "type": "individual"
+}'
+```
+
+```json Response expandable
+{
+  "id": "uuid",
+  "full_name": "John Doe",
+  "email": "johndoe@example.com",
+  "type": "individual", // or "business"
+  "kyc_link": "https://bridge.withpersona.com/verify?",
+  "tos_link": "https://dashboard.bridge.xyz/accept-terms-of-service?",
+  "kyc_status": "not_started", // or "under_review", "incomplete", "approved" or "rejected"
+  "rejection_reasons": [],
+  "tos_status": "pending", // or "approved"
+  "created_at": "2025-07-16T18:28:25.970Z",
+  "customer_id": "customer_id",
+  "persona_inquiry_type": "gov_id_db"
+}
+```
+
+Guide the user through:
+
+1. Visiting the `tos_link` and accepting terms of service
+2. Completing identity verification via the `kyc_link`
+
+This process typically takes less than a minute and updates automatically once complete.
