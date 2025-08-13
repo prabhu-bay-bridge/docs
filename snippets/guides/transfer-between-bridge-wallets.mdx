@@ -1,0 +1,48 @@
+---
+title: "New file"
+description: "Description of your new file."
+---
+
+Refer below on how to create a transfer to move money between Bridge wallets. Use the [Transfers](/api-reference/transfers/create-a-transfer) API with `bridge_wallet` as the source.
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+  --header 'Api-Key: <API Key>' \
+  --header 'Idempotency-Key: <Unique Key>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "amount": "10.0",
+    "on_behalf_of": "<customer_id>",
+    "developer_fee": "0.0",
+    "source": {
+      "payment_rail": "bridge_wallet",
+      "currency": "usdb",
+      "bridge_wallet_id": "wallet_123"
+    },
+    "destination": {
+      "payment_rail": "bridge_wallet",
+      "currency": "solana",
+      "to_address": "wallet_456"
+    }
+  }'
+```
+
+```json Response expandable
+{
+  "id": "transfer_abc",
+  "amount": "10.0",
+	...
+  "source": {
+     "payment_rail": "bridge_wallet",
+     "currency": "usdb",
+     "bridge_wallet_id": "wallet_123"
+   },
+  "destination": {
+    "payment_rail": "bridge_wallet",
+    "currency": "solana",
+    "to_address": "wallet_456"
+  },
+}
+```
+
+Bridge will then initiate a crypto transfer from between the two specified bridge wallets.
