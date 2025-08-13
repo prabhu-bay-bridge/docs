@@ -392,6 +392,10 @@
         {
             "source": "/docs/identifying-information-overview",
             "destination": "/platform/customers/customers/identifying-information-overview"
+        },
+        {
+            "source": "/docs/mobile-wallet-provisioning",
+            "destination": "/platform/cards/mobile-wallet-provisioning"
         }
     ]
 }

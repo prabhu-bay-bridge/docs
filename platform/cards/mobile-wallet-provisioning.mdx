@@ -1,0 +1,90 @@
+---
+title: "In-App Mobile Wallet Provisioning"
+---
+
+_Push provisioning_ enables customers to add the card directly to Apple Pay or Google Pay without manually typing in the card details. Bridge's Cards API provides [mobile wallet push provisioning request](/api-reference/cards/create-a-mobile-wallet-push-provisioning-request) endpoint that will provide the necessary information to add a card to a mobile wallet.
+
+Below, we'll discuss the details of the process specific to each wallet provider.
+
+## Apple Pay
+
+For Apple Pay, your mobile app first communicates with Apple's servers to retrieve the necessary certificates to encrypt the card details, then sends them to Bridge to retrieve the encrypted card details, and uses it to complete the provisioning process. At a high level, you can think of the process as the following:
+
+1. Your cardholder requests to add their card to the mobile wallet from within your mobile app.
+2. Your mobile app calls the mobile wallet to generate the certificates, keys, and other data required to encrypt the card details.
+3. You pass this information through your backend to Bridge, which will encrypt the card details using the provided certificates and keys, and return the encrypted payload to you.
+4. You provide the encrypted payload to the mobile wallet.
+5. Your mobile wallet decrypts the payload, validates it, tokenizes it with the card network, and activates it.
+
+Your app must have the `com.apple.developer.payment-pass-provisioning` entitlement in order to enable adding cards to Apple Pay wallets. You can request this entitlement with Apple following [this guide](https://applepaydemo.apple.com/wallet-extensions#allowListing).
+
+Within your app, create a `PKAddPaymentPassRequestConfiguration` to configure how the card will be displayed. Use this to initialize a `PKAddPaymentPassViewController` to display the flow for adding the card to Apple Pay. As the user interacts with the flow, the controller will handle requesting Apple Servers for the necessary certificates, which will then get passed back to the `generateRequestWithCertificateChain` method.
+
+In your implementation of the `generateRequestWithCertificateChain` method, the arguments will contain a list of `certificates`, a `nonce`, and a `nonceSignature`. From the list of certificates, you will take the leaf certificate (the first item), and a subordinate certificate (the second item). You can use the following snippet as a rough reference implementation in your `PKAddPaymentPassViewControllerDelegate` for extracting the necessary details:
+
+```swift
+extension AddCardToWalletViewController: PKAddPaymentPassViewControllerDelegate {
+    func addPaymentPassViewController(_ controller: PKAddPaymentPassViewController,
+                                    generateRequestWithCertificateChain certificates: [Data],
+                                    nonce: Data,
+                                    nonceSignature: Data,
+                                    completionHandler handler: @escaping (PKAddPaymentPassRequest) -> Void) {
+        
+        // Extract leaf and subordinate certificates - both must exist
+        guard certificates.count >= 2 else {
+            print("Error: Expected at least 2 certificates (leaf and subordinate)")
+            ...
+        }
+        
+        let leafCert = certificates[0].base64EncodedString()
+        let subordinateCert = certificates[1].base64EncodedString()
+      
+      	// This is what the request should look like when it gets to Bridge's
+      	// POST /card_accounts/{cardAccountID}/create_mobile_wallet_provisioning_request endpoint
+        // Just a mock example -- don't directly call Bridge's endpoint from your mobile app!
+        let pushProvisioningDetailsJSON: [String: Any] = [
+            "wallet_provider": "apple_pay",
+            "apple_pay": [
+                "encoding": "base64",
+                "leaf_cert": leafCert,
+                "subordinate_cert": subordinateCert,
+                "nonce": nonce.base64EncodedString(),
+                "nonce_signature": nonceSignature.base64EncodedString()
+            ]
+        ]
+        ...
+```
+
+Pass these details to your backend, and then to the Bridge [mobile wallet push provisioning request](/api-reference/cards/create-a-mobile-wallet-push-provisioning-request) endpoint, like so:
+
+```json
+{
+  "wallet_provider": "apple_pay",
+  "apple_pay": {
+    "encoding": "base64",
+    "leaf_cert": "MIIFjTCCA3WgAwIBAgIIWq7uC...",
+    "subordinate_cert": "MIIFozCCA4ugAwIBAgIBATANBg...",
+    "nonce": "dGhpcyBpcyBhIG5vbmNl",
+    "nonce_signature": "MEUCIQDxl9V7oV8k3R..."
+  }
+}
+```
+
+The response will contain the encrypted card details like so:
+
+```json
+{
+  "wallet_provider": "apple_pay",
+  "apple_pay": {
+    "activation_data": "MBPAC-1-FK-123456.1--TDEA-8BF92C1D4291C91F35EFF127C1F9ABC12348DFED4E",
+    "encrypted_pass_data": "F92C1D45EFF127F9C1D45EF2C1D45EFF127F92F127F92C1D45EFF127==",
+    "ephemeral_public_key": "0499a6f42e83e27830f7f8994a4f150a78cdb9b7507bc5d28cbfbf8cc3ef0af68b780ffb562c936e60cb10db69192017089e3b73c83fcf0ebdf2c06b613c3f88b7"
+  }
+}
+```
+
+You can then use the `activation_data`, `encrypted_pass_data`, and `ephemeral_public_key` to create the `PKAddPaymentPassRequest` to complete the provisioning.
+
+## Google Pay
+
+For Google Pay, you can integrate Google's private [Android Push Provisioning API](https://developers.google.com/pay/issuers/apis/push-provisioning/android/integration-steps). You can follow [this guide](https://support.google.com/console/answer/15157842?hl=en) to request access to the API. Google Pay will provide the wallet account ID and device ID that is needed to pass into the mobile wallet provisioning request.
