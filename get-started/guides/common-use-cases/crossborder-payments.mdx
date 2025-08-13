@@ -1,5 +1,46 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Cross border payments"
 ---
 
+To enable your customer to make cross-border payments to global suppliers, you need to create **two static templates** – **reusable payment routes** that allow you to both on-ramp from fiat to crypto and off-ramp from crypto to fiat. Bridge provides deposit instructions for your customer. When your customer’s supplier payment arrives in our account, we convert the fiat to stablecoins, send the stablecoins to a pass-through wallet, then convert back to fiat and finally deposit into the supplier's account.
+
+---
+import GenerateApiKeys from '/snippets/guides/generate-api-keys.mdx';
+import CreateACustomer from '/snippets/guides/create-a-customer.mdx';
+import CreateAWallet from '/snippets/guides/create-a-wallet.mdx';
+import CreateAVirtualAccount from '/snippets/guides/create-a-virtual-account.mdx';
+import TransferBetweenBridgeWallets from '/snippets/guides/transfer-between-bridge-wallets.mdx';
+
+## Step 1: Generate your API Keys
+
+<GenerateApiKeys />
+
+## Step 2: Create a customer
+
+Create a customer ID for each employer so you can easily manage payroll funding and payouts
+
+<CreateACustomer />
+
+## Step 3: Create a wallet for the employer
+
+Create a prefunded wallet to securely hold the employer’s payroll funds. A prefunded wallet is a specialized wallet that allows you to maintain and disburse funds on behalf of the employer until it’s time to process payroll.
+
+<CreateAWallet />
+
+## Step 4: Create a virtual account
+
+Create a USD or EUR account for the employer. Provide them with the bank instructions so that they can deposit payroll funds. Funds deposited are converted to stablecoins and sent directly to the employer’s wallet.
+
+<CreateAVirtualAccount />
+
+## Step 5: Create a wallet for an employee
+
+Create a wallet for each employee to get paid in stablecoins.
+
+<CreateAWallet />
+
+## Step 5: Move funds from the employer's wallet to the employee's wallet using the Transfers API
+
+Use the Transfers API to move funds from the employer’s prefunded wallet to the employee’s wallet. Simply provide the source and destination wallet addresses and specify the amount. You will need to call the API for each employee.
+
+<TransferBetweenBridgeWallets />
