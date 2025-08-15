@@ -5,10 +5,7 @@ description: "Receive webhooks for quick detection of crypto deposits."
 
 The Indexed deposits webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized.
 
-**When to Use**\
-Use this webhook if your application benefits from knowing about a deposit _as soon as it appears on chain_, even before it’s finalized. Ideal for UX that wants to pre-notify users of inbound funds, or to start monitoring for large incoming payments.
-
-## Disclaimer Regarding Chain Reorganization
+## Important Disclaimer Risk of Money Loss\!
 
 <Danger>
   A transaction that is `detected` here may not ultimately be `finalized` due to chain reorganization. **<u>Please understand your risk and liability before utilizing this webhook.</u>**
@@ -18,7 +15,7 @@ In the case of a chain reorganization, it is possible to receive multiple `detec
 
 For the purpose of tracking deposits uniquely, be sure to take into account the `block_hash`, `tx_hash`,  an`log_or_instruction_index`.
 
-**Be aware that this information is provided to help developers track the status of a deposit on the blockchain, not the state of a transaction within the Bridge system.** Even though an indexed deposit is `detected` or `finalized` , the transaction may still be incomplete. Use caution when utilizing the information from this webhook.
+**Be aware that this information is provided to help developers track the status of a deposit on the blockchain, not the state of a transaction within the Bridge system.** Even though an indexed deposit is detected or finalized , the transaction may still be incomplete. Use caution when utilizing the information from this webhook.
 
 ## Applicable Deposits
 
@@ -39,11 +36,9 @@ Indexed deposits are categorized in one of two states:
 - `finalized` - The deposit has achieved finality, indicating a higher degree of confidence that it will be incorporated into the canonical chain.\
   Payload Structure
 
-## Webhook payload
+**NOTE**: As development continues on this feature, the structure of this payload is likely to change.
 
-<Warning>
-  **NOTE**: As we're in beta and development on this feature continues, the structure of this payload is likely to change. We will keep you informed if this happens\!
-</Warning>
+## Webhook payload
 
 | Name                     | Type   | Description                                                                         |
 | :----------------------- | :----- | :---------------------------------------------------------------------------------- |
@@ -53,7 +48,7 @@ Indexed deposits are categorized in one of two states:
 | block_hash               | string | Hash of the block containing this transaction                                       |
 | block_number             | string | Number of the block containing this transaction (For Solana, this is the slot)      |
 | block_timestamp          | string | Timestamp of the block containing this transaction, e.g. “2025-06-10 15:27:54 UTC”  |
-| state                    | string | Either “`detected`” or “`finalized`”                                                |
+| state                    | string | Either “detected” or “finalized”                                                    |
 | chain                    | string | The chain on which the transaction occurred, e.g. “base”, “solana”, “polygon”, etc. |
 | currency                 | string | Currency of the deposit, e.g. “usdc”                                                |
 | log_or_instruction_index | string | Top level index of the log or instruction, e.g. “3”                                 |
