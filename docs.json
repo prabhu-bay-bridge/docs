@@ -396,6 +396,10 @@
         {
             "source": "/docs/mobile-wallet-provisioning",
             "destination": "/platform/cards/mobile-wallet-provisioning"
+        },
+        {
+            "source": "/docs/safely-reveal-card-details-to-customers",
+            "destination": "/platform/cards/additional/safely-reveal-card-details"
         }
     ]
 }
