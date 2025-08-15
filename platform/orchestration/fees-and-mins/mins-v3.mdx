@@ -1,11 +1,8 @@
 ---
 title: "Test"
 ---
-
-import { useState, useEffect, useMemo } from "react";
-
 export const MinTxCalculator = () => {
-  // === Data ===
+  // --- Data (same as your app) ---
   const currencyToSourceRails = {
     mxn: ["spei"],
     usd: ["ach", "wire"],
@@ -36,14 +33,14 @@ export const MinTxCalculator = () => {
     usdb: ["bridge_wallet"],
   };
 
-  const allCurrencies = useMemo(() => Object.keys(currencyToSourceRails), []);
-  const allRails = useMemo(() => {
-    const s = Object.values(currencyToSourceRails).flat();
-    const d = Object.values(currencyToDestRails).flat();
-    return Array.from(new Set([...s, ...d]));
-  }, []);
+  const allCurrencies = Object.keys(currencyToSourceRails);
+  const allRails = Array.from(
+    new Set(
+      Object.values(currencyToSourceRails).flat().concat(Object.values(currencyToDestRails).flat())
+    )
+  );
 
-  // === State ===
+  // --- State ---
   const [sourceCurrency, setSourceCurrency] = useState("");
   const [sourceRail, setSourceRail] = useState("");
   const [destCurrency, setDestCurrency] = useState("");
@@ -52,59 +49,47 @@ export const MinTxCalculator = () => {
 
   const sortAsc = (arr) => [...arr].sort((a, b) => a.localeCompare(b));
 
-  // === Derived option lists (respecting selections) ===
-  const validSourceRails = useMemo(() => {
-    if (!sourceCurrency) return sortAsc(allRails);
-    return sortAsc(currencyToSourceRails[sourceCurrency] ?? []);
-  }, [sourceCurrency, allRails]);
+  // --- Helpers for valid options based on the counterpart selection ---
+  const validSourceRailsFor = (cur) => (cur ? currencyToSourceRails[cur] || [] : allRails);
+  const validSourceCurrenciesFor = (rail) =>
+    rail ? allCurrencies.filter((c) => (currencyToSourceRails[c] || []).includes(rail)) : allCurrencies;
 
-  const validSourceCurrencies = useMemo(() => {
-    if (!sourceRail) return sortAsc(allCurrencies);
-    return sortAsc(
-      allCurrencies.filter((cur) => (currencyToSourceRails[cur] ?? []).includes(sourceRail))
-    );
-  }, [sourceRail, allCurrencies]);
+  const validDestRailsFor = (cur) => (cur ? currencyToDestRails[cur] || [] : allRails);
+  const validDestCurrenciesFor = (rail) =>
+    rail ? allCurrencies.filter((c) => (currencyToDestRails[c] || []).includes(rail)) : allCurrencies;
 
-  const validDestRails = useMemo(() => {
-    if (!destCurrency) return sortAsc(allRails);
-    return sortAsc(currencyToDestRails[destCurrency] ?? []);
-  }, [destCurrency, allRails]);
+  // --- Change handlers that also reconcile the dependent field ---
+  const onSourceCurrency = (cur) => {
+    setSourceCurrency(cur);
+    const rails = validSourceRailsFor(cur);
+    setSourceRail((prev) => (rails.length === 1 ? rails[0] : rails.includes(prev) ? prev : ""));
+  };
+  const onSourceRail = (rail) => {
+    setSourceRail(rail);
+    const curs = validSourceCurrenciesFor(rail);
+    setSourceCurrency((prev) => (curs.length === 1 ? curs[0] : curs.includes(prev) ? prev : ""));
+  };
 
-  const validDestCurrencies = useMemo(() => {
-    if (!destRail) return sortAsc(allCurrencies);
-    return sortAsc(
-      allCurrencies.filter((cur) => (currencyToDestRails[cur] ?? []).includes(destRail))
-    );
-  }, [destRail, allCurrencies]);
+  const onDestCurrency = (cur) => {
+    setDestCurrency(cur);
+    const rails = validDestRailsFor(cur);
+    setDestRail((prev) => (rails.length === 1 ? rails[0] : rails.includes(prev) ? prev : ""));
+  };
+  const onDestRail = (rail) => {
+    setDestRail(rail);
+    const curs = validDestCurrenciesFor(rail);
+    setDestCurrency((prev) => (curs.length === 1 ? curs[0] : curs.includes(prev) ? prev : ""));
+  };
 
-  // === Auto-fix dependent fields when options change ===
-  useEffect(() => {
-    if (sourceRail && !validSourceRails.includes(sourceRail)) setSourceRail("");
-    if (!sourceRail && validSourceRails.length === 1) setSourceRail(validSourceRails[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validSourceRails.join("|")]);
-
-  useEffect(() => {
-    if (sourceCurrency && !validSourceCurrencies.includes(sourceCurrency)) setSourceCurrency("");
-    if (!sourceCurrency && validSourceCurrencies.length === 1) setSourceCurrency(validSourceCurrencies[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validSourceCurrencies.join("|")]);
-
-  useEffect(() => {
-    if (destRail && !validDestRails.includes(destRail)) setDestRail("");
-    if (!destRail && validDestRails.length === 1) setDestRail(validDestRails[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validDestRails.join("|")]);
-
-  useEffect(() => {
-    if (destCurrency && !validDestCurrencies.includes(destCurrency)) setDestCurrency("");
-    if (!destCurrency && validDestCurrencies.length === 1) setDestCurrency(validDestCurrencies[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validDestCurrencies.join("|")]);
+  // --- Derived option arrays (sorted for display) ---
+  const sourceRails = sortAsc(validSourceRailsFor(sourceCurrency));
+  const sourceCurrencies = sortAsc(validSourceCurrenciesFor(sourceRail));
+  const destRails = sortAsc(validDestRailsFor(destCurrency));
+  const destCurrencies = sortAsc(validDestCurrenciesFor(destRail));
 
   const filled = sourceCurrency && sourceRail && destCurrency && destRail;
 
-  // === Calculation (ported 1:1) ===
+  // --- Calculation (1:1 port) ---
   const onCalculate = () => {
     const src = (sourceCurrency || "").toLowerCase();
     const dst = (destCurrency || "").toLowerCase();
@@ -113,9 +98,7 @@ export const MinTxCalculator = () => {
 
     const fiats = ["usd", "euro", "mxn"];
     if (fiats.includes(src) && fiats.includes(dst)) {
-      setResult(
-        `🛠️ Fiat-to-fiat transfers are not available yet, but coming soon!`
-      );
+      setResult("🛠️ Fiat-to-fiat transfers are not available yet, but coming soon!");
       return;
     }
 
@@ -176,7 +159,7 @@ export const MinTxCalculator = () => {
     setResult("Minimum required: —");
   };
 
-  // === UI ===
+  // --- Small Select helper ---
   const Select = ({ id, label, value, onChange, options }) => (
     <div className="flex-1">
       <label htmlFor={id} className="block text-sm font-medium mb-1">
@@ -209,15 +192,15 @@ export const MinTxCalculator = () => {
             id="sourceCurrency"
             label="Source Currency"
             value={sourceCurrency}
-            onChange={setSourceCurrency}
-            options={validSourceCurrencies}
+            onChange={onSourceCurrency}
+            options={sourceCurrencies}
           />
           <Select
             id="sourceRail"
             label="Source Payment Rail"
             value={sourceRail}
-            onChange={setSourceRail}
-            options={validSourceRails}
+            onChange={onSourceRail}
+            options={sourceRails}
           />
         </div>
       </fieldset>
@@ -229,15 +212,15 @@ export const MinTxCalculator = () => {
             id="destCurrency"
             label="Destination Currency"
             value={destCurrency}
-            onChange={setDestCurrency}
-            options={validDestCurrencies}
+            onChange={onDestCurrency}
+            options={destCurrencies}
           />
           <Select
             id="destRail"
             label="Destination Payment Rail"
             value={destRail}
-            onChange={setDestRail}
-            options={validDestRails}
+            onChange={onDestRail}
+            options={destRails}
           />
         </div>
       </fieldset>
