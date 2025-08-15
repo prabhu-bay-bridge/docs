@@ -1,0 +1,155 @@
+/* No npm imports (React is provided by the MDX runtime) */
+const { useState } = React;
+
+export default function MinTxCalculator() {
+  // --- data ---
+  const currencyToSourceRails = {
+    mxn:["spei"], usd:["ach","wire"], euro:["sepa"],
+    usdc:["ethereum","polygon","base","arbitrum","avalanche","optimism","solana","stellar"],
+    usdt:["ethereum","tron"], dai:["ethereum"], usdp:["ethereum"],
+    pyusd:["ethereum","solana"], eurc:["solana"], btc:["bitcoin"],
+    eth:["ethereum"], usdb:["bridge_wallet"],
+  };
+  const currencyToDestRails = {
+    mxn:["spei"], usd:["ach_push","ach_same_day","wire"], euro:["sepa"],
+    usdc:["ethereum","polygon","base","arbitrum","avalanche","optimism","solana","stellar"],
+    usdt:["ethereum","tron"], dai:["ethereum"], usdp:["ethereum"],
+    pyusd:["ethereum","solana"], eurc:["solana"], btc:["bitcoin"],
+    eth:["ethereum"], usdb:["bridge_wallet"],
+  };
+
+  const allCurrencies = Object.keys(currencyToSourceRails);
+  const allRails = Array.from(new Set([
+    ...Object.values(currencyToSourceRails).flat(),
+    ...Object.values(currencyToDestRails).flat(),
+  ]));
+
+  // --- state ---
+  const [sourceCurrency, setSourceCurrency] = useState("");
+  const [sourceRail, setSourceRail]         = useState("");
+  const [destCurrency, setDestCurrency]     = useState("");
+  const [destRail, setDestRail]             = useState("");
+  const [result, setResult]                 = useState("Minimum required: —");
+
+  // --- helpers ---
+  const sortAsc = (arr)=>[...arr].sort((a,b)=>a.localeCompare(b));
+  const validSourceRailsFor      = (cur)=> cur ? (currencyToSourceRails[cur]||[]) : allRails;
+  const validSourceCurrenciesFor = (rail)=> rail ? allCurrencies.filter(c => (currencyToSourceRails[c]||[]).includes(rail)) : allCurrencies;
+  const validDestRailsFor        = (cur)=> cur ? (currencyToDestRails[cur]||[]) : allRails;
+  const validDestCurrenciesFor   = (rail)=> rail ? allCurrencies.filter(c => (currencyToDestRails[c]||[]).includes(rail)) : allCurrencies;
+
+  // keep pairs in sync
+  const onSourceCurrency = (cur)=>{ setSourceCurrency(cur);
+    const rails = validSourceRailsFor(cur);
+    setSourceRail(prev => (rails.length===1?rails[0] : rails.includes(prev)?prev : "")); };
+  const onSourceRail = (rail)=>{ setSourceRail(rail);
+    const curs = validSourceCurrenciesFor(rail);
+    setSourceCurrency(prev => (curs.length===1?curs[0] : curs.includes(prev)?prev : "")); };
+  const onDestCurrency = (cur)=>{ setDestCurrency(cur);
+    const rails = validDestRailsFor(cur);
+    setDestRail(prev => (rails.length===1?rails[0] : rails.includes(prev)?prev : "")); };
+  const onDestRail = (rail)=>{ setDestRail(rail);
+    const curs = validDestCurrenciesFor(rail);
+    setDestCurrency(prev => (curs.length===1?curs[0] : curs.includes(prev)?prev : "")); };
+
+  // options
+  const sourceRails      = sortAsc(validSourceRailsFor(sourceCurrency));
+  const sourceCurrencies = sortAsc(validSourceCurrenciesFor(sourceRail));
+  const destRails        = sortAsc(validDestRailsFor(destCurrency));
+  const destCurrencies   = sortAsc(validDestCurrenciesFor(destRail));
+  const filled = sourceCurrency && sourceRail && destCurrency && destRail;
+
+  // --- calculation (1:1 from your script) ---
+  const onCalculate = ()=>{
+    const src=(sourceCurrency||"").toLowerCase();
+    const dst=(destCurrency||"").toLowerCase();
+    const rail=(sourceRail||"").toLowerCase();
+    const dstRailLower=(destRail||"").toLowerCase();
+
+    const fiats=["usd","euro","mxn"];
+    if (fiats.includes(src) && fiats.includes(dst)) {
+      setResult("🛠️ Fiat-to-fiat transfers are not available yet, but coming soon!");
+      return;
+    }
+
+    const reasons=[];
+    let base = !fiats.includes(src) ? (["usdc","usdt","usdp","dai","pyusd","eurc"].includes(src) ? 1.0 : 2.0) : 1.0;
+    const mins=[base];
+
+    if (
+      ["dai","usdt"].includes(src) || ["dai","usdt"].includes(dst) ||
+      ["eth","btc"].includes(src)  || ["eth","btc"].includes(dst)
+    ) { mins.push(2); reasons.push("Exchange or crypto fee"); }
+
+    if (["btc","dai","eth","usdt"].includes(dst) && ["bitcoin","ethereum"].includes(dstRailLower)) {
+      mins.push(20); reasons.push("Gas cost on destination rail");
+    }
+
+    if (rail==="tron" || dstRailLower==="tron") { mins.push(5); reasons.push("Tron adjustment"); }
+    if (src==="mxn")  { mins.push(50); reasons.push("MXN source minimum"); }
+    if (dst==="mxn")  { mins.push(2);  reasons.push("MXN destination minimum"); }
+
+    const finalMin = Math.max(...mins);
+    const displayCurrency = src.toUpperCase();
+    setResult(`Minimum required: ${finalMin.toFixed(2)} ${displayCurrency}
+Reason: ${reasons.length ? reasons.join(", ") : "base minimum applied"}`);
+  };
+
+  const onReset = ()=>{
+    setSourceCurrency(""); setSourceRail(""); setDestCurrency(""); setDestRail("");
+    setResult("Minimum required: —");
+  };
+
+  // tiny Select
+  const Select = ({ id, label, value, onChange, options }) => (
+    <div style={{ flex: 1 }}>
+      <label htmlFor={id} style={{ fontWeight: 600, display: "block", marginBottom: 4 }}>{label}</label>
+      <select
+        id={id} value={value} onChange={(e)=>onChange(e.target.value)}
+        style={{ width:"100%", height:40, borderRadius:8, border:"1px solid #ccc", padding:"0 8px", background:"transparent" }}
+      >
+        <option value="">{`-- Select --`}</option>
+        {options.map(opt => <option key={opt} value={opt}>{opt.toUpperCase()}</option>)}
+      </select>
+    </div>
+  );
+
+  return (
+    <div style={{ fontFamily:"sans-serif", padding:20 }}>
+      <div style={{ maxWidth:640, margin:"0 auto" }}>
+        <h2 style={{ fontSize:20, fontWeight:600, marginBottom:16 }}>Minimum Transaction Calculator</h2>
+
+        <fieldset style={{ border:"1px solid #ccc", borderRadius:6, padding:15, marginBottom:20 }}>
+          <legend style={{ fontWeight:600, padding:"0 8px" }}>Source</legend>
+          <div style={{ display:"flex", gap:10, marginBottom:15 }}>
+            <Select id="sourceCurrency" label="Source Currency" value={sourceCurrency} onChange={onSourceCurrency} options={sourceCurrencies} />
+            <Select id="sourceRail"     label="Source Payment Rail" value={sourceRail}     onChange={onSourceRail}     options={sourceRails} />
+          </div>
+        </fieldset>
+
+        <fieldset style={{ border:"1px solid #ccc", borderRadius:6, padding:15, marginBottom:20 }}>
+          <legend style={{ fontWeight:600, padding:"0 8px" }}>Destination</legend>
+          <div style={{ display:"flex", gap:10, marginBottom:15 }}>
+            <Select id="destCurrency"  label="Destination Currency" value={destCurrency}  onChange={onDestCurrency}  options={destCurrencies} />
+            <Select id="destRail"      label="Destination Payment Rail" value={destRail}  onChange={onDestRail}      options={destRails} />
+          </div>
+        </fieldset>
+
+        <div style={{ display:"flex", gap:10 }}>
+          <button disabled={!filled} onClick={onCalculate}
+            style={{ height:40, padding:"0 12px", borderRadius:8, border:"1px solid #ccc", opacity:filled?1:0.6, cursor:filled?"pointer":"not-allowed" }}>
+            Calculate Minimum
+          </button>
+          <button onClick={onReset}
+            style={{ height:40, padding:"0 12px", borderRadius:8, border:"1px solid #ccc", cursor:"pointer" }}>
+            Reset
+          </button>
+        </div>
+
+        <div style={{ marginTop:20, fontWeight:600, whiteSpace:"pre-line" }}>
+          {result.startsWith("🛠️") ? <span style={{ color:"orange" }}>{result}</span> : <span>{result}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
