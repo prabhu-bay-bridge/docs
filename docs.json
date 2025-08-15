@@ -109,7 +109,7 @@
                         "pages": [
                             "platform/orchestration/overview",
                             {
-                                "group": "Virtual Accounts",
+                                "group": "Virtual accounts",
                                 "pages": [
                                     "platform/orchestration/virtual_accounts/virtual-account",
                                     "platform/orchestration/virtual_accounts/virtual-account-events",
@@ -127,20 +127,20 @@
                                 ]
                             },
                             {
-                                "group": "Liquidation Address",
+                                "group": "Liquidation address",
                                 "pages": [
                                     "platform/orchestration/liquidation_address/liquidation_address",
                                     "platform/orchestration/liquidation_address/drains"
                                 ]
                             },
                             {
-                                "group": "Prefunded Accounts",
+                                "group": "Prefunded accounts",
                                 "pages": [
                                     "platform/orchestration/prefunded_accounts/prefunded_accounts"
                                 ]
                             },
                             {
-                                "group": "External Accounts",
+                                "group": "External accounts",
                                 "pages": [
                                     "platform/orchestration/external-accounts/external-accounts-api",
                                     "platform/orchestration/external-accounts/plaid",
@@ -148,7 +148,7 @@
                                 ]
                             },
                             {
-                                "group": "Fees & Minimums",
+                                "group": "Fees & minimums",
                                 "pages": [
                                     "platform/orchestration/fees-and-mins/devfees",
                                     "platform/orchestration/fees-and-mins/mins"
@@ -268,7 +268,7 @@
                 ]
             },
             {
-                "tab": "API Reference",
+                "tab": "API reference",
                 "icon": "brackets-curly",
                 "pages": [
                     "api-reference/introduction/authentication",
