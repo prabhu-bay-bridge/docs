@@ -1,5 +1,5 @@
 ---
-title: "Managing Customer Eligibility for Cards"
+title: "Managing customer eligibility for cards"
 description: "Things to be aware of before issuing a card for your customer"
 ---
 
@@ -7,7 +7,7 @@ In order to issue a card to a [Customer](https://apidocs.bridge.xyz/docs/custome
 
 In this page, we'll provide an overview of how to manage a customer's eligibility for card issuance.
 
-# Request a KYC Link for a Cards Endorsement
+## Request a KYC Link for a Cards Endorsement
 
 Regardless of whether you are onboarding a new customer or issuing a card to an existing customer, you can use the [Customer KYC Link retrieval](/platform/customers/customers/kyclinks) endpoint to request a cards endorsement using a query parameter of `?endorsement=cards` (when requesting multiple capabilities, e.g. cards and SEPA, you can set the `endorsement` param similarly to this: `endorsement[]=cards&endorsement[]=sepa`).
 
@@ -25,7 +25,7 @@ If the customer has completed KYC within the past 24 hours, they will be immedia
 
 Otherwise, the approval for the cards endorsement is not necessarily immediate. When the link is created  KYC refresh flow, you cannot assume that their cards endorsement will be approved immediately. Instead, you must check the status of the `cards` endorsement, either by directly checking the Customer endpoint, or by consuming the `customers` webhook event category.
 
-# Check Customer Status or Webhooks For Card Endorsement Status
+## Check Customer Status or Webhooks For Card Endorsement Status
 
 The status of the `cards` endorsement is exposed in the [Customer](https://apidocs.bridge.xyz/api-reference/customers/get-a-single-customer-object#get-a-single-customer-object) object, within the `endorsements` array. You can also receive endorsements updates via webhook events with the `customer` category, with events conforming to the same Customer object definition.
 
