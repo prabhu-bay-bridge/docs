@@ -5,7 +5,10 @@ description: "Receive webhooks for quick detection of crypto deposits."
 
 The Indexed deposits webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized.
 
-## Important Disclaimer Risk of Money Loss\!
+**When to Use**\
+Use this webhook if your application benefits from knowing about a deposit _as soon as it appears on chain_, even before it’s finalized. Ideal for UX that wants to pre-notify users of inbound funds, or to start monitoring for large incoming payments.
+
+## Important disclaimer: risk of loss\!
 
 <Danger>
   A transaction that is `detected` here may not ultimately be `finalized` due to chain reorganization. **<u>Please understand your risk and liability before utilizing this webhook.</u>**
@@ -17,7 +20,7 @@ For the purpose of tracking deposits uniquely, be sure to take into account the 
 
 **Be aware that this information is provided to help developers track the status of a deposit on the blockchain, not the state of a transaction within the Bridge system.** Even though an indexed deposit is detected or finalized , the transaction may still be incomplete. Use caution when utilizing the information from this webhook.
 
-## Applicable Deposits
+## Applicable deposits
 
 | Chain      | Assets    |
 | :--------- | :-------- |
@@ -28,7 +31,7 @@ For the purpose of tracking deposits uniquely, be sure to take into account the 
 | Tron       | USDT      |
 | Worldchain | USDC      |
 
-## Deposit States
+## Deposit states
 
 Indexed deposits are categorized in one of two states:
 
