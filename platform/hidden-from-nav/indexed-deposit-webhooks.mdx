@@ -3,11 +3,11 @@ title: "Indexed Deposits Webhook (Beta)"
 description: "Description of your new file."
 ---
 
-# Overview
+## Overview
 
-The Indexed Deposits Webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized. 
+The Indexed Deposits Webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized.
 
-# Disclaimer Regarding Chain Reorganization
+## <Icon icon="brake-warning" color="#f70a0a" /> Disclaimer Regarding Chain Reorganization
 
 A transaction that is `detected` here may not ultimately be `finalized` due to chain reorganization. Please understand your risk and liability before utilizing this webhook.
 
@@ -17,7 +17,7 @@ For the purpose of tracking deposits uniquely, be sure to take into account the 
 
 Be aware that this information is provided to help developers track the status of a deposit on the blockchain, not the state of a transaction within the Bridge system. Even though an indexed deposit is detected or finalized , the transaction may still be incomplete. Use caution when utilizing the information from this webhook.
 
-# Applicable Deposits
+## Applicable Deposits
 
 | Chain      | Assets    |
 
@@ -35,13 +35,12 @@ Be aware that this information is provided to help developers track the status o
 
 | Worldchain | USDC      |
 
-# Deposit States
+## Deposit States
 
 Indexed deposits are categorized in one of two states:
 
 - `detected` - The deposit has been detected on chain, but has not achieved finality. It is possible that this deposit may not be incorporated into the canonical chain
-
-- `finalized` - The deposit has achieved finality, indicating a higher degree of confidence that it will be incorporated into the canonical chain.  
+- `finalized` - The deposit has achieved finality, indicating a higher degree of confidence that it will be incorporated into the canonical chain.
 
   Payload Structure
 
