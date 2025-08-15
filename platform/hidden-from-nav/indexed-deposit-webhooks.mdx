@@ -1,15 +1,15 @@
 ---
-title: "Indexed Deposits Webhook (Beta)"
+title: "(Beta) Indexed deposits webhook"
 description: "Receive webhooks for quick detection of crypto deposits."
 ---
 
-## Overview
+The Indexed deposits webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized.
 
-The Indexed Deposits Webhook alerts you of customer deposits as we detect them on chain. This is useful for use cases that require information about the first possible appearance of a deposit on chain, whether or not it has been finalized.
+## Disclaimer Regarding Chain Reorganization
 
-## <Icon icon="brake-warning" color="#f70a0a" /> Disclaimer Regarding Chain Reorganization
-
-A transaction that is `detected` here may not ultimately be `finalized` due to chain reorganization. Please understand your risk and liability before utilizing this webhook.
+<Danger>
+  A transaction that is `detected` here may not ultimately be `finalized` due to chain reorganization. **<u>Please understand your risk and liability before utilizing this webhook.</u>**
+</Danger>
 
 In the case of a chain reorganization, it is possible to receive multiple `detected` webhook events for a transaction occurring in multiple branches. I.e. transaction with hash `X` may be seen on a block with hash `A` and again on a block with hash `B`. In such a case, two `detected` webhook events will be sent.
 
