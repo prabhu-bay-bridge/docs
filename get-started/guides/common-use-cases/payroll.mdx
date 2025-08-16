@@ -1,8 +1,8 @@
 ---
-title: "Running payroll"
+title: "Payroll"
 ---
 
-To enable your customer (the “employer”) to pay employees or contractors in stablecoins globally, you need to create a **wallet** and **virtual account** for the employer and a **wallet** for each employee. Once the employer deposits payroll funds into their virtual account, Bridge converts the fiat to stablecoins and securely holds the funds in the employer’s wallet. To process payroll, use the Transfers API to send funds from the employer’s wallet to each employee’s wallet.
+Enable employers to pay employees and contractors globally by **creating a wallet and virtual account **for the employer and a wallet for each employee. Fiat deposits into the virtual account are converted to stablecoins and held in the employer’s wallet. Use the Transfers API to pay out funds from the employer to the employee.
 
 ---
 
@@ -16,21 +16,21 @@ import TransferBetweenBridgeWallets from '/snippets/guides/transfer-between-brid
 
 <GenerateApiKeys />
 
-## Step 2: Create a customer
+## Step 2: Onboard a customer
 
-Create a customer ID for each employer so you can easily manage payroll funding and payouts
+Create a customer ID for each employer to manage payroll. Customers will need to accept our terms of service and complete KYC.
 
 <CreateACustomer />
 
-## Step 3: Create a wallet for the employer
+## Step 3: Create a prefunded wallet
 
-Create a prefunded wallet to securely hold the employer’s payroll funds. A prefunded wallet is a specialized wallet that allows you to maintain and disburse funds on behalf of the employer until it’s time to process payroll.
+Create a prefunded wallet to hold the employer’s payroll funds. This is a specialized wallet that enables you to disburse funds on behalf of employers.
 
 <CreateAWallet />
 
 ## Step 4: Create a virtual account
 
-Create a USD or EUR account for the employer. Provide them with the bank instructions so that they can deposit payroll funds. Funds deposited are converted to stablecoins and sent directly to the employer’s wallet.
+Create a USD or EUR account for the employer. Provide them with the bank instructions so they can deposit payroll. Deposits are converted to stablecoins and sent to their wallet.
 
 <CreateAVirtualAccount />
 
@@ -40,8 +40,8 @@ Create a wallet for each employee to get paid in stablecoins.
 
 <CreateAWallet />
 
-## Step 5: Move funds from the employer's wallet to the employee's wallet using the Transfers API
+## Step 5: Make a transfer
 
-Use the Transfers API to move funds from the employer’s prefunded wallet to the employee’s wallet. Simply provide the source and destination wallet addresses and specify the amount. You will need to call the API for each employee.
+Use the Transfers API to move funds from the employer’s wallet to the employee’s wallet. You will need to call the API for each employee.
 
 <TransferBetweenBridgeWallets />

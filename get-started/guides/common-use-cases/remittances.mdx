@@ -2,7 +2,7 @@
 title: "Remittances"
 ---
 
-To enable your customer (the “sender”) to send fiat or stablecoins to recipients globally, you need to create a **virtual account** for the sender and a **wallet** for the recipient. Once the sender deposits funds into their virtual account, Bridge converts the fiat to stablecoins and delivers the stablecoins to the recipient’s wallet
+Enable senders to pay recipients globally by creating a virtual account for the sender and a wallet for the recipient. Fiat deposits into the sender’s virtual account are converted to stablecoins and sent to the recipient’s wallet.
 
 ---
 
@@ -16,9 +16,9 @@ import ExploreCards from '/snippets/guides/explore-cards.mdx';
 
 <GenerateApiKeys />
 
-## Step 2: Create a customer
+## Step 2: Onboard a customer
 
-Create a customer ID for each sender initiating a remittance.
+Create a customer ID for each sender initiating a payment. Customers will need to accept our terms of service and complete KYC.
 
 <CreateACustomer />
 
@@ -30,10 +30,12 @@ Create a wallet for the recipient to receive funds from the sender.
 
 ## Step 4: Create a virtual account
 
-Create a USD or EUR account for the sender. Provide the bank instructions to them so that they can deposit funds to initiate the transfer. Funds deposited are converted to stablecoins and sent directly to the recipient’s wallet.
+Create a USD or EUR account for the sender. Provide them with the bank instructions so they can deposit funds. Deposits are converted to stablecoins and sent to their wallet.
 
 <CreateAVirtualAccount />
 
-## Step 5: Create a virtual account
+## Step 5: Explore Cards
+
+Enable users to spend their stablecoin balances locally.
 
 <ExploreCards />

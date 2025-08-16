@@ -1,5 +1,43 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Treasury management"
 ---
 
+Manage your customer’s treasury funds with USDB – a Bridge-issued stablecoin backed 1:1 by US dollars. USDB earns treasury yield, and that yield is shared with you. Create a virtual account and wallet to custody treasury funds. Fiat deposits into the virtual account are converted to stablecoins and held in the customer’s wallet. Use the Transfers API to enable customers to pay vendors.
+
+---
+
+import GenerateApiKeys from '/snippets/guides/generate-api-keys.mdx';
+import CreateACustomer from '/snippets/guides/create-a-customer.mdx';
+import CreateAWallet from '/snippets/guides/create-a-wallet.mdx';
+import CreateAVirtualAccount from '/snippets/guides/create-a-virtual-account.mdx';
+import ExploreCards from '/snippets/guides/explore-cards.mdx';
+
+## Step 1: Generate your API Keys
+
+<GenerateApiKeys />
+
+## Step 2: Onboard a customer
+
+Create a customer ID for each business. Customers will need to accept our terms of service and complete KYC.
+
+<CreateACustomer />
+
+## Step 3: Create a wallet
+
+Create a wallet for your customer to hold treasury funds in USDB.
+
+<CreateAWallet />
+
+## Step 4: Create a virtual account
+
+Create a USD or EUR account for the customer. Provide them with the bank instructions so they can receive payments. Deposits are converted to stablecoins and held in their wallet.
+
+<CreateAVirtualAccount />
+
+## Step 5: Create an external account
+Add and store a vendor’s bank account details to send payments from the customer.
+
+## Step 6: Use the Transfers API
+
+Use the Transfers API to move funds from the customer’s wallet to a vendor’s bank account. You will need to call the API for each payment.
+<ExploreCards />
