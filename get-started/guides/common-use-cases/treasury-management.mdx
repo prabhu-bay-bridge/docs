@@ -11,6 +11,9 @@ import CreateACustomer from '/snippets/guides/create-a-customer.mdx';
 import CreateAWallet from '/snippets/guides/create-a-wallet.mdx';
 import CreateAVirtualAccount from '/snippets/guides/create-a-virtual-account.mdx';
 import ExploreCards from '/snippets/guides/explore-cards.mdx';
+import CreateAnExternalAccount from '/snippets/guides/create-an-external-account.mdx';
+import TransferWalletToExternalAccount from '/snippets/guides/transfer-wallet-to-external-account.mdx';
+
 
 ## Step 1: Generate your API Keys
 
@@ -37,7 +40,11 @@ Create a USD or EUR account for the customer. Provide them with the bank instruc
 ## Step 5: Create an external account
 Add and store a vendor’s bank account details to send payments from the customer.
 
+<CreateAnExternalAccount />
+
+
 ## Step 6: Use the Transfers API
 
 Use the Transfers API to move funds from the customer’s wallet to a vendor’s bank account. You will need to call the API for each payment.
-<ExploreCards />
+
+<TransferWalletToExternalAccount />

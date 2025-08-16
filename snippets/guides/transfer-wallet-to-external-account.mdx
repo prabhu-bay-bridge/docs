@@ -1,0 +1,24 @@
+---
+title: "New file"
+description: "Description of your new file."
+---
+
+```bash Request expandable
+curl --location --request POST 'https://api.bridge.xyz/v0/transfers' \
+--header 'Api-Key: <API Key>' \
+--header 'Idempotency-Key: <Unique Idempotency Key>' \
+--data-raw '{
+  "amount": "10.0",
+  "on_behalf_of": "cust_alice",
+  "developer_fee": "0.5",
+  "source": {
+    "payment_rail": "wire",
+    "currency": "usd",
+  },
+  "destination": {
+    "payment_rail": "ach",
+    "currency": "usd",
+    "external_account_id": "<external-account-id>"
+  },
+}'
+```

@@ -10,7 +10,9 @@ import GenerateApiKeys from '/snippets/guides/generate-api-keys.mdx';
 import CreateACustomer from '/snippets/guides/create-a-customer.mdx';
 import CreateAWallet from '/snippets/guides/create-a-wallet.mdx';
 import CreateAVirtualAccount from '/snippets/guides/create-a-virtual-account.mdx';
-import TransferBetweenBridgeWallets from '/snippets/guides/transfer-between-bridge-wallets.mdx';
+import CreateAnExternalAccount from '/snippets/guides/create-an-external-account.mdx';
+import TransferWalletToExternalAccount from '/snippets/guides/transfer-wallet-to-external-account.mdx';
+
 
 ## Step 1: Generate your API Keys
 
@@ -38,10 +40,10 @@ Create a USD or EUR account for the customer. Provide them with the bank instruc
 
 Add and store a supplier's bank account details to send payments from the customer.
 
-<CreateAWallet />
+<CreateAnExternalAccount />
 
 ## Step 5: Make a payment
 
 Use the Transfers API to move funds from the customer’s wallet to a supplier’s bank account. You will need to call the API for each payment.
 
-<TransferBetweenBridgeWallets />
+<TransferWalletToExternalAccount />
